@@ -9,27 +9,20 @@ const useStyles = makeStyles({
 
 interface CustomDropzoneAreaProps {
     acceptedFiles: string[];
-    setSelectedCsvFile: (file: any) => void;
-    setErrorMessage: (message: string) => void;
 }
 
 const CustomDropzoneArea = (props: CustomDropzoneAreaProps) => {
     const classes = useStyles();
-    const { acceptedFiles, setErrorMessage, setSelectedCsvFile } = props
-    const onAlert = (message: string, variant: AlertType) => {
-        if (variant === "error") {
-            setErrorMessage(message)
-        }
+    const { acceptedFiles} = props
+    const onAlert = () => {
     };
 
     const onChange = (files: File[]) => {
         // only one file is allowed
         const file = files[0]
-        setSelectedCsvFile(file)
     };
 
     const onDelete = (_file: File) => {
-        setSelectedCsvFile("")
     };
     return (
         <DropzoneArea
