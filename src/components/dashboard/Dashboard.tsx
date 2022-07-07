@@ -2,12 +2,7 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import data from '../../demo_data/batching_output_example.json'
-import { PieChart, Pie, Sector, Cell, ResponsiveContainer } from 'recharts';
-import Tab from '@mui/material/Tab';
-import TabContext from '@mui/lab/TabContext';
-import TabList from '@mui/lab/TabList';
-import TabPanel from '@mui/lab/TabPanel';
-import { Container } from '@mui/material';
+import { PieChart, Pie, Cell, } from 'recharts';
 
 
 console.log(data)
