@@ -1,7 +1,7 @@
 import {Routes, Route} from "react-router-dom";
 import Upload from "../components/Upload";
 import paths from "./paths";
-import Dashboard from "../components/dashboard/Dashboard";
+import Dashboard from "../components/Dashboard";
 
 const AppRouter = () => {
     return (
