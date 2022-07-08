@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
-import data from '../../demo_data/batching_output_example.json'
+
 import Infobox from "./Infobox";
 import PieChartBox from "./PieChartBox";
 
@@ -19,15 +19,17 @@ function dhmToString(time: [number, number, number]) {
     return time[0] + "D " + time[1] + "H " + time[2] + "M"
 }
 
-const visData = [
-    {name: 'Extraneous', value: data.total_extraneous_wt, label: "EXTRANEOUS\n" + dhmToString(secondsToDhm(data.total_extraneous_wt))},
-    {name: 'Batching', value: data.total_batching_wt, label: "BATCHING\n" + dhmToString(secondsToDhm(data.total_extraneous_wt))},
-    {name: 'Resource Unavailability', value: data.total_unavailability_wt, label: "UNAVAILABILITY\n" + dhmToString(secondsToDhm(data.total_extraneous_wt))},
-    {name: 'Resource Contention', value: data.total_contention_wt, label: "CONTENTION\n" + dhmToString(secondsToDhm(data.total_extraneous_wt))},
-    {name: 'Prioritization', value: data.total_prioritization_wt, label: "PRIORITIZATION\n" + dhmToString(secondsToDhm(data.total_extraneous_wt))}
-]
 
-function Dashboard() {
+
+function Dashboard(data: any) {
+
+    const visData = [
+        {name: 'Extraneous', value: data.data.total_extraneous_wt, label: "EXTRANEOUS\n" + dhmToString(secondsToDhm(data.data.total_extraneous_wt))},
+        {name: 'Batching', value: data.data.total_batching_wt, label: "BATCHING\n" + dhmToString(secondsToDhm(data.data.total_extraneous_wt))},
+        {name: 'Resource Unavailability', value: data.data.total_unavailability_wt, label: "UNAVAILABILITY\n" + dhmToString(secondsToDhm(data.data.total_extraneous_wt))},
+        {name: 'Resource Contention', value: data.data.total_contention_wt, label: "CONTENTION\n" + dhmToString(secondsToDhm(data.data.total_extraneous_wt))},
+        {name: 'Prioritization', value: data.data.total_prioritization_wt, label: "PRIORITIZATION\n" + dhmToString(secondsToDhm(data.data.total_extraneous_wt))}
+    ]
 
     return (
         <Box sx={{
@@ -56,22 +58,22 @@ function Dashboard() {
                             alignItems={"stretch"}
                     >
                         <Grid item xs={6}>
-                            <Infobox data={{title: "Cases", subtitle: "Total number of cases", value: data.num_cases}}/>
+                            <Infobox data={{title: "Cases", subtitle: "Total number of cases", value: data.data.num_cases}}/>
                         </Grid>
                         <Grid item xs={6}>
-                            <Infobox data={{title: "Waiting time (WT)", subtitle: "Total waiting time of the process", value: dhmToString(secondsToDhm(data.total_wt))}}/>
+                            <Infobox data={{title: "Waiting time (WT)", subtitle: "Total waiting time of the process", value: dhmToString(secondsToDhm(data.data.total_wt))}}/>
                         </Grid>
                         <Grid item xs={6}>
-                            <Infobox data={{title: "Activities", subtitle: "Total number of activities", value: data.num_activities}}/>
+                            <Infobox data={{title: "Activities", subtitle: "Total number of activities", value: data.data.num_activities}}/>
                         </Grid>
                         <Grid item xs={6}>
-                            <Infobox data={{title: "Activity instances", subtitle: "Total number of activity executions", value: data.num_activity_instances}}/>
+                            <Infobox data={{title: "Activity instances", subtitle: "Total number of activity executions", value: data.data.num_activity_instances}}/>
                         </Grid>
                         <Grid item xs={6}>
-                            <Infobox data={{title: "Activity transitions", subtitle: "Total number of activity pairs where transitions occur", value: data.num_transitions}}/>
+                            <Infobox data={{title: "Activity transitions", subtitle: "Total number of activity pairs where transitions occur", value: data.data.num_transitions}}/>
                         </Grid>
                         <Grid item xs={6}>
-                            <Infobox data={{title: "Activity instance transitions", subtitle: "Total number of transition executions between activities", value: data.num_transition_instances}}/>
+                            <Infobox data={{title: "Activity instance transitions", subtitle: "Total number of transition executions between activities", value: data.data.num_transition_instances}}/>
                         </Grid>
                     </Grid>
                 </Grid>

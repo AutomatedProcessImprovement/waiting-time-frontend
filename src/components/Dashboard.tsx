@@ -3,6 +3,9 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import Overview from "./dashboard/Overview";
+import Transitions from "./dashboard/Transitions";
+
+import data from '../demo_data/batching_output_example.json'
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -54,10 +57,10 @@ export default function BasicTabs() {
                 </Tabs>
             </Box>
             <TabPanel value={value} index={0}>
-                <Overview/>
+                <Overview data={data}/>
             </TabPanel>
             <TabPanel value={value} index={1}>
-                <Overview/>
+                <Transitions data={data}/>
             </TabPanel>
             <TabPanel value={value} index={2}>
                 <Overview/>

@@ -25,7 +25,7 @@ function dhmToString(time: [number, number, number]) {
 }
 
 export default function PieChartBox(data:any) {
-    console.log(data)
+
     return (
         <Card sx={{ minWidth: 275 }}>
             <PieChart height={500} width={1000} margin={{top: 5, right: 5, bottom: 5, left: 5 }}>
