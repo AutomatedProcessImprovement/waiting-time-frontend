@@ -5,26 +5,12 @@ import Box from '@mui/material/Box';
 import Overview from "./dashboard/Overview";
 import Transitions from "./dashboard/Transitions";
 
-import data from '../demo_data/batching_output_example.json'
+// import data from '../demo_data/batching_output_example.json'
 import {alpha, Grid, IconButton, InputBase, styled, Typography} from "@mui/material";
 
 import Download from '@mui/icons-material/CloudDownloadOutlined';
 import SearchIcon from '@mui/icons-material/Search';
-
-
-function AdditionalData(data: any) {
-//    Calculate the percentage of respective waiting_times in each report entry
-    let report_data = data.report
-    for (var entry of report_data) {
-        entry.batch_wt_perc = (entry.batching_wt / entry.total_wt * 100).toFixed(2)
-        entry.prio_wt_perc = (entry.prioritization_wt / entry.total_wt * 100).toFixed(2)
-        entry.cont_wt_perc = (entry.contention_wt / entry.total_wt * 100).toFixed(2)
-        entry.unav_wt_perc = (entry.unavailability_wt / entry.total_wt * 100).toFixed(2)
-        entry.extr_wt_perc = (entry.extraneous_wt / entry.total_wt * 100).toFixed(2)
-        entry.bar_label = entry.source_activity + " - " + entry.target_activity
-    }
-    return data
-}
+import {useLocation} from "react-router-dom";
 
 
 interface TabPanelProps {
@@ -103,13 +89,28 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 const onDownload = () => {
     // TODO DEMO ONLY- REPLACE WITH LINK FROM SERVER
     const link = document.createElement("a");
-    link.download = `download.txt`;
-    link.href = "./download.txt";
+    link.download = `batching_output_example.json`;
+    link.href = "../demo_data/batching_output_example.json";
     link.click();
 };
 
-export default function BasicTabs() {
+interface LocationState {
+    jsonLog : File
+}
+
+// const fromContentToBlob = (values: any) => {
+//     const content = JSON.stringify(values)
+//     const blob = new Blob([content], { type: "text/plain" })
+//     return blob
+// };
+
+const BasicTabs = () => {
     const [value, setValue] = React.useState(0);
+
+    const {state} = useLocation()
+    const {jsonLog} = state as LocationState
+
+    let data = jsonLog
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
@@ -160,7 +161,7 @@ export default function BasicTabs() {
                 <Overview data={data} />
             </TabPanel>
             <TabPanel value={value} index={1}>
-                <Transitions data={AdditionalData(data)} sx={{ mx: "2rem" }}/>
+                <Transitions data={data} sx={{ mx: "2rem" }}/>
             </TabPanel>
             <TabPanel value={value} index={2}>
                 <Overview sx={{ mx: "auto" }}/>
@@ -168,3 +169,6 @@ export default function BasicTabs() {
         </Box>
     );
 }
+
+
+export default BasicTabs

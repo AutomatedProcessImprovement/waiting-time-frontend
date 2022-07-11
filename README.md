@@ -24,6 +24,8 @@ Frontend client for Waiting Time Analysis tool.
 
 ## Presentable progress:
 
+### Home - Upload:
+![](./screenshots/Home-Upload.PNG)
 ### Dashboard - Overview
 ![](./screenshots/Dashboard-Overview.PNG)
 ### Dashboard - Transitions

@@ -1,4 +1,4 @@
-import data from '../../demo_data/batching_output_example.json'
+// import data from '../../demo_data/batching_output_example.json'
 import React from 'react';
 import {
     BarChart,
@@ -12,9 +12,6 @@ import {
     LabelList
 } from 'recharts';
 
-function create_bar_data() {
-    return data.report
-}
 
 function secondsToDhm(seconds: number) {
     seconds = Number(seconds);
@@ -59,10 +56,24 @@ const CustBarLabel = (props: { x: any; y:any, value: any; }) => {
     );
 };
 
+function AdditionalData(data: any) {
+//    Calculate the percentage of respective waiting_times in each report entry
+    for (var entry of data) {
+        entry.batch_wt_perc = (entry.batching_wt / entry.total_wt * 100).toFixed(2)
+        entry.prio_wt_perc = (entry.prioritization_wt / entry.total_wt * 100).toFixed(2)
+        entry.cont_wt_perc = (entry.contention_wt / entry.total_wt * 100).toFixed(2)
+        entry.unav_wt_perc = (entry.unavailability_wt / entry.total_wt * 100).toFixed(2)
+        entry.extr_wt_perc = (entry.extraneous_wt / entry.total_wt * 100).toFixed(2)
+        entry.bar_label = entry.source_activity + " - " + entry.target_activity
+    }
+    return data
+}
 
-function TransitionsBarChart() {
-    let bar_data = create_bar_data()
-    bar_data = bar_data.sort((f,s) => 0 - (f.total_wt > s.total_wt ? 1 : -1))
+
+function TransitionsBarChart(data: any) {
+    console.log(data)
+    let bar_data = AdditionalData(data.data)
+    bar_data = bar_data.sort((f: { total_wt: number; }, s: { total_wt: number; }) => 0 - (f.total_wt > s.total_wt ? 1 : -1))
 
     return (
         <>

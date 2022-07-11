@@ -9,20 +9,22 @@ const useStyles = makeStyles({
 
 interface CustomDropzoneAreaProps {
     acceptedFiles: string[];
+    setSelectedLogFile: (file:any) => void;
 }
 
 const CustomDropzoneArea = (props: CustomDropzoneAreaProps) => {
     const classes = useStyles();
-    const { acceptedFiles} = props
+    const { acceptedFiles, setSelectedLogFile} = props
     const onAlert = () => {
     };
 
     const onChange = (files: File[]) => {
         // only one file is allowed
-        return files[0]
+        setSelectedLogFile(files[0])
     };
 
     const onDelete = (_file: File) => {
+        setSelectedLogFile("")
     };
     return (
         <DropzoneArea
@@ -44,6 +46,7 @@ const CustomDropzoneArea = (props: CustomDropzoneAreaProps) => {
             onDelete={onDelete}
             onChange={onChange}
             onAlert={onAlert}
+
         />
     )
 }

@@ -100,7 +100,6 @@ function Row(props: { row: any }) {
     )
 }
 function Transitions(data:any) {
-    console.log(data.data.report)
     // TODO - REPLACE WITH DATATABLE INSTEAD OF TABLE
     return (
         <Box sx={{
@@ -112,7 +111,7 @@ function Transitions(data:any) {
             mx: "5rem"
         }}>
             <Card sx={{ minWidth: 500 }}>
-                <TransitionsBarChart/>
+                <TransitionsBarChart data={data.data.report}/>
             </Card>
             <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 650 }} aria-label="simple table" style={{ tableLayout: 'fixed' }}>

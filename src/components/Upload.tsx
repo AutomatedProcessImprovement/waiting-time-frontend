@@ -5,6 +5,10 @@ import paths from '../router/paths'
 import CustomDropzoneArea from './upload/CustomDropzoneArea';
 import { LoadingButton } from '@mui/lab';
 
+// TODO REPLACE LATER
+import data from '../demo_data/batching_output_example.json'
+
+
 // enum Source {
 //     empty,
 //     existing,
@@ -13,12 +17,37 @@ import { LoadingButton } from '@mui/lab';
 
 const Upload = () => {
     const [loading, setLoading] = useState<boolean>(false);
+    const [selectedLogFile, setSelectedLogFile] = useState<File | null>(null);
 
     const navigate = useNavigate()
 
+    const areFilesPresent = () => {
+        const isEventLogProvided = !!selectedLogFile
+
+        return isEventLogProvided;
+
+    }
+
+
     const onContinueClick = () => {
+
         setLoading(true)
-        navigate(paths.DASHBOARD_PATH, {})
+        if (!areFilesPresent()) {
+            return
+        }
+
+        const formData = new FormData()
+        formData.append("eventLog", selectedLogFile as Blob)
+
+        // TODO AXIOS STUFF - CSV MAPPING?
+
+
+
+        navigate(paths.DASHBOARD_PATH, {
+            state: {
+                jsonLog: data
+            }
+        });
         setLoading(false)
     };
 
@@ -37,12 +66,13 @@ const Upload = () => {
                         <Grid container spacing={2}>
                             <Grid item xs={12}>
                                 <Typography variant="h6" align="left">
-                                    Process Model
+                                    Event log
                                 </Typography>
                             </Grid>
                             <Grid item xs={12}>
                                 <CustomDropzoneArea
                                     acceptedFiles={[".csv"]}
+                                    setSelectedLogFile={setSelectedLogFile}
                                 />
                             </Grid>
                         </Grid>
@@ -54,7 +84,7 @@ const Upload = () => {
                         onClick={onContinueClick}
                         loading={loading}
                     >
-                        Specify Scenario Parameters
+                        Upload event log
                     </LoadingButton>
                 </Grid>
             </Grid>
