@@ -4,6 +4,7 @@ import Grid from '@mui/material/Grid';
 
 import Infobox from "./Infobox";
 import PieChartBox from "./PieChartBox";
+import Typography from "@mui/material/Typography";
 
 
 function secondsToDhm(seconds: number) {
@@ -39,6 +40,7 @@ function Dashboard(data: any) {
             m: 1,
             bgcolor: 'background.paper',
             borderRadius: 1,
+            mx: "5rem"
         }}>
             <Grid container
                   spacing={3}
@@ -79,6 +81,12 @@ function Dashboard(data: any) {
                 </Grid>
                 <Grid item xs={6}>
                     <Grid item xs={12}>
+                        <Typography align={"left"} variant="h5" component="div" sx={{ fontSize: 18 }} color="text.primary" gutterBottom>
+                            Waiting time causes
+                        </Typography>
+                        <Typography  align={"left"} variant="h6" sx={{ fontSize: 16 }} color="text.secondary" component="div">
+                            Total waiting time of the process by its cause
+                        </Typography>
                         <PieChartBox data={visData}/>
                     </Grid>
                 </Grid>

@@ -29,11 +29,15 @@ function NavBar() {
                         color="inherit"
                         aria-label="menu"
                         sx={{ mr: 2 }}
+                        disabled
                     >
                         <ConstructionIcon />
                     </IconButton>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                        Waiting Time Analyser (WIP)
+                        Waiting Time Analyser
+                    </Typography>
+                    <Typography>
+                        Will_be_the_log_name_later.csv
                     </Typography>
                     <Box>
                         {menuOptions.map(({ title, to }, index) => (

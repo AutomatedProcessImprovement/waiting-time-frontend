@@ -1,20 +1,16 @@
 import data from '../../demo_data/batching_output_example.json'
-import React, {Component, PureComponent} from 'react';
+import React from 'react';
 import {
     BarChart,
     Bar,
-    Cell,
     XAxis,
     YAxis,
     CartesianGrid,
     Tooltip,
     Legend,
     ResponsiveContainer,
-    Label,
     LabelList
 } from 'recharts';
-import {Typography} from "@mui/material";
-import {render} from "react-dom";
 
 function create_bar_data() {
     return data.report
@@ -42,7 +38,7 @@ const CustEndLabel = (props: { x: any; y: any; value: number;}) => {
             x={x}
             y={y}
             dx={"1%"}
-            dy={25}
+            dy={20}
             fontSize="15"
             fontWeight="bold"
             fill={"#181818"}
@@ -57,7 +53,7 @@ const CustBarLabel = (props: { x: any; y:any, value: any; }) => {
     const { x, y, value } = props;
 
     return (
-        <text x={x} y={y} dy={25} fontWeight="bold" dominantBaseline="auto" textAnchor="start">
+        <text x={x} y={y} dy={20} fontWeight="bold" dominantBaseline="auto" textAnchor="start">
             {value + "%"}
         </text>
     );
@@ -70,9 +66,6 @@ function TransitionsBarChart() {
 
     return (
         <>
-            <Typography>
-                BLIEPBLOOP
-            </Typography>
             <ResponsiveContainer width={"100%"} height={400} min-width={400}>
 
                 <BarChart
@@ -87,7 +80,7 @@ function TransitionsBarChart() {
                     }}
                     barGap={'5%'}
                     layout={'vertical'}
-                    barSize={40}
+                    barSize={30}
                 >
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis type={'number'} hide />
