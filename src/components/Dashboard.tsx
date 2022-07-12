@@ -11,6 +11,7 @@ import {alpha, Grid, IconButton, InputBase, styled, Typography} from "@mui/mater
 import Download from '@mui/icons-material/CloudDownloadOutlined';
 import SearchIcon from '@mui/icons-material/Search';
 import {useLocation} from "react-router-dom";
+import Cteimpact from "./dashboard/Cteimpact";
 
 
 interface TabPanelProps {
@@ -164,7 +165,7 @@ const BasicTabs = () => {
                 <Transitions data={data} sx={{ mx: "2rem" }}/>
             </TabPanel>
             <TabPanel value={value} index={2}>
-                <Overview sx={{ mx: "auto" }}/>
+                <Cteimpact data={data}/>
             </TabPanel>
         </Box>
     );
