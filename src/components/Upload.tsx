@@ -1,19 +1,17 @@
-import { useState } from 'react';
-import {Grid, Paper, Typography } from "@mui/material";
-import { useNavigate } from 'react-router-dom';
+import {useState} from 'react';
+import {Grid, Paper, Typography} from "@mui/material";
+import {useNavigate} from 'react-router-dom';
 import paths from '../router/paths'
 import CustomDropzoneArea from './upload/CustomDropzoneArea';
-import { LoadingButton } from '@mui/lab';
-
+import {LoadingButton} from '@mui/lab';
 // TODO REPLACE LATER
-import data from '../demo_data/batching_output_example.json'
+import axios from "axios";
 
 
-// enum Source {
-//     empty,
-//     existing,
-//     logs
-// }
+// Stream big file in worker thread
+
+
+
 
 const Upload = () => {
     const [loading, setLoading] = useState<boolean>(false);
@@ -23,11 +21,8 @@ const Upload = () => {
 
     const areFilesPresent = () => {
         const isEventLogProvided = !!selectedLogFile
-
         return isEventLogProvided;
-
     }
-
 
     const onContinueClick = () => {
 
@@ -35,19 +30,30 @@ const Upload = () => {
         if (!areFilesPresent()) {
             return
         }
+        const formData = {
+            'event_log': "http://localhost:8090/assets/samples/PurchasingExample.csv",
+            'callback_endpoint': "http://example.com/callback"
+        }
 
-        const formData = new FormData()
-        formData.append("eventLog", selectedLogFile as Blob)
 
         // TODO AXIOS STUFF - CSV MAPPING?
+        axios.post(
+            'http://localhost:8080/jobs',
+            formData)
+            .then(((res:any) => {
+            const jsonString = JSON.stringify(res.data)
+            const blob = new Blob([jsonString], {type: "application/json"});
+            const analysedEventLog = new File([blob], "name", { type: "application/json" })
 
-
-
-        navigate(paths.DASHBOARD_PATH, {
-            state: {
-                jsonLog: data
-            }
-        });
+            navigate(paths.DASHBOARD_PATH, {
+                state: {
+                    jsonLog: analysedEventLog
+                }
+            })
+        })).catch((error: any) => {
+            console.log("Need to handle this: " + error)
+            setLoading(false)
+        })
         setLoading(false)
     };
 
