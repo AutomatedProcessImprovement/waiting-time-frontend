@@ -1,10 +1,12 @@
-import {useState} from 'react';
+import {useState } from 'react';
 import {Grid, Paper, Typography} from "@mui/material";
-// import {useNavigate} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import CustomDropzoneArea from './upload/CustomDropzoneArea';
 import {LoadingButton} from '@mui/lab';
 // TODO REPLACE LATER
 import axios from "axios";
+import paths from "../router/paths";
+import data from '../demo_data/batching_output_example.json'
 
 
 
@@ -13,7 +15,7 @@ const Upload = () => {
     const [loading, setLoading] = useState<boolean>(false);
     const [selectedLogFile, setSelectedLogFile] = useState<File | null>(null);
 
-    // const navigate = useNavigate()
+    const navigate = useNavigate()
 
     const areFilesPresent = () => {
         const isEventLogProvided = !!selectedLogFile
@@ -48,33 +50,47 @@ const Upload = () => {
                 )
                     .then(((res:any) => {
                         console.log(res.data)
-
+                        let job = res.data
+                        let f = setInterval(() => {
+                            axios.get(
+                                'http://193.40.11.233/jobs/' + job.job.id,
+                            ).then((r:any)  => {
+                                let j = r.data
+                                if (j.job.status === 'completed') {
+                                    console.log('ok')
+                                    clearInterval(f)
+                                    axios({
+                                        url: j.job.report_csv,
+                                        method: 'GET',
+                                        responseType: 'blob',
+                                    }).then((response) => {
+                                        const url = window.URL.createObjectURL(new Blob([response.data]));
+                                        const link = document.createElement('a');
+                                        link.href = url;
+                                        link.setAttribute('download', 'file.pdf'); //or any other extension
+                                        document.body.appendChild(link);
+                                        link.click();
+                                    });
+                                    // JSONLOG OUUTPUT
+                                    navigate(paths.DASHBOARD_PATH, {
+                                        state: {
+                                            jsonLog: data
+                                        }
+                                    })
+                                    setLoading(false)
+                                }
+                            })
+                        }, 60000)
                         // const jsonString = JSON.stringify(res.data)
                         // const blob = new Blob([jsonString], {type: "application/json"});
                         // const analysedEventLog = new File([blob], "name", { type: "application/json" })
                         //
-                        // navigate(paths.DASHBOARD_PATH, {
-                        //     state: {
-                        //         jsonLog: analysedEventLog
-                        //     }
-                        // })
                     })).catch((error: any) => {
                     console.log("Need to handle this: " + error)
                     setLoading(false)
                 })
-                setLoading(false)
             }
-
         )
-
-        // const formData = {
-        //     'event_log': "http://localhost:8080/assets/samples/PurchasingExample.csv",
-        //     'callback_endpoint': "http://localhost:3000/callback"
-        // }
-
-
-        // TODO AXIOS STUFF - CSV MAPPING?
-
     };
 
     return (
