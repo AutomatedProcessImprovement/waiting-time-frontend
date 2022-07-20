@@ -7,8 +7,42 @@ import {LoadingButton} from '@mui/lab';
 import axios from "axios";
 import paths from "../router/paths";
 import data from '../demo_data/batching_output_example.json'
+// import config from '../owncloud.json'
 
-
+// const owncloud = require('owncloud-sdk');
+// let oc = new owncloud({
+//     baseUrl: config.OWNCLOUDURL,
+//     auth: {
+//         basic: {
+//             username: config.USERNAME,
+//             password: config.PASSWORD
+//         }
+//     }
+// });
+//
+// // Login
+// oc.login().then((status: any) => {
+//     // STUFF
+//     console.log(status)
+// }).catch((error: any) => {
+//     // HANDLE ERROR
+//     console.log(error)
+// });
+//
+// // Share File With Link
+// oc.shares.shareFileWithLink('linkToYourFile').then((shareInfo: { getLink: () => string; }) => {
+//     console.log("Link is : " + shareInfo.getLink());
+// }).catch((error: any) => {
+//     console.log(error)
+//     // HANDLE ERROR
+// });
+//
+// // List all files
+// oc.files.list('https://owncloud.ut.ee/owncloud/index.php/s/DAynoadkJJdDWJE').then((files: any) => {
+//     console.log(files);
+// }).catch((error: any) => {
+//     console.log(error);
+// });
 
 
 const Upload = () => {
@@ -67,7 +101,7 @@ const Upload = () => {
                                         const url = window.URL.createObjectURL(new Blob([response.data]));
                                         const link = document.createElement('a');
                                         link.href = url;
-                                        link.setAttribute('download', 'file.pdf'); //or any other extension
+                                        link.setAttribute('download', 'file.csv'); //or any other extension
                                         document.body.appendChild(link);
                                         link.click();
                                     });
