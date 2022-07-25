@@ -11,19 +11,6 @@ let colordict = {
 }
 const COLORS = [colordict.extraneous, colordict.batching, colordict.unavailability, colordict.contention, colordict.prioritization]
 
-function secondsToDhm(seconds: number) {
-    seconds = Number(seconds);
-    let d = Math.floor(seconds / (3600*24));
-    let h = Math.floor(seconds % (3600*24) / 3600);
-    let m = Math.floor(seconds % 3600 / 60);
-    let res: [number, number, number] = [d,h,m]
-    return res
-}
-
-function dhmToString(time: [number, number, number]) {
-    return time[0] + "D " + time[1] + "H " + time[2] + "M"
-}
-
 export default function CTEPiechart(data:any) {
 
     return (

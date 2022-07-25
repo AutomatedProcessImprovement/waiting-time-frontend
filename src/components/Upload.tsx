@@ -6,7 +6,6 @@ import {LoadingButton} from '@mui/lab';
 // TODO REPLACE LATER
 import axios from "axios";
 import paths from "../router/paths";
-import data from '../demo_data/batching_output_example.json'
 // import config from '../owncloud.json'
 
 // const owncloud = require('owncloud-sdk');
@@ -76,8 +75,8 @@ const Upload = () => {
             }
         )
             .then(((res:any) => {
-                console.log(res.data)
                 let job = res.data
+                console.log(job)
                 let f = setInterval(() => {
                     axios.get(
                         'http://193.40.11.233/jobs/949dc6ee-09d1-11ed-95fe-0242c0a85002',
