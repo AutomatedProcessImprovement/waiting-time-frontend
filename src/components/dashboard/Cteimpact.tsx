@@ -3,7 +3,7 @@ import Infobox from "./Infobox";
 import * as React from "react";
 import Row from "./Row";
 import Typography from "@mui/material/Typography";
-import PieChartBox from "./PieChartBox";
+import CTEPiechart from "./CTEPiechart";
 
 function cteImpactCalculations(data:any) {
     console.log(data)
@@ -26,13 +26,16 @@ function dhmToString(time: [number, number, number]) {
 
 function Cteimpact(data:any) {
 
+    console.log(data)
+
     const visData = [
-        {name: 'Extraneous', value: data.data.total_extraneous_wt, label: "EXTRANEOUS\n" + dhmToString(secondsToDhm(data.data.total_extraneous_wt))},
-        {name: 'Batching', value: data.data.total_batching_wt, label: "BATCHING\n" + dhmToString(secondsToDhm(data.data.total_extraneous_wt))},
-        {name: 'Resource Unavailability', value: data.data.total_unavailability_wt, label: "UNAVAILABILITY\n" + dhmToString(secondsToDhm(data.data.total_extraneous_wt))},
-        {name: 'Resource Contention', value: data.data.total_contention_wt, label: "CONTENTION\n" + dhmToString(secondsToDhm(data.data.total_extraneous_wt))},
-        {name: 'Prioritization', value: data.data.total_prioritization_wt, label: "PRIORITIZATION\n" + dhmToString(secondsToDhm(data.data.total_extraneous_wt))}
+        {name: 'Extraneous', value: data.data.cte_impact.extraneous_impact, label: "EXTRANEOUS\n" + data.data.extraneous_impact},
+        {name: 'Batching', value: data.data.cte_impact.batching_impact, label: "BATCHING\n" + data.data.batching_impact},
+        {name: 'Resource Unavailability', value: data.data.cte_impact.unavailability_impact, label: "UNAVAILABILITY\n" + data.data.unavailability_impact},
+        {name: 'Resource Contention', value: data.data.cte_impact.contention_impact, label: "CONTENTION\n" + data.data.contention_impact},
+        {name: 'Prioritization', value: data.data.cte_impact.prioritization_impact, label: "PRIORITIZATION\n" + data.data.prioritization_impact}
     ]
+    console.log(visData)
 
     return (
         <Box sx={{
@@ -77,7 +80,7 @@ function Cteimpact(data:any) {
                         <Typography  align={"left"} variant="h6" sx={{ fontSize: 16 }} color="text.secondary" component="div">
                             Potential CTE values when waiting time causes are eliminated
                         </Typography>
-                        <PieChartBox data={visData}/>
+                        <CTEPiechart data={visData}/>
                     </Grid>
                 </Grid>
 

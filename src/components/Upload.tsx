@@ -62,69 +62,49 @@ const Upload = () => {
         if (!areFilesPresent()) {
             return
         }
-        let formData = new FormData()
-        formData.append("file", selectedLogFile as Blob)
-        // TODO REPLACE WITH PUBLIC ACCESSIBLE ENDPOINT
+        let analysisJson = {
+            // TODO REPLACE WITH SELECTEDLOGFILE
+            event_log: selectedLogFile,
+            callback_endpoint: "http://example.com/callback"
+        }
+        console.log(analysisJson.event_log)
         axios.post(
-            'http://localhost:5000/file',
-            formData
-        ).then(res =>
+            'http://193.40.11.233/jobs',
+            selectedLogFile as Blob,
             {
-                console.log("uploaded")
-                const fileUrl = res.data.url
-                console.log(fileUrl)
-
-                let analysisJson = {
-                    event_log: "http://193.40.11.233/assets/samples/PurchasingExample.csv",
-                    callback_endpoint: "http://example.com/callback"
-                }
-                axios.post(
-                    'http://193.40.11.233/jobs',
-                    analysisJson,
-                )
-                    .then(((res:any) => {
-                        console.log(res.data)
-                        let job = res.data
-                        let f = setInterval(() => {
-                            axios.get(
-                                'http://193.40.11.233/jobs/' + job.job.id,
-                            ).then((r:any)  => {
-                                let j = r.data
-                                if (j.job.status === 'completed') {
-                                    console.log('ok')
-                                    clearInterval(f)
-                                    axios({
-                                        url: j.job.report_csv,
-                                        method: 'GET',
-                                        responseType: 'blob',
-                                    }).then((response) => {
-                                        const url = window.URL.createObjectURL(new Blob([response.data]));
-                                        const link = document.createElement('a');
-                                        link.href = url;
-                                        link.setAttribute('download', 'file.csv'); //or any other extension
-                                        document.body.appendChild(link);
-                                        link.click();
-                                    });
-                                    // JSONLOG OUUTPUT
-                                    navigate(paths.DASHBOARD_PATH, {
-                                        state: {
-                                            jsonLog: data
-                                        }
-                                    })
-                                    setLoading(false)
-                                }
-                            })
-                        }, 60000)
-                        // const jsonString = JSON.stringify(res.data)
-                        // const blob = new Blob([jsonString], {type: "application/json"});
-                        // const analysedEventLog = new File([blob], "name", { type: "application/json" })
-                        //
-                    })).catch((error: any) => {
-                    console.log("Need to handle this: " + error)
-                    setLoading(false)
-                })
+                headers: {'Content-Type': 'text/csv', "Access-Control-Allow-Origin": "*"}
             }
         )
+            .then(((res:any) => {
+                console.log(res.data)
+                let job = res.data
+                let f = setInterval(() => {
+                    axios.get(
+                        'http://193.40.11.233/jobs/949dc6ee-09d1-11ed-95fe-0242c0a85002',
+                        //TODO REPLACE WITH THIS ONCE WORKING 'http://193.40.11.233/jobs/' + job.id,
+                    ).then((r:any)  => {
+                        let j = r.data
+                        if (j.status === 'completed') {
+                            console.log('ok')
+                            clearInterval(f)
+                            const result = j.result
+                            navigate(paths.DASHBOARD_PATH, {
+                                state: {
+                                    jsonLog: result
+                                }
+                            })
+                            setLoading(false)
+                        }
+                    })
+                }, 60000)
+                // const jsonString = JSON.stringify(res.data)
+                // const blob = new Blob([jsonString], {type: "application/json"});
+                // const analysedEventLog = new File([blob], "name", { type: "application/json" })
+                //
+            })).catch((error: any) => {
+            console.log("Need to handle this: " + error)
+            setLoading(false)
+        })
     };
 
     return (
