@@ -7,6 +7,7 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import ConstructionIcon from '@mui/icons-material/Construction';
 import { Link } from 'react-router-dom';
+import {useState} from "react";
 
 interface MenuOptions {
     title: string,
@@ -36,21 +37,16 @@ function NavBar() {
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                         Waiting Time Analyser
                     </Typography>
-                    <Typography>
-                        Will_be_the_log_name_later.csv
-                    </Typography>
-                    <Box>
-                        {menuOptions.map(({ title, to }, index) => (
-                            <Button
-                                key={`menu_item_btn_${index}`}
-                                component={Link}
-                                to={to}
-                                sx={{ my: 2, color: 'white', display: 'block' }}
-                            >
-                                {title}
-                            </Button>
-                        ))}
-                    </Box>
+                    {menuOptions.map(({ title, to }, index) => (
+                        <Button
+                            key={`menu_item_btn_${index}`}
+                            component={Link}
+                            to={to}
+                            sx={{ my: 2, color: 'white', display: 'block' }}
+                        >
+                            {title}
+                        </Button>
+                    ))}
                 </Toolbar>
             </AppBar>
         </Box>

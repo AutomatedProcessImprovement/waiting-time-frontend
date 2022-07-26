@@ -29,7 +29,6 @@ function dhmToString(time: [number, number, number]) {
 
 const CustEndLabel = (props: { x: any; y: any; value: number;}) => {
     const { x, y, value } = props;
-
     return (
         <text
             x={x}
@@ -48,7 +47,13 @@ const CustEndLabel = (props: { x: any; y: any; value: number;}) => {
 
 const CustBarLabel = (props: { x: any; y:any, value: any; }) => {
     const { x, y, value } = props;
+    if (value === "0.00" || isNaN(value)) {
+        return (
+            <text>
 
+            </text>
+        );
+    }
     return (
         <text x={x} y={y} dy={20} fontWeight="bold" dominantBaseline="auto" textAnchor="start">
             {value + "%"}

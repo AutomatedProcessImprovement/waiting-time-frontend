@@ -1,4 +1,4 @@
-import {useState } from 'react';
+import {useState} from 'react';
 import {Grid, Paper, Typography} from "@mui/material";
 import {useNavigate} from 'react-router-dom';
 import CustomDropzoneArea from './upload/CustomDropzoneArea';
@@ -6,6 +6,7 @@ import {LoadingButton} from '@mui/lab';
 // TODO REPLACE LATER
 import axios from "axios";
 import paths from "../router/paths";
+import Navbar from "./navbar/Navbar";
 // import config from '../owncloud.json'
 
 // const owncloud = require('owncloud-sdk');
@@ -47,8 +48,12 @@ import paths from "../router/paths";
 const Upload = () => {
     const [loading, setLoading] = useState<boolean>(false);
     const [selectedLogFile, setSelectedLogFile] = useState<File | null>(null);
+    const formData = new FormData()
+    if (selectedLogFile) {
+        formData.append('event_log', selectedLogFile)
+    }
 
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     const areFilesPresent = () => {
         const isEventLogProvided = !!selectedLogFile
@@ -59,43 +64,42 @@ const Upload = () => {
 
         setLoading(true)
         if (!areFilesPresent()) {
+            setLoading(false)
             return
         }
-        let analysisJson = {
-            // TODO REPLACE WITH SELECTEDLOGFILE
-            event_log: selectedLogFile,
-            callback_endpoint: "http://example.com/callback"
-        }
-        console.log(analysisJson.event_log)
-        axios.post(
-            'http://193.40.11.233/jobs',
-            selectedLogFile as Blob,
-            {
-                headers: {'Content-Type': 'text/csv', "Access-Control-Allow-Origin": "*"}
-            }
+        var config = {
+            method: 'post',
+            url: 'http://193.40.11.233/jobs',
+            headers: {
+                'Content-Type': 'text/csv'
+            },
+            data : new Blob([selectedLogFile as Blob], {type:"text/csv"})
+        };
+        axios(
+            config
         )
             .then(((res:any) => {
                 let job = res.data
                 console.log(job)
                 let f = setInterval(() => {
                     axios.get(
-                        'http://193.40.11.233/jobs/949dc6ee-09d1-11ed-95fe-0242c0a85002',
-                        //TODO REPLACE WITH THIS ONCE WORKING 'http://193.40.11.233/jobs/' + job.id,
+                        'http://193.40.11.233/jobs/' + job.id,
                     ).then((r:any)  => {
                         let j = r.data
-                        if (j.status === 'completed') {
-                            console.log('ok')
+                        if (j.status === 'completed' || j.status === 'duplicate') {
                             clearInterval(f)
-                            const result = j.result
+                            let logN = selectedLogFile?.name
                             navigate(paths.DASHBOARD_PATH, {
                                 state: {
-                                    jsonLog: result
+                                    jsonLog: j.result,
+                                    report: j,
+                                    logName: logN
                                 }
                             })
                             setLoading(false)
                         }
                     })
-                }, 60000)
+                }, 30000)
                 // const jsonString = JSON.stringify(res.data)
                 // const blob = new Blob([jsonString], {type: "application/json"});
                 // const analysedEventLog = new File([blob], "name", { type: "application/json" })

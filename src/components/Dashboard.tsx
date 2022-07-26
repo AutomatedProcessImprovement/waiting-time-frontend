@@ -87,31 +87,34 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
 }));
 
-const onDownload = () => {
+const onDownload = (report:string) => {
     // TODO DEMO ONLY- REPLACE WITH LINK FROM SERVER
+    console.log(report)
     const link = document.createElement("a");
-    link.download = `batching_output_example.json`;
-    link.href = "../demo_data/batching_output_example.json";
+    link.href = report;
+    link.setAttribute(
+        'download',
+        `report_csv.csv`
+    )
     link.click();
 };
 
 interface LocationState {
     jsonLog : File
+    report: any
+    logName: string
 }
-
-// const fromContentToBlob = (values: any) => {
-//     const content = JSON.stringify(values)
-//     const blob = new Blob([content], { type: "text/plain" })
-//     return blob
-// };
 
 const BasicTabs = () => {
     const [value, setValue] = React.useState(0);
 
     const {state} = useLocation()
-    const {jsonLog} = state as LocationState
+    const {report} = state as LocationState
+    const {logName} = state as LocationState
 
-    let data = jsonLog
+    let data = report.result
+    console.log(report.report_csv)
+    console.log(logName)
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
@@ -149,9 +152,16 @@ const BasicTabs = () => {
                                 inputProps={{ 'aria-label': 'search' }}
                             />
                         </Search>
+
                     </Grid>
                     <Grid item>
-                        <IconButton aria-label="download" size="large" onClick={onDownload}>
+                        <Typography>
+                            Log: {logName}
+                        </Typography>
+                    </Grid>
+                    <Grid item>
+
+                        <IconButton aria-label="download" size="large" onClick={() => onDownload(report.report_csv)}>
                             <Download />
                         </IconButton>
                     </Grid>

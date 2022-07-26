@@ -25,9 +25,6 @@ function dhmToString(time: [number, number, number]) {
 }
 
 function Cteimpact(data:any) {
-
-    console.log(data)
-
     const visData = [
         {name: 'Extraneous', value: data.data.cte_impact.extraneous_impact, label: "EXTRANEOUS\n" + data.data.extraneous_impact},
         {name: 'Batching', value: data.data.cte_impact.batching_impact, label: "BATCHING\n" + data.data.batching_impact},
