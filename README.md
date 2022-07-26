@@ -26,7 +26,13 @@ Frontend client for Waiting Time Analysis tool.
 
 ### Home - Upload:
 ![](./screenshots/Home-Upload.PNG)
+### Home - Uploading:
+![](./screenshots/Home-Upload-Uploading.PNG)
 ### Dashboard - Overview
 ![](./screenshots/Dashboard-Overview.PNG)
 ### Dashboard - Transitions
 ![](./screenshots/Dashboard-Transitions.PNG)
+### Dashboard - CTE Impact
+![](./screenshots/Dashboard-CTEIMPACT.PNG)
+### Dashboard - Download Report
+![](./screenshots/Dashboard-DownloadReport.PNG)
