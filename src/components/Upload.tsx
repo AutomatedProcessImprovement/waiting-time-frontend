@@ -6,7 +6,6 @@ import {LoadingButton} from '@mui/lab';
 // TODO REPLACE LATER
 import axios from "axios";
 import paths from "../router/paths";
-import Navbar from "./navbar/Navbar";
 // import config from '../owncloud.json'
 
 // const owncloud = require('owncloud-sdk');
@@ -113,12 +112,39 @@ const Upload = () => {
     return (
         <>
             <Grid container alignItems="center" justifyContent="center" spacing={4} style={{ paddingTop: '10px' }} className="centeredContent">
-                <Grid item xs={9}>
+                <Grid item xs={12}>
                     <Grid item>
                         <Typography variant="subtitle1">
                             Upload an event log to start the waiting time analysis. (CSV format)
                         </Typography>
                     </Grid>
+                </Grid>
+                <Grid item xs={2.5}>
+                    <Paper elevation={5} sx={{ p: 3, minHeight: '30vw' }}>
+                        <Grid container spacing={2}>
+                            <Grid item xs={12}>
+                                <Typography variant="h6" align="left">
+                                    NOTICE:
+                                </Typography>
+                                <Typography align={"left"}>
+                                    Please format your event_log for now like the following example:
+                                    <br/>
+                                    <br/>
+                                    - Case ID ={'>'} case:concept:name
+                                    <br/>
+                                    - Activity ={'>'} concept:name
+                                    <br/>
+                                    - Start Timestamp ={'>'} start_timestamp
+                                    <br/>
+                                    - End Timestamp ={'>'} time:timestamp
+                                    <br/>
+                                    - Resource ={'>'} org:resource
+                                </Typography>
+                            </Grid>
+                            <Grid item xs={12}>
+                            </Grid>
+                        </Grid>
+                    </Paper>
                 </Grid>
                 <Grid item xs={6}>
                     <Paper elevation={5} sx={{ p: 3, minHeight: '30vw' }}>

@@ -6,7 +6,7 @@ import Overview from "./dashboard/Overview";
 import Transitions from "./dashboard/Transitions";
 
 // import data from '../demo_data/batching_output_example.json'
-import {alpha, Grid, IconButton, InputBase, styled, Typography} from "@mui/material";
+import {alpha, Grid, IconButton, InputBase, styled, Tooltip, Typography} from "@mui/material";
 
 import Download from '@mui/icons-material/CloudDownloadOutlined';
 import SearchIcon from '@mui/icons-material/Search';
@@ -137,9 +137,15 @@ const BasicTabs = () => {
                     </Grid>
                     <Grid item>
                         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" >
-                            <Tab label="Overview" {...a11yProps(0)} />
-                            <Tab label="Transitions" {...a11yProps(1)} />
-                            <Tab label="CTE Impact" {...a11yProps(2)} />
+                            <Tooltip title="Report Overview">
+                                <Tab label="Overview" {...a11yProps(0)} />
+                            </Tooltip>
+                            <Tooltip title="Activity Transitions Report">
+                                <Tab label="Transitions" {...a11yProps(1)} />
+                            </Tooltip>
+                            <Tooltip title="CTE Impact Report">
+                                <Tab label="CTE Impact" {...a11yProps(2)} />
+                            </Tooltip>
                         </Tabs>
                     </Grid>
                     <Grid item>
@@ -155,15 +161,18 @@ const BasicTabs = () => {
 
                     </Grid>
                     <Grid item>
-                        <Typography>
-                            Log: {logName}
-                        </Typography>
+                        <Tooltip title="Original Event Log Name">
+                            <Typography>
+                                <b>{logName}</b>
+                            </Typography>
+                        </Tooltip>
                     </Grid>
                     <Grid item>
-
-                        <IconButton aria-label="download" size="large" onClick={() => onDownload(report.report_csv)}>
-                            <Download />
-                        </IconButton>
+                        <Tooltip title="Download CSV report">
+                            <IconButton aria-label="download" size="large" onClick={() => onDownload(report.report_csv)}>
+                                <Download />
+                            </IconButton>
+                        </Tooltip>
                     </Grid>
                 </Grid>
 

@@ -34,7 +34,7 @@ function Transitions(data:any) {
                 <Table sx={{ minWidth: 650 }} aria-label="simple table" style={{ tableLayout: 'fixed' }}>
                     <TableHead>
                         <TableRow>
-                            <TableCell align="right">#</TableCell>
+                            <TableCell/>
                             <TableCell align="right">Source Activity</TableCell>
                             <TableCell align="right">Target Activity</TableCell>
                             <TableCell align="right">Case frequency</TableCell>
