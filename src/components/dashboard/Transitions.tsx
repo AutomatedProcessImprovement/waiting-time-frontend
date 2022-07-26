@@ -12,10 +12,6 @@ import React from "react";
 import TransitionsBarChart from "./TransitionsBarChart";
 import Row from "./Row";
 
-
-
-
-
 function Transitions(data:any) {
     // TODO - REPLACE WITH DATATABLE INSTEAD OF TABLE
     return (

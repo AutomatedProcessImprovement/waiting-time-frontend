@@ -1,4 +1,3 @@
-// import data from '../../demo_data/batching_output_example.json'
 import React from 'react';
 import {
     BarChart,

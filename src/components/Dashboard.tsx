@@ -4,8 +4,6 @@ import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import Overview from "./dashboard/Overview";
 import Transitions from "./dashboard/Transitions";
-
-// import data from '../demo_data/batching_output_example.json'
 import {alpha, Grid, IconButton, InputBase, styled, Tooltip, Typography} from "@mui/material";
 
 import Download from '@mui/icons-material/CloudDownloadOutlined';
