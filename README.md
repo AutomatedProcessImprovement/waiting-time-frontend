@@ -16,11 +16,15 @@ Frontend client for Waiting Time Analysis tool.
 
 ## TODO'S:
 
-- Upload functionality
-- Event log mapping
-- Server API connection
-- Download functionality
-- CTE Impact
+- Upload functionality | DONE
+- Event log mapping | In concept
+- Server API connection | DONE
+- Download functionality | DONE
+- CTE Impact | WIP
+
+#### Flair:
+
+- Tooltips for most items
 
 ## Presentable progress:
 

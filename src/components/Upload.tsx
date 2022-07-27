@@ -1,11 +1,14 @@
-import {useState} from 'react';
-import {Grid, Paper, Typography} from "@mui/material";
+import React, {useState} from 'react';
+import {Button, Dialog, Grid, Paper, Typography} from "@mui/material";
 import {useNavigate} from 'react-router-dom';
 import CustomDropzoneArea from './upload/CustomDropzoneArea';
 import {LoadingButton} from '@mui/lab';
 // TODO REPLACE LATER
 import axios from "axios";
 import paths from "../router/paths";
+import Papa from 'papaparse'
+import SimpleDialog from "./upload/Mapping";
+
 // import config from '../owncloud.json'
 
 // const owncloud = require('owncloud-sdk');
@@ -46,7 +49,21 @@ import paths from "../router/paths";
 
 const Upload = () => {
     const [loading, setLoading] = useState<boolean>(false);
+    let [open, setOpen] = React.useState(false);
     const [selectedLogFile, setSelectedLogFile] = useState<File | null>(null);
+    const [selectedValue, setSelectedValue] = React.useState<string[]>([]);
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = (cancel:boolean) => {
+        if (cancel) {
+            setLoading(false)
+        }
+        setOpen(false);
+    };
+
     const formData = new FormData()
     if (selectedLogFile) {
         formData.append('event_log', selectedLogFile)
@@ -59,6 +76,7 @@ const Upload = () => {
         return isEventLogProvided;
     }
 
+
     const onContinueClick = () => {
 
         setLoading(true)
@@ -66,47 +84,61 @@ const Upload = () => {
             setLoading(false)
             return
         }
-        var config = {
-            method: 'post',
-            url: 'http://193.40.11.233/jobs',
-            headers: {
-                'Content-Type': 'text/csv'
-            },
-            data : new Blob([selectedLogFile as Blob], {type:"text/csv"})
-        };
-        axios(
-            config
-        )
-            .then(((res:any) => {
-                let job = res.data
-                console.log(job)
-                let f = setInterval(() => {
-                    axios.get(
-                        'http://193.40.11.233/jobs/' + job.id,
-                    ).then((r:any)  => {
-                        let j = r.data
-                        if (j.status === 'completed' || j.status === 'duplicate') {
-                            clearInterval(f)
-                            let logN = selectedLogFile?.name
-                            navigate(paths.DASHBOARD_PATH, {
-                                state: {
-                                    jsonLog: j.result,
-                                    report: j,
-                                    logName: logN
-                                }
-                            })
-                            setLoading(false)
-                        }
-                    })
-                }, 30000)
-                // const jsonString = JSON.stringify(res.data)
-                // const blob = new Blob([jsonString], {type: "application/json"});
-                // const analysedEventLog = new File([blob], "name", { type: "application/json" })
-                //
-            })).catch((error: any) => {
-            console.log("Need to handle this: " + error)
-            setLoading(false)
-        })
+        Papa.parse(selectedLogFile!, {
+            preview: 1,
+            complete: function (results) {
+                setOpen(true)
+                setSelectedValue(results.data[0] as string[])
+            }
+        });
+
+        console.log(loading)
+
+        if (!loading) {
+            return;
+        }
+
+        // var config = {
+        //     method: 'post',
+        //     url: 'http://193.40.11.233/jobs',
+        //     headers: {
+        //         'Content-Type': 'text/csv'
+        //     },
+        //     data : new Blob([selectedLogFile as Blob], {type:"text/csv"})
+        // };
+        // axios(
+        //     config
+        // )
+        //     .then(((res:any) => {
+        //         let job = res.data
+        //         console.log(job)
+        //         let f = setInterval(() => {
+        //             axios.get(
+        //                 'http://193.40.11.233/jobs/' + job.id,
+        //             ).then((r:any)  => {
+        //                 let j = r.data
+        //                 if (j.status === 'completed' || j.status === 'duplicate') {
+        //                     clearInterval(f)
+        //                     let logN = selectedLogFile?.name
+        //                     navigate(paths.DASHBOARD_PATH, {
+        //                         state: {
+        //                             jsonLog: j.result,
+        //                             report: j,
+        //                             logName: logN
+        //                         }
+        //                     })
+        //                     setLoading(false)
+        //                 }
+        //             })
+        //         }, 30000)
+        //         // const jsonString = JSON.stringify(res.data)
+        //         // const blob = new Blob([jsonString], {type: "application/json"});
+        //         // const analysedEventLog = new File([blob], "name", { type: "application/json" })
+        //         //
+        //     })).catch((error: any) => {
+        //     console.log("Need to handle this: " + error)
+        //     setLoading(false)
+        // })
     };
 
     return (
@@ -163,6 +195,11 @@ const Upload = () => {
                         </Grid>
                     </Paper>
                 </Grid>
+                <SimpleDialog
+                    open={open}
+                    onClose={handleClose}
+                    selectedValue={selectedValue}
+                />
                 <Grid item xs={12}>
                     <LoadingButton
                         variant="contained"
