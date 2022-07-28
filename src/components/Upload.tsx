@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Button, Dialog, Grid, Paper, Typography} from "@mui/material";
+import { Grid, Paper, Typography} from "@mui/material";
 import {useNavigate} from 'react-router-dom';
 import CustomDropzoneArea from './upload/CustomDropzoneArea';
 import {LoadingButton} from '@mui/lab';
@@ -57,11 +57,15 @@ const Upload = () => {
         setOpen(true);
     };
 
-    const handleClose = (cancel:boolean) => {
+    const handleClose = (cancel:boolean, values: string[]) => {
+        console.log(values)
         if (cancel) {
-            setLoading(false)
+            setLoading(false);
+        } else {
+            handleValidRequest()
         }
         setOpen(false);
+
     };
 
     const formData = new FormData()
@@ -92,54 +96,58 @@ const Upload = () => {
             }
         });
 
-        console.log(loading)
+        // console.log(loading)
+        //
+        // if (!loading) {
+        //     return;
+        // }
 
-        if (!loading) {
-            return;
-        }
 
-        // var config = {
-        //     method: 'post',
-        //     url: 'http://193.40.11.233/jobs',
-        //     headers: {
-        //         'Content-Type': 'text/csv'
-        //     },
-        //     data : new Blob([selectedLogFile as Blob], {type:"text/csv"})
-        // };
-        // axios(
-        //     config
-        // )
-        //     .then(((res:any) => {
-        //         let job = res.data
-        //         console.log(job)
-        //         let f = setInterval(() => {
-        //             axios.get(
-        //                 'http://193.40.11.233/jobs/' + job.id,
-        //             ).then((r:any)  => {
-        //                 let j = r.data
-        //                 if (j.status === 'completed' || j.status === 'duplicate') {
-        //                     clearInterval(f)
-        //                     let logN = selectedLogFile?.name
-        //                     navigate(paths.DASHBOARD_PATH, {
-        //                         state: {
-        //                             jsonLog: j.result,
-        //                             report: j,
-        //                             logName: logN
-        //                         }
-        //                     })
-        //                     setLoading(false)
-        //                 }
-        //             })
-        //         }, 30000)
-        //         // const jsonString = JSON.stringify(res.data)
-        //         // const blob = new Blob([jsonString], {type: "application/json"});
-        //         // const analysedEventLog = new File([blob], "name", { type: "application/json" })
-        //         //
-        //     })).catch((error: any) => {
-        //     console.log("Need to handle this: " + error)
-        //     setLoading(false)
-        // })
     };
+
+    const handleValidRequest = () => {
+        var config = {
+            method: 'post',
+            url: 'http://193.40.11.233/jobs',
+            headers: {
+                'Content-Type': 'text/csv'
+            },
+            data : new Blob([selectedLogFile as Blob], {type:"text/csv"})
+        };
+        axios(
+            config
+        )
+            .then(((res:any) => {
+                let job = res.data
+                console.log(job)
+                let f = setInterval(() => {
+                    axios.get(
+                        'http://193.40.11.233/jobs/' + job.id,
+                    ).then((r:any)  => {
+                        let j = r.data
+                        if (j.status === 'completed' || j.status === 'duplicate') {
+                            clearInterval(f)
+                            let logN = selectedLogFile?.name
+                            navigate(paths.DASHBOARD_PATH, {
+                                state: {
+                                    jsonLog: j.result,
+                                    report: j,
+                                    logName: logN
+                                }
+                            })
+                            setLoading(false)
+                        }
+                    })
+                }, 30000)
+                // const jsonString = JSON.stringify(res.data)
+                // const blob = new Blob([jsonString], {type: "application/json"});
+                // const analysedEventLog = new File([blob], "name", { type: "application/json" })
+                //
+            })).catch((error: any) => {
+            console.log("Need to handle this: " + error)
+            setLoading(false)
+        })
+    }
 
     return (
         <>
