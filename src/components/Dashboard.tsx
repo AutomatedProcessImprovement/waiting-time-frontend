@@ -2,14 +2,14 @@ import * as React from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
-import Overview from "./dashboard/Overview";
-import Transitions from "./dashboard/Transitions";
+import Overview from "./dashboard/overview/Overview";
+import Transitions from "./dashboard/transitions/Transitions";
 import {alpha, Grid, IconButton, InputBase, styled, Tooltip, Typography} from "@mui/material";
 
 import Download from '@mui/icons-material/CloudDownloadOutlined';
 import SearchIcon from '@mui/icons-material/Search';
 import {useLocation} from "react-router-dom";
-import Cteimpact from "./dashboard/Cteimpact";
+import Cteimpact from "./dashboard/cteimpact/Cteimpact";
 
 
 interface TabPanelProps {

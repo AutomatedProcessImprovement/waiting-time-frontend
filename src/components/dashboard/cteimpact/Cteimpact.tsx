@@ -1,7 +1,7 @@
 import {Box, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
-import Infobox from "./Infobox";
+import Infobox from "../Infobox";
 import * as React from "react";
-import Row from "./Row";
+import Row from "../Row";
 import Typography from "@mui/material/Typography";
 import CTEPiechart from "./CTEPiechart";
 
@@ -78,6 +78,7 @@ function Cteimpact(data:any) {
                             Potential CTE values when waiting time causes are eliminated
                         </Typography>
                         <CTEPiechart data={visData}/>
+                    {/*    TODO REPLACE WITH BARCHART*/}
                     </Grid>
                 </Grid>
 
