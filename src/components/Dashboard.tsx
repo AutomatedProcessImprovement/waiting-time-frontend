@@ -4,8 +4,14 @@ import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import Overview from "./dashboard/overview/Overview";
 import Transitions from "./dashboard/transitions/Transitions";
-import {alpha, Grid, IconButton, InputBase, styled, Tooltip, Typography} from "@mui/material";
-
+import {alpha, Button, ButtonGroup, Grid, InputBase, styled, Tooltip, Typography} from "@mui/material";
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import ClickAwayListener from '@mui/material/ClickAwayListener';
+import Grow from '@mui/material/Grow';
+import Paper from '@mui/material/Paper';
+import Popper from '@mui/material/Popper';
+import MenuItem from '@mui/material/MenuItem';
+import MenuList from '@mui/material/MenuList';
 import Download from '@mui/icons-material/CloudDownloadOutlined';
 import SearchIcon from '@mui/icons-material/Search';
 import {useLocation} from "react-router-dom";
@@ -85,16 +91,39 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
 }));
 
-const onDownload = (report:string) => {
+const onDownload = (report:any, type:number) => {
     // TODO DEMO ONLY- REPLACE WITH LINK FROM SERVER
     console.log(report)
+    console.log(type)
     const link = document.createElement("a");
-    link.href = report;
-    link.setAttribute(
-        'download',
-        `report_csv.csv`
-    )
-    link.click();
+    switch (type) {
+        case 0:
+
+            link.href = report.report_csv;
+            link.setAttribute(
+                'download',
+                `report_csv.csv`
+            )
+            link.click();
+            break
+        case 1:
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(report.result));
+            link.href = dataStr;
+            link.setAttribute(
+                'download',
+                `report_json.json`
+            )
+            link.click();
+            break
+        default:
+            link.href = report.report_csv;
+            link.setAttribute(
+                'download',
+                `report_csv.csv`
+            )
+            link.click();
+            break
+    }
 };
 
 interface LocationState {
@@ -102,9 +131,13 @@ interface LocationState {
     report: any
     logName: string
 }
+const options = ['Download as CSV', 'Download as JSON'];
 
 const BasicTabs = () => {
     const [value, setValue] = React.useState(0);
+    const [open, setOpen] = React.useState(false);
+    const anchorRef = React.useRef<HTMLDivElement>(null);
+    const [selectedIndex, setSelectedIndex] = React.useState(1);
 
     const {state} = useLocation()
     const {report} = state as LocationState
@@ -112,11 +145,37 @@ const BasicTabs = () => {
 
     let clean_data = report.result
     const data = JSON.parse(JSON.stringify(clean_data));
-    console.log(report.report_csv)
-    console.log(logName)
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
+    };
+
+    const handleClick = () => {
+        console.info(`You clicked ${options[selectedIndex]}`);
+    };
+
+    const handleToggle = () => {
+        setOpen((prevOpen) => !prevOpen);
+    };
+
+    const handleClose = (event: Event) => {
+        if (
+            anchorRef.current &&
+            anchorRef.current.contains(event.target as HTMLElement)
+        ) {
+            return;
+        }
+
+        setOpen(false);
+    };
+
+    const handleMenuItemClick = (
+        event: React.MouseEvent<HTMLLIElement, MouseEvent>,
+        index: number,
+    ) => {
+        setSelectedIndex(index);
+        setOpen(false);
+        onDownload(report, index)
     };
 
     return (
@@ -167,11 +226,63 @@ const BasicTabs = () => {
                         </Tooltip>
                     </Grid>
                     <Grid item>
-                        <Tooltip title="Download CSV report">
-                            <IconButton aria-label="download" size="large" onClick={() => onDownload(report.report_csv)}>
-                                <Download />
-                            </IconButton>
-                        </Tooltip>
+                        <ButtonGroup variant="contained" ref={anchorRef} aria-label="split button">
+                            <Tooltip title={'Download as CSV'}>
+                                <Button size="small"
+                                        aria-controls={open ? 'split-button-menu' : undefined}
+                                        aria-expanded={open ? 'true' : undefined}
+                                        aria-label="select merge strategy"
+                                        aria-haspopup="menu"
+                                        onClick={handleClick}>
+
+                                    <Download />
+                                </Button>
+                            </Tooltip>
+                            <Button
+                                size="small"
+                                aria-controls={open ? 'split-button-menu' : undefined}
+                                aria-expanded={open ? 'true' : undefined}
+                                aria-label="select merge strategy"
+                                aria-haspopup="menu"
+                                onClick={handleToggle}
+                            >
+                                <ArrowDropDownIcon />
+                            </Button>
+                        </ButtonGroup>
+                        <Popper
+                            open={open}
+                            anchorEl={anchorRef.current}
+                            role={undefined}
+                            transition
+                            disablePortal
+                        >
+                            {({ TransitionProps, placement }) => (
+                                <Grow
+                                    {...TransitionProps}
+                                    style={{
+                                        transformOrigin:
+                                            placement === 'bottom' ? 'center top' : 'center bottom',
+                                    }}
+                                >
+                                    <Paper>
+                                        <ClickAwayListener onClickAway={handleClose}>
+                                            <MenuList id="split-button-menu" autoFocusItem>
+                                                {options.map((option, index) => (
+                                                    <MenuItem
+                                                        key={option}
+                                                        disabled={index === 2}
+                                                        selected={index === selectedIndex}
+                                                        onClick={(event) => handleMenuItemClick(event, index)}
+                                                    >
+                                                        {option}
+                                                    </MenuItem>
+                                                ))}
+                                            </MenuList>
+                                        </ClickAwayListener>
+                                    </Paper>
+                                </Grow>
+                            )}
+                        </Popper>
                     </Grid>
                 </Grid>
 
