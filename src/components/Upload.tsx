@@ -53,10 +53,6 @@ const Upload = () => {
     const [selectedLogFile, setSelectedLogFile] = useState<File | null>(null);
     const [selectedValue, setSelectedValue] = React.useState<string[]>([]);
 
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
-
     const handleClose = (cancel:boolean, values: string[]) => {
         if (cancel) {
             setLoading(false);
