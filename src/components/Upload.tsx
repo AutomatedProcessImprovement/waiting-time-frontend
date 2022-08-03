@@ -58,11 +58,10 @@ const Upload = () => {
     };
 
     const handleClose = (cancel:boolean, values: string[]) => {
-        console.log(values)
         if (cancel) {
             setLoading(false);
         } else {
-            handleValidRequest()
+            handleValidRequest(values)
         }
         setOpen(false);
 
@@ -105,7 +104,8 @@ const Upload = () => {
 
     };
 
-    const handleValidRequest = () => {
+    const handleValidRequest = (values: string[]) => {
+        console.log(values)
         var config = {
             method: 'post',
             url: 'http://193.40.11.233/jobs',
@@ -139,10 +139,6 @@ const Upload = () => {
                         }
                     })
                 }, 30000)
-                // const jsonString = JSON.stringify(res.data)
-                // const blob = new Blob([jsonString], {type: "application/json"});
-                // const analysedEventLog = new File([blob], "name", { type: "application/json" })
-                //
             })).catch((error: any) => {
             console.log("Need to handle this: " + error)
             setLoading(false)

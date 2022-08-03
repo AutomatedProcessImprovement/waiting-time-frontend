@@ -1,9 +1,9 @@
-import {Box, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
+import {Box, Grid} from "@mui/material";
 import Infobox from "../Infobox";
 import * as React from "react";
-import Row from "../Row";
 import Typography from "@mui/material/Typography";
-import CTEPiechart from "./CTEPiechart";
+import CTEBarChart from "./CTEBarChart";
+import CTETable from "./CTETable";
 
 function cteImpactCalculations(data:any) {
     console.log(data)
@@ -26,11 +26,11 @@ function dhmToString(time: [number, number, number]) {
 
 function Cteimpact(data:any) {
     const visData = [
-        {name: 'Extraneous', value: data.data.cte_impact.extraneous_impact, label: "EXTRANEOUS\n" + data.data.extraneous_impact},
-        {name: 'Batching', value: data.data.cte_impact.batching_impact, label: "BATCHING\n" + data.data.batching_impact},
-        {name: 'Resource Unavailability', value: data.data.cte_impact.unavailability_impact, label: "UNAVAILABILITY\n" + data.data.unavailability_impact},
-        {name: 'Resource Contention', value: data.data.cte_impact.contention_impact, label: "CONTENTION\n" + data.data.contention_impact},
-        {name: 'Prioritization', value: data.data.cte_impact.prioritization_impact, label: "PRIORITIZATION\n" + data.data.prioritization_impact}
+        {name: 'Extraneous', value: data.data.cte_impact.extraneous_impact},
+        {name: 'Batching', value: data.data.cte_impact.batching_impact},
+        {name: 'Resource Unavailability', value: data.data.cte_impact.unavailability_impact},
+        {name: 'Resource Contention', value: data.data.cte_impact.contention_impact},
+        {name: 'Prioritization', value: data.data.cte_impact.prioritization_impact}
     ]
     console.log(visData)
 
@@ -77,36 +77,36 @@ function Cteimpact(data:any) {
                         <Typography  align={"left"} variant="h6" sx={{ fontSize: 16 }} color="text.secondary" component="div">
                             Potential CTE values when waiting time causes are eliminated
                         </Typography>
-                        <CTEPiechart data={visData}/>
-                    {/*    TODO REPLACE WITH BARCHART*/}
+                        <CTEBarChart data={visData}/>
                     </Grid>
                 </Grid>
 
             </Grid>
-            <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 650 }} aria-label="simple table" style={{ tableLayout: 'fixed' }}>
-                    <TableHead>
-                        <TableRow>
-                            <TableCell align="right">#</TableCell>
-                            <TableCell align="right">Source Activity</TableCell>
-                            <TableCell align="right">Target Activity</TableCell>
-                            <TableCell align="right">Case frequency</TableCell>
-                            <TableCell align="right">Total frequency</TableCell>
-                            <TableCell align="right">Total wt</TableCell>
-                            <TableCell align="right">Batching</TableCell>
-                            <TableCell align="right">R. contention</TableCell>
-                            <TableCell align="right">Prioritization</TableCell>
-                            <TableCell align="right">R. unavailability</TableCell>
-                            <TableCell align="right">Extraneous</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {data.data.report.map((row: any) => (
-                            <Row key={row.name} row={row} />
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
+            <CTETable data={data.data}/>
+            {/*<TableContainer component={Paper}>*/}
+            {/*    <Table sx={{ minWidth: 650 }} aria-label="simple table" style={{ tableLayout: 'fixed' }}>*/}
+            {/*        <TableHead>*/}
+            {/*            <TableRow>*/}
+            {/*                <TableCell align="right">#</TableCell>*/}
+            {/*                <TableCell align="right">Source Activity</TableCell>*/}
+            {/*                <TableCell align="right">Target Activity</TableCell>*/}
+            {/*                <TableCell align="right">Case frequency</TableCell>*/}
+            {/*                <TableCell align="right">Total frequency</TableCell>*/}
+            {/*                <TableCell align="right">Total wt</TableCell>*/}
+            {/*                <TableCell align="right">Batching</TableCell>*/}
+            {/*                <TableCell align="right">R. contention</TableCell>*/}
+            {/*                <TableCell align="right">Prioritization</TableCell>*/}
+            {/*                <TableCell align="right">R. unavailability</TableCell>*/}
+            {/*                <TableCell align="right">Extraneous</TableCell>*/}
+            {/*            </TableRow>*/}
+            {/*        </TableHead>*/}
+            {/*        <TableBody>*/}
+            {/*            {data.data.report.map((row: any) => (*/}
+            {/*                <Row key={row.name} row={row} />*/}
+            {/*            ))}*/}
+            {/*        </TableBody>*/}
+            {/*    </Table>*/}
+            {/*</TableContainer>*/}
         </Box>
 
     )

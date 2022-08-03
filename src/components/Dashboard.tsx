@@ -110,7 +110,8 @@ const BasicTabs = () => {
     const {report} = state as LocationState
     const {logName} = state as LocationState
 
-    let data = report.result
+    let clean_data = report.result
+    const data = JSON.parse(JSON.stringify(clean_data));
     console.log(report.report_csv)
     console.log(logName)
 

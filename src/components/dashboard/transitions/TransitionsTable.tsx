@@ -23,28 +23,28 @@ const columns: GridColDef[] = [
         width: 150
     },
     {
-        field: 'total_wt_converted',
-        headerName: 'Total Batching',
+        field: 'total_batch_converted',
+        headerName: 'Batching',
         width: 150
     },
     {
-        field: 'total_wt_converted',
-        headerName: 'Total R. Contention',
+        field: 'total_cont_converted',
+        headerName: 'R. Contention',
         width: 150
     },
     {
-        field: 'total_wt_converted',
-        headerName: 'Total Prioritization',
+        field: 'total_prio_converted',
+        headerName: 'Prioritization',
         width: 150
     },
     {
-        field: 'total_wt_converted',
-        headerName: 'Total R. Unavailability',
+        field: 'total_unav_converted',
+        headerName: 'R. Unavailability',
         width: 150
     },
     {
-        field: 'total_wt_converted',
-        headerName: 'Total Extraneous',
+        field: 'total_extra_converted',
+        headerName: 'Extraneous',
         width: 150
     },
 
@@ -68,11 +68,16 @@ const add_index = (data:any) => {
     for (let i = 0; i < data.length; i++) {
         data[i].id = i+1
         data[i].total_wt_converted = dhmToString(secondsToDhm(data[i].total_wt))
+        data[i].total_batch_converted = dhmToString(secondsToDhm(data[i].batching_wt))
+        data[i].total_prio_converted = dhmToString(secondsToDhm(data[i].prioritization_wt))
+        data[i].total_cont_converted = dhmToString(secondsToDhm(data[i].contention_wt))
+        data[i].total_extra_converted = dhmToString(secondsToDhm(data[i].extraneous_wt))
+        data[i].total_unav_converted = dhmToString(secondsToDhm(data[i].unavailability_wt))
     }
     return data
 }
 
-export default function CTETable(data:any) {
+export default function TransitionsTable(data:any) {
     let table_data = add_index(data.data.report)
     console.log(table_data)
     return (

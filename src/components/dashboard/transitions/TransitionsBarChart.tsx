@@ -28,6 +28,24 @@ function dhmToString(time: [number, number, number]) {
 
 const CustEndLabel = (props: { x: any; y: any; value: number;}) => {
     const { x, y, value } = props;
+
+
+    if (value < 1) {
+        return (
+            <text
+                x={x}
+                y={y}
+                dx={"1%"}
+                dy={20}
+                fontSize="15"
+                fontWeight="bold"
+                fill={"#181818"}
+                textAnchor="start"
+            >
+                No Waiting Time
+            </text>
+        );
+    }
     return (
         <text
             x={x}
@@ -77,6 +95,7 @@ function AdditionalData(data: any) {
 function TransitionsBarChart(data: any) {
     console.log(data)
     let bar_data = AdditionalData(data.data)
+    console.log(bar_data)
     bar_data = bar_data.sort((f: { total_wt: number; }, s: { total_wt: number; }) => 0 - (f.total_wt > s.total_wt ? 1 : -1))
 
     return (

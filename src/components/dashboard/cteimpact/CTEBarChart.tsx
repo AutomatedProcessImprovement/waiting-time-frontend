@@ -1,13 +1,11 @@
 import {
     Bar,
     CartesianGrid,
-    Legend,
     Tooltip,
     XAxis,
     YAxis,
     BarChart,
-    LabelList,
-    ResponsiveContainer
+    ResponsiveContainer, Cell
 } from "recharts";
 import * as React from "react";
 
@@ -20,15 +18,15 @@ let colordict = {
 }
 const COLORS = [colordict.extraneous, colordict.batching, colordict.unavailability, colordict.contention, colordict.prioritization]
 
-export default function CTEPiechart(data:any) {
-
+export default function CTEBarChart(data:any) {
+    console.log(data.data)
     return (
         <>
             <ResponsiveContainer width={"100%"} height={400} min-width={400}>
             <BarChart
                 width={2160}
                 height={300}
-                data={data}
+                data={data.data}
                 margin={{
                     top: 20,
                     right: 30,
@@ -41,18 +39,12 @@ export default function CTEPiechart(data:any) {
             >
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis type={'number'} hide/>
-                <YAxis width={200} dx={-25} name={"test"} type={'category'} dataKey="bar_label" />
+                <YAxis width={200} dx={-25} name={"test"} type={'category'} dataKey="name" />
                 <Tooltip />
-                <Legend />
-                <Bar name={"Batching"} dataKey="batching_wt"  fill="#6C8EBF">
-                </Bar>
-                <Bar name={"Prioritization"} dataKey="prioritization_wt"  fill="#B8544F">
-                </Bar>
-                <Bar name={"R. Contention"} dataKey="contention_wt"  fill="#D7B500">
-                </Bar>
-                <Bar name={"R. Unavailability"} dataKey="unavailability_wt"  fill="#63B7B0" >
-                </Bar>
-                <Bar name={"Extraneous"} dataKey="extraneous_wt"  fill="#B3B3B3">
+                <Bar dataKey="value" label={{ position: 'right' }}>
+                    {data.data.map((entry: any, index: any) => (
+                        <Cell key={`cell-${index}`} fill={COLORS[index % 20]} />
+                    ))}
                 </Bar>
             </BarChart>
             </ResponsiveContainer>
