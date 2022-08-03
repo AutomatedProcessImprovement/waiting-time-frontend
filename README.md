@@ -9,18 +9,16 @@ Frontend client for Waiting Time Analysis tool.
 - Upload of event log (CSV format)
 - Mapping of selected event log (required parameters)
 - Dashboard overview of results
-  - Overview
-    - Generic information about event log
+  - Overview: ```Generic information about event log```
   - Transitions
   - CTE Impact
-
+- Sorting and filtering for tables
+- Download of report in CSV and JSON format
 ## TODO'S:
 
-- Upload functionality | DONE
-- Event log mapping | In concept
-- Server API connection | DONE
-- Download functionality | DONE
-- CTE Impact | WIP
+- Event log mapping | WIP > Only mapping apply to CSV missing
+- CTE Impact | WIP > Some number calculations missing
+- Add Collapsed table again after refactor to DataGrid | TODO
 
 #### Flair:
 
@@ -30,6 +28,8 @@ Frontend client for Waiting Time Analysis tool.
 
 ### Home - Upload:
 ![](./screenshots/Home-Upload.PNG)
+### Home - Mapping:
+![](./screenshots/Home-Upload-Mapping.PNG)
 ### Home - Uploading:
 ![](./screenshots/Home-Upload-Uploading.PNG)
 ### Dashboard - Overview
