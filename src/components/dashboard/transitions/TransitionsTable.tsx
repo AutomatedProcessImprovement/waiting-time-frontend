@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import {DataGrid, GridColDef, GridToolbar} from '@mui/x-data-grid';
 
 const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID'},
@@ -87,6 +87,7 @@ export default function TransitionsTable(data:any) {
                 columns={columns}
                 pageSize={5}
                 rowsPerPageOptions={[5]}
+                components={{ Toolbar: GridToolbar }}
             />
         </div>
     );
