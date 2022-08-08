@@ -92,9 +92,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 const onDownload = (report:any, type:number) => {
-    // TODO DEMO ONLY- REPLACE WITH LINK FROM SERVER
-    console.log(report)
-    console.log(type)
     const link = document.createElement("a");
     switch (type) {
         case 0:

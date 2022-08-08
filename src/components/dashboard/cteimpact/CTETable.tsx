@@ -1,5 +1,6 @@
 import * as React from 'react';
-import {DataGrid, GridColDef, GridToolbar} from '@mui/x-data-grid';
+import {DataGrid, GridColDef, GridEventListener, GridToolbar} from '@mui/x-data-grid';
+import RowDialog from '../RowDialog';
 const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID'},
     { field: 'source_activity', headerName: 'Source Activity', width: 120},
@@ -87,9 +88,31 @@ const add_index = (data:any) => {
     return data
 }
 
+
+
 export default function CTETable(data:any) {
     let table_data = add_index(data.data.report)
     console.log(table_data)
+
+    let [open, setOpen] = React.useState(false);
+    const [selectedValue, setSelectedValue] = React.useState<string[]>([]);
+
+    const handleClose = () => {
+        setOpen(false);
+
+    };
+
+    const onEvent: GridEventListener<'rowDoubleClick'> = (
+        params, // GridRowParams
+    ) => {
+        // TODO Pop up dialog of wt_by_resource information
+        console.log(params.row)
+        console.log(params.row.wt_by_resource)
+        setOpen(true)
+        setSelectedValue(params.row.wt_by_resource as string[])
+
+    }
+
     return (
         <div style={{ height: 400, width: '100%' }}>
             <DataGrid
@@ -98,7 +121,13 @@ export default function CTETable(data:any) {
                 pageSize={5}
                 rowsPerPageOptions={[5]}
                 components={{ Toolbar: GridToolbar }}
+                onRowDoubleClick={onEvent}
             />
+            <RowDialog
+                open={open}
+                onClose={handleClose}
+                selectedValue={selectedValue}
+                type={1}/>
         </div>
     );
 }

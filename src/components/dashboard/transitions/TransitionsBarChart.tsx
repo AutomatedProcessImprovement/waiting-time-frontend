@@ -10,21 +10,8 @@ import {
     ResponsiveContainer,
     LabelList
 } from 'recharts';
-
-
-function secondsToDhm(seconds: number) {
-    seconds = Number(seconds);
-    let d = Math.floor(seconds / (3600*24));
-    let h = Math.floor(seconds % (3600*24) / 3600);
-    let m = Math.floor(seconds % 3600 / 60);
-    let res: [number, number, number] = [d,h,m]
-    return res
-}
-
-function dhmToString(time: [number, number, number]) {
-    return time[0] + "D " + time[1] + "H " + time[2] + "M"
-}
-
+var moment = require("moment");
+var momentDurationFormatSetup = require("moment-duration-format");
 
 const CustEndLabel = (props: { x: any; y: any; value: number;}) => {
     const { x, y, value } = props;
@@ -57,7 +44,7 @@ const CustEndLabel = (props: { x: any; y: any; value: number;}) => {
             fill={"#181818"}
             textAnchor="start"
         >
-            {dhmToString(secondsToDhm(value))}
+            {moment.duration(value, 'seconds').format('d[D] HH[H] mm[M]')}
         </text>
     );
 }
@@ -72,7 +59,7 @@ const CustBarLabel = (props: { x: any; y:any, value: any; }) => {
         );
     }
     return (
-        <text x={x} y={y} dy={20} fontWeight="bold" dominantBaseline="auto" textAnchor="start">
+        <text x={x} y={y} dy={20} dominantBaseline="auto" textAnchor="start">
             {value + "%"}
         </text>
     );
@@ -88,28 +75,26 @@ function AdditionalData(data: any) {
         entry.extr_wt_perc = (entry.extraneous_wt / entry.total_wt * 100).toFixed(2)
         entry.bar_label = entry.source_activity + " - " + entry.target_activity
     }
-    return data
+    return data.sort((f: { total_wt: number; }, s: { total_wt: number; }) => 0 - (f.total_wt > s.total_wt ? 1 : -1))
+
 }
 
-
 function TransitionsBarChart(data: any) {
-    console.log(data)
-    let bar_data = AdditionalData(data.data)
-    console.log(bar_data)
-    bar_data = bar_data.sort((f: { total_wt: number; }, s: { total_wt: number; }) => 0 - (f.total_wt > s.total_wt ? 1 : -1))
+    let data_copy = [...data.data]
+    const bar_data = AdditionalData(data_copy)
 
     return (
         <>
             <ResponsiveContainer width={"100%"} height={400} min-width={400}>
 
                 <BarChart
-                    width={2160}
+                    width={1920}
                     height={500}
                     data={bar_data}
                     margin={{
                         top: 20,
-                        right: 30,
-                        left: 20,
+                        right: 10,
+                        left: 10,
                         bottom: 5,
                     }}
                     barGap={'5%'}
@@ -118,11 +103,11 @@ function TransitionsBarChart(data: any) {
                 >
 
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis type={'number'} hide />
+                    <XAxis type={'number'} hide/>
                     <YAxis width={200} dx={-25} name={"test"} type={'category'} dataKey="bar_label" />
                     <Tooltip />
                     <Legend />
-                    <Bar name={"Batching"} dataKey="batching_wt" stackId="a" fill="#6C8EBF">
+                    <Bar name={"Batching"} dataKey="batching_wt" stackId="a" fill="#6C8EBF" >
                         <LabelList dataKey="batch_wt_perc" content={<CustBarLabel x={0} y={0} value={1}/>}/>
                     </Bar>
                     <Bar name={"Prioritization"} dataKey="prioritization_wt" stackId="a" fill="#B8544F">

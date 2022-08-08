@@ -16,7 +16,7 @@ export interface SimpleDialogProps {
     onClose: (cancel:boolean, values: string[]) => void;
 }
 
-export default function SimpleDialog(props: SimpleDialogProps) {
+export default function MappingDialog(props: SimpleDialogProps) {
     const { onClose, selectedValue, open } = props;
 
     let headerMapping = selectedValue

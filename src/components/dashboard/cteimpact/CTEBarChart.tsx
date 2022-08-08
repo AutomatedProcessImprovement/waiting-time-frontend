@@ -16,7 +16,7 @@ let colordict = {
     unavailability: "#63B7B0",
     extraneous: "#B3B3B3",
 }
-const COLORS = [colordict.extraneous, colordict.batching, colordict.unavailability, colordict.contention, colordict.prioritization]
+const COLORS = [ colordict.batching,colordict.prioritization,colordict.contention, colordict.unavailability, colordict.extraneous]
 
 
 const CustBarLabel = (props: { x: any; y:any, value: any; }) => {
@@ -30,6 +30,7 @@ const CustBarLabel = (props: { x: any; y:any, value: any; }) => {
 
 
 export default function CTEBarChart(data:any) {
+    console.log(data.data)
     return (
         <>
             <ResponsiveContainer width={"100%"} height={400} min-width={400}>

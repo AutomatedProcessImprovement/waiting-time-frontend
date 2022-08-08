@@ -7,7 +7,7 @@ import {LoadingButton} from '@mui/lab';
 import axios from "axios";
 import paths from "../router/paths";
 import Papa from 'papaparse'
-import SimpleDialog from "./upload/Mapping";
+import MappingDialog from "./upload/Mapping";
 
 // import config from '../owncloud.json'
 
@@ -195,7 +195,7 @@ const Upload = () => {
                         </Grid>
                     </Paper>
                 </Grid>
-                <SimpleDialog
+                <MappingDialog
                     open={open}
                     onClose={handleClose}
                     selectedValue={selectedValue}

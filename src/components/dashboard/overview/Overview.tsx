@@ -6,6 +6,8 @@ import Infobox from "../Infobox";
 import PieChartBox from "../PieChartBox";
 import Typography from "@mui/material/Typography";
 
+var moment = require("moment");
+var momentDurationFormatSetup = require("moment-duration-format");
 
 function secondsToDhm(seconds: number) {
     seconds = Number(seconds);
@@ -31,6 +33,7 @@ function Dashboard(data: any) {
         {name: 'Resource Contention', value: data.data.total_contention_wt, label: "CONTENTION\n" + dhmToString(secondsToDhm(data.data.total_extraneous_wt))},
         {name: 'Prioritization', value: data.data.total_prioritization_wt, label: "PRIORITIZATION\n" + dhmToString(secondsToDhm(data.data.total_extraneous_wt))}
     ]
+
 
     return (
         <Box sx={{
@@ -63,7 +66,7 @@ function Dashboard(data: any) {
                             <Infobox data={{title: "Cases", subtitle: "Total number of cases", value: data.data.num_cases}}/>
                         </Grid>
                         <Grid item xs={6}>
-                            <Infobox data={{title: "Waiting time (WT)", subtitle: "Total waiting time of the process", value: dhmToString(secondsToDhm(data.data.total_wt))}}/>
+                            <Infobox data={{title: "Waiting time (WT)", subtitle: "Total waiting time of the process", value: moment.duration(data.data.total_wt, 'seconds').format('d[D] HH[H] mm[M]')}}/>
                         </Grid>
                         <Grid item xs={6}>
                             <Infobox data={{title: "Activities", subtitle: "Total number of activities", value: data.data.num_activities}}/>

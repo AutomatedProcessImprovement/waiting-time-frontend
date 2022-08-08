@@ -1,6 +1,8 @@
 import * as React from 'react';
-import {DataGrid, GridColDef, GridToolbar} from '@mui/x-data-grid';
+import {DataGrid, GridColDef, GridEventListener, GridToolbar} from '@mui/x-data-grid';
+import RowDialog from "../RowDialog";
 var moment = require("moment");
+var momentDurationFormatSetup = require("moment-duration-format");
 
 const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID'},
@@ -81,7 +83,23 @@ const add_index = (data:any) => {
 
 export default function TransitionsTable(data:any) {
     let table_data = add_index(data.data.report)
-    console.log(table_data)
+
+    let [open, setOpen] = React.useState(false);
+    const [selectedValue, setSelectedValue] = React.useState<string[]>([]);
+
+    const handleClose = () => {
+        setOpen(false);
+
+    };
+
+    const onEvent: GridEventListener<'rowDoubleClick'> = (
+        params, // GridRowParams
+    ) => {
+        setOpen(true)
+        setSelectedValue(params.row.wt_by_resource as string[])
+
+    }
+
     return (
         <div style={{ height: 400, width: '100%' }}>
             <DataGrid
@@ -90,7 +108,13 @@ export default function TransitionsTable(data:any) {
                 pageSize={5}
                 rowsPerPageOptions={[5]}
                 components={{ Toolbar: GridToolbar }}
+                onRowDoubleClick={onEvent}
             />
+            <RowDialog
+                open={open}
+                onClose={handleClose}
+                selectedValue={selectedValue}
+                type={0}/>
         </div>
     );
 }

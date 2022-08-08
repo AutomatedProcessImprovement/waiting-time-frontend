@@ -26,11 +26,11 @@ function dhmToString(time: [number, number, number]) {
 
 function Cteimpact(data:any) {
     const visData = [
-        {name: 'Extraneous', value: data.data.cte_impact.extraneous_impact},
         {name: 'Batching', value: data.data.cte_impact.batching_impact},
-        {name: 'Resource Unavailability', value: data.data.cte_impact.unavailability_impact},
+        {name: 'Prioritization', value: data.data.cte_impact.prioritization_impact},
         {name: 'Resource Contention', value: data.data.cte_impact.contention_impact},
-        {name: 'Prioritization', value: data.data.cte_impact.prioritization_impact}
+        {name: 'Resource Unavailability', value: data.data.cte_impact.unavailability_impact},
+        {name: 'Extraneous', value: data.data.cte_impact.extraneous_impact}
     ]
     console.log(visData)
 
@@ -83,30 +83,6 @@ function Cteimpact(data:any) {
 
             </Grid>
             <CTETable data={data.data}/>
-            {/*<TableContainer component={Paper}>*/}
-            {/*    <Table sx={{ minWidth: 650 }} aria-label="simple table" style={{ tableLayout: 'fixed' }}>*/}
-            {/*        <TableHead>*/}
-            {/*            <TableRow>*/}
-            {/*                <TableCell align="right">#</TableCell>*/}
-            {/*                <TableCell align="right">Source Activity</TableCell>*/}
-            {/*                <TableCell align="right">Target Activity</TableCell>*/}
-            {/*                <TableCell align="right">Case frequency</TableCell>*/}
-            {/*                <TableCell align="right">Total frequency</TableCell>*/}
-            {/*                <TableCell align="right">Total wt</TableCell>*/}
-            {/*                <TableCell align="right">Batching</TableCell>*/}
-            {/*                <TableCell align="right">R. contention</TableCell>*/}
-            {/*                <TableCell align="right">Prioritization</TableCell>*/}
-            {/*                <TableCell align="right">R. unavailability</TableCell>*/}
-            {/*                <TableCell align="right">Extraneous</TableCell>*/}
-            {/*            </TableRow>*/}
-            {/*        </TableHead>*/}
-            {/*        <TableBody>*/}
-            {/*            {data.data.report.map((row: any) => (*/}
-            {/*                <Row key={row.name} row={row} />*/}
-            {/*            ))}*/}
-            {/*        </TableBody>*/}
-            {/*    </Table>*/}
-            {/*</TableContainer>*/}
         </Box>
 
     )

@@ -1,6 +1,8 @@
 import {Cell, Pie, PieChart} from "recharts";
 import {Card} from "@mui/material";
 import * as React from "react";
+var moment = require("moment");
+var momentDurationFormatSetup = require("moment-duration-format");
 
 let colordict = {
     batching: "#6C8EBF",
@@ -11,18 +13,6 @@ let colordict = {
 }
 const COLORS = [colordict.extraneous, colordict.batching, colordict.unavailability, colordict.contention, colordict.prioritization]
 
-function secondsToDhm(seconds: number) {
-    seconds = Number(seconds);
-    let d = Math.floor(seconds / (3600*24));
-    let h = Math.floor(seconds % (3600*24) / 3600);
-    let m = Math.floor(seconds % 3600 / 60);
-    let res: [number, number, number] = [d,h,m]
-    return res
-}
-
-function dhmToString(time: [number, number, number]) {
-    return time[0] + "D " + time[1] + "H " + time[2] + "M"
-}
 
 export default function PieChartBox(data:any) {
 
@@ -63,7 +53,7 @@ export default function PieChartBox(data:any) {
 
                             >
                                 <tspan x={x} y={y} fill="grey" alignmentBaseline="middle" fontSize="18">{(data.data[index].name).toUpperCase()}</tspan>
-                                <tspan x={x} y={y + 20} fill="black" alignmentBaseline="middle" fontSize="16">{dhmToString(secondsToDhm(value))}</tspan>
+                                <tspan x={x} y={y + 20} fill="black" alignmentBaseline="middle" fontSize="16">{moment.duration(value, 'seconds').format('d[D] HH[H] mm[M]')}</tspan>
                             </text>
                         );
                     }}
