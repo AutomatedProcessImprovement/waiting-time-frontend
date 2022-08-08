@@ -116,6 +116,7 @@ function TransitionsBarChart(data: any) {
                     layout={'vertical'}
                     barSize={30}
                 >
+
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis type={'number'} hide />
                     <YAxis width={200} dx={-25} name={"test"} type={'category'} dataKey="bar_label" />
@@ -136,7 +137,7 @@ function TransitionsBarChart(data: any) {
                     <Bar name={"Extraneous"} dataKey="extraneous_wt" stackId="a" fill="#B3B3B3">
                         <LabelList dataKey="extr_wt_perc" content={<CustBarLabel x={0} y={0} value={1}/>}/>
                     </Bar>
-                    {/*TODO UGLY STUFF -> Should be a better way no?*/}
+                    {/*TODO Create second custom label that contains all the total values of the row. to replace BLACK colored label at end of bar*/}
                     <Bar dataKey="" stackId="a" label={<CustEndLabel x={-10} y={-10} value={1}/>}/>
                 </BarChart>
             </ResponsiveContainer>

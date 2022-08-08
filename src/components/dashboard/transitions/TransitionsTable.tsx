@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {DataGrid, GridColDef, GridToolbar} from '@mui/x-data-grid';
+var moment = require("moment");
 
 const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID'},
@@ -9,7 +10,9 @@ const columns: GridColDef[] = [
         field: 'case_freq',
         headerName: 'Case Frequency',
         type: 'number',
-        width: 150
+        width: 150,
+        valueFormatter: params =>
+            ((params?.value * 100).toFixed(2) ) + "%"
     },
     {
         field: 'total_freq',
@@ -18,61 +21,60 @@ const columns: GridColDef[] = [
         width: 150
     },
     {
-        field: 'total_wt_converted',
+        field: 'total_wt',
         headerName: 'Total Waiting Time',
-        width: 150
+        width: 150,
+        type: 'number',
+        valueFormatter: params =>
+            moment.duration(params?.value, 'seconds').format('d[D] HH[H] mm[M]')
     },
     {
-        field: 'total_batch_converted',
+        field: 'batching_wt',
         headerName: 'Batching',
-        width: 150
+        width: 150,
+        type: 'number',
+        valueFormatter: params =>
+            moment.duration(params?.value, 'seconds').format('d[D] HH[H] mm[M]')
     },
     {
-        field: 'total_cont_converted',
+        field: 'contention_wt',
         headerName: 'R. Contention',
-        width: 150
+        width: 150,
+        type: 'number',
+        valueFormatter: params =>
+            moment.duration(params?.value, 'seconds').format('d[D] HH[H] mm[M]')
     },
     {
-        field: 'total_prio_converted',
+        field: 'prioritization_wt',
         headerName: 'Prioritization',
-        width: 150
+        width: 150,
+        type: 'number',
+        valueFormatter: params =>
+            moment.duration(params?.value, 'seconds').format('d[D] HH[H] mm[M]')
     },
     {
-        field: 'total_unav_converted',
+        field: 'unavailability_wt',
         headerName: 'R. Unavailability',
-        width: 150
+        width: 150,
+        type: 'number',
+        valueFormatter: params =>
+            moment.duration(params?.value, 'seconds').format('d[D] HH[H] mm[M]')
     },
     {
-        field: 'total_extra_converted',
+        field: 'extraneous_wt',
         headerName: 'Extraneous',
-        width: 150
+        width: 150,
+        type: 'number',
+        valueFormatter: params =>
+            moment.duration(params?.value, 'seconds').format('d[D] HH[H] mm[M]')
     },
 
 ];
-
-function secondsToDhm(seconds: number) {
-    seconds = Number(seconds);
-    let d = Math.floor(seconds / (3600*24));
-    let h = Math.floor(seconds % (3600*24) / 3600);
-    let m = Math.floor(seconds % 3600 / 60);
-    let res: [number, number, number] = [d,h,m]
-    return res
-}
-
-function dhmToString(time: [number, number, number]) {
-    return time[0] + "D " + time[1] + "H " + time[2] + "M"
-}
 
 const add_index = (data:any) => {
     console.log(data)
     for (let i = 0; i < data.length; i++) {
         data[i].id = i+1
-        data[i].total_wt_converted = dhmToString(secondsToDhm(data[i].total_wt))
-        data[i].total_batch_converted = dhmToString(secondsToDhm(data[i].batching_wt))
-        data[i].total_prio_converted = dhmToString(secondsToDhm(data[i].prioritization_wt))
-        data[i].total_cont_converted = dhmToString(secondsToDhm(data[i].contention_wt))
-        data[i].total_extra_converted = dhmToString(secondsToDhm(data[i].extraneous_wt))
-        data[i].total_unav_converted = dhmToString(secondsToDhm(data[i].unavailability_wt))
     }
     return data
 }

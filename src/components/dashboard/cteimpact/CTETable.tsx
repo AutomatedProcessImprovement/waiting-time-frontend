@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {DataGrid, GridColDef, GridToolbar} from '@mui/x-data-grid';
-
 const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID'},
     { field: 'source_activity', headerName: 'Source Activity', width: 120},
@@ -9,7 +8,9 @@ const columns: GridColDef[] = [
         field: 'case_freq',
         headerName: 'Case Frequency',
         type: 'number',
-        width: 150
+        width: 150,
+        valueFormatter: params =>
+            ((params?.value).toFixed(2) * 100) + "%"
     },
     {
         field: 'total_freq',
@@ -18,56 +19,70 @@ const columns: GridColDef[] = [
         width: 150
     },
     {
-        field: 'total_wt_converted',
+        field: 'cte_impact_total',
         headerName: 'Total Waiting Time',
-        width: 150
+        width: 150,
+        type: 'number',
+        valueFormatter: params =>
+            ((params?.value * 100).toFixed(2)) + "%"
     },
     {
-        field: 'total_wt_converted',
+        field: 'batching_impact',
         headerName: 'Total Batching',
-        width: 150
+        width: 150,
+        type: 'number',
+        valueGetter: params =>
+            params.row.cte_impact.batching_impact,
+        valueFormatter: params =>
+            ((params?.value * 100).toFixed(2)) + "%"
     },
     {
-        field: 'total_wt_converted',
+        field: 'contention_impact',
         headerName: 'Total R. Contention',
-        width: 150
+        width: 150,
+        type: 'number',
+        valueGetter: params =>
+            params.row.cte_impact.contention_impact,
+        valueFormatter: params =>
+            ((params?.value * 100).toFixed(2)) + "%"
     },
     {
-        field: 'total_wt_converted',
+        field: 'prioritization_impact',
         headerName: 'Total Prioritization',
-        width: 150
+        width: 150,
+        type: 'number',
+        valueGetter: params =>
+            params.row.cte_impact.prioritization_impact,
+        valueFormatter: params =>
+            ((params?.value * 100).toFixed(2)) + "%"
+
     },
     {
-        field: 'total_wt_converted',
+        field: 'unavailability_impact',
         headerName: 'Total R. Unavailability',
-        width: 150
+        width: 150,
+        type: 'number',
+        valueGetter: params =>
+            params.row.cte_impact.unavailability_impact,
+        valueFormatter: params =>
+            ((params?.value * 100).toFixed(2)) + "%"
     },
     {
-        field: 'total_wt_converted',
+        field: 'extraneous_impact',
         headerName: 'Total Extraneous',
-        width: 150
+        width: 150,
+        type: 'number',
+        valueGetter: params =>
+            params.row.cte_impact.extraneous_impact,
+        valueFormatter: params =>
+            ((params?.value * 100).toFixed(2)) + "%"
     },
 
 ];
 
-function secondsToDhm(seconds: number) {
-    seconds = Number(seconds);
-    let d = Math.floor(seconds / (3600*24));
-    let h = Math.floor(seconds % (3600*24) / 3600);
-    let m = Math.floor(seconds % 3600 / 60);
-    let res: [number, number, number] = [d,h,m]
-    return res
-}
-
-function dhmToString(time: [number, number, number]) {
-    return time[0] + "D " + time[1] + "H " + time[2] + "M"
-}
-
 const add_index = (data:any) => {
-    console.log(data)
     for (let i = 0; i < data.length; i++) {
         data[i].id = i+1
-        data[i].total_wt_converted = dhmToString(secondsToDhm(data[i].total_wt))
     }
     return data
 }

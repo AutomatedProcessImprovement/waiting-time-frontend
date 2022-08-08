@@ -59,10 +59,10 @@ function Cteimpact(data:any) {
                             alignItems={"stretch"}
                     >
                         <Grid item xs={12}>
-                            <Infobox data={{title: "Process CTE", subtitle: "Cycle Time Efficiency of the process", value: "123.15"}}/>
+                            <Infobox data={{title: "Process CTE", subtitle: "Cycle Time Efficiency of the process", value: (data.data.process_cte* 100).toFixed(2) + '%'}}/>
                         </Grid>
                         <Grid item xs={12}>
-                            <Infobox data={{title: "Processing time (PT)", subtitle: "Total processing time", value: data.data.num_cases}}/>
+                            <Infobox data={{title: "Processing time (PT)", subtitle: "Total processing time", value: dhmToString(secondsToDhm(data.data.total_pt))}}/>
                         </Grid>
                         <Grid item xs={12}>
                             <Infobox data={{title: "Waiting time (WT)", subtitle: "Total waiting time", value: dhmToString(secondsToDhm(data.data.total_wt))}}/>
