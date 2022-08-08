@@ -2,8 +2,7 @@ import * as React from 'react';
 import {Box, Button, Modal, Typography} from "@mui/material";
 import {DataGrid, GridColDef} from "@mui/x-data-grid";
 var moment = require("moment");
-var momentDurationFormatSetup = require("moment-duration-format");
-
+require("moment-duration-format");
 export interface SimpleDialogProps {
     open: boolean;
     selectedValue: string[];
@@ -162,21 +161,9 @@ const cte_columns: GridColDef[] = [
 
 export default function RowDialog(props: SimpleDialogProps) {
     const { onClose, selectedValue, open, type } = props;
-
-    // let headerMapping = selectedValue
-
     const handleClose = () => {
         onClose(selectedValue);
     };
-
-    const add_index = (data:any) => {
-        for (let i = 0; i < data.length; i++) {
-            data[i].id = i+1
-        }
-        return data
-    }
-
-    // let table_data = add_index(selectedValue)
 
     const style = {
         position: 'absolute' as 'absolute',

@@ -106,8 +106,6 @@ export default function CTETable(data:any) {
         params, // GridRowParams
     ) => {
         // TODO Pop up dialog of wt_by_resource information
-        console.log(params.row)
-        console.log(params.row.wt_by_resource)
         setOpen(true)
         setSelectedValue(params.row.wt_by_resource as string[])
 
@@ -126,7 +124,7 @@ export default function CTETable(data:any) {
             <RowDialog
                 open={open}
                 onClose={handleClose}
-                selectedValue={selectedValue}
+                selectedValue={add_index(selectedValue)}
                 type={1}/>
         </div>
     );

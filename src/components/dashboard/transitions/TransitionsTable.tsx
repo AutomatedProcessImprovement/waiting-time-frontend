@@ -2,8 +2,7 @@ import * as React from 'react';
 import {DataGrid, GridColDef, GridEventListener, GridToolbar} from '@mui/x-data-grid';
 import RowDialog from "../RowDialog";
 var moment = require("moment");
-var momentDurationFormatSetup = require("moment-duration-format");
-
+require("moment-duration-format");
 const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID'},
     { field: 'source_activity', headerName: 'Source Activity', width: 120},
@@ -113,7 +112,7 @@ export default function TransitionsTable(data:any) {
             <RowDialog
                 open={open}
                 onClose={handleClose}
-                selectedValue={selectedValue}
+                selectedValue={add_index(selectedValue)}
                 type={0}/>
         </div>
     );

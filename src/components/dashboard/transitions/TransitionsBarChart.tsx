@@ -11,8 +11,7 @@ import {
     LabelList
 } from 'recharts';
 var moment = require("moment");
-var momentDurationFormatSetup = require("moment-duration-format");
-
+require("moment-duration-format");
 const CustEndLabel = (props: { x: any; y: any; value: number;}) => {
     const { x, y, value } = props;
 

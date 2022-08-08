@@ -2,8 +2,7 @@ import {Cell, Pie, PieChart} from "recharts";
 import {Card} from "@mui/material";
 import * as React from "react";
 var moment = require("moment");
-var momentDurationFormatSetup = require("moment-duration-format");
-
+require("moment-duration-format");
 let colordict = {
     batching: "#6C8EBF",
     prioritization: "#B8544F",

@@ -7,8 +7,7 @@ import PieChartBox from "../PieChartBox";
 import Typography from "@mui/material/Typography";
 
 var moment = require("moment");
-var momentDurationFormatSetup = require("moment-duration-format");
-
+require("moment-duration-format");
 function secondsToDhm(seconds: number) {
     seconds = Number(seconds);
     let d = Math.floor(seconds / (3600*24));
