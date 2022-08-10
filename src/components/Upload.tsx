@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { Grid, Paper, Typography} from "@mui/material";
+import {AlertColor, Grid, Paper, Typography} from "@mui/material";
 import {useNavigate} from 'react-router-dom';
 import CustomDropzoneArea from './upload/CustomDropzoneArea';
 import {LoadingButton} from '@mui/lab';
@@ -8,6 +8,7 @@ import axios from "axios";
 import paths from "../router/paths";
 import Papa from 'papaparse'
 import MappingDialog from "./upload/Mapping";
+import CustomizedSnackbar from "./CustomizedSnackBar";
 
 // import config from '../owncloud.json'
 
@@ -53,14 +54,33 @@ const Upload = () => {
     const [selectedLogFile, setSelectedLogFile] = useState<File | null>(null);
     const [selectedValue, setSelectedValue] = React.useState<string[]>([]);
 
+    const [snackMessage, setSnackMessage] = useState("")
+    const [snackColor, setSnackColor] = useState<AlertColor | undefined>(undefined)
+
+
     const handleClose = (cancel:boolean, values: string[]) => {
         if (cancel) {
             setLoading(false);
         } else {
+            setInfoMessage('Analysis in progress...')
             handleValidRequest(values)
         }
         setOpen(false);
 
+    };
+
+    const setInfoMessage = (value: string) => {
+        setSnackColor("info")
+        setSnackMessage(value)
+    };
+
+    const setErrorMessage = (value: string) => {
+        setSnackColor("error")
+        setSnackMessage(value)
+    };
+
+    const onSnackbarClose = () => {
+        setErrorMessage("")
     };
 
     const formData = new FormData()
@@ -71,8 +91,7 @@ const Upload = () => {
     const navigate = useNavigate();
 
     const areFilesPresent = () => {
-        const isEventLogProvided = !!selectedLogFile
-        return isEventLogProvided;
+        return !!selectedLogFile;
     }
 
 
@@ -90,25 +109,19 @@ const Upload = () => {
                 setSelectedValue(results.data[0] as string[])
             }
         });
-
-        // console.log(loading)
-        //
-        // if (!loading) {
-        //     return;
-        // }
-
-
     };
 
     const handleValidRequest = (values: string[]) => {
+        // TODO values => mapping of header of csv.
+        //  needs to be passed along or need to update file before sending request.
         console.log(values)
-        var config = {
+        const config = {
             method: 'post',
             url: 'http://193.40.11.233/jobs',
             headers: {
                 'Content-Type': 'text/csv'
             },
-            data : new Blob([selectedLogFile as Blob], {type:"text/csv"})
+            data: new Blob([selectedLogFile as Blob], {type: "text/csv"})
         };
         axios(
             config
@@ -210,6 +223,11 @@ const Upload = () => {
                     </LoadingButton>
                 </Grid>
             </Grid>
+            {snackMessage && <CustomizedSnackbar
+                message={snackMessage}
+                severityLevel={snackColor}
+                onSnackbarClose={onSnackbarClose}
+            />}
         </>
     );
 }

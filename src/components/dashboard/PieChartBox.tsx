@@ -1,4 +1,4 @@
-import {Cell, Pie, PieChart} from "recharts";
+import {Cell, Pie, PieChart, Tooltip} from "recharts";
 import {Card} from "@mui/material";
 import * as React from "react";
 var moment = require("moment");
@@ -12,6 +12,20 @@ let colordict = {
 }
 const COLORS = [colordict.extraneous, colordict.batching, colordict.unavailability, colordict.contention, colordict.prioritization]
 
+const CustomTooltip = ({ active, payload, label }: any) => {
+    if (active && payload && payload.length) {
+        console.log(payload)
+        return (
+            <div className="tooltip">
+                {payload.map((entry: any) => (
+                    <p>{entry.name} : {moment.duration(entry.value, 'seconds').format('d[D] HH[H] mm[M]')}</p>
+                ))}
+            </div>
+        );
+    }
+
+    return null;
+};
 
 export default function PieChartBox(data:any) {
 
@@ -61,6 +75,7 @@ export default function PieChartBox(data:any) {
                         <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                     ))}
                 </Pie>
+                <Tooltip content={<CustomTooltip />} />
             </PieChart>
         </Card>
     )

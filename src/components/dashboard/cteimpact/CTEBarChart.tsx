@@ -28,6 +28,37 @@ const CustBarLabel = (props: { x: any; y:any, value: any; }) => {
     );
 };
 
+const getIntroOfPage = (label: string) => {
+    if (label === "Batching") {
+        return "This bar represents the CTE value if all batching waiting time is eliminated";
+    }
+    if (label === "Prioritization") {
+        return "This bar represents the CTE value if all prioritization waiting time is eliminated";
+    }
+    if (label === "Resource Contention") {
+        return "This bar represents the CTE value if all resource contention waiting time is eliminated";
+    }
+    if (label === "Resource Unavailability") {
+        return "This bar represents the CTE value if all resource unavailability waiting time is eliminated";
+    }
+    if (label === "Extraneous") {
+        return "This bar represents the CTE value if all extraneous waiting time is eliminated";
+    }
+    return "";
+};
+const CustomTooltip = ({ active, payload, label }: any) => {
+    if (active && payload && payload.length) {
+        return (
+            <div className="tooltip">
+                <p className="label">{`CTE after eliminating ${label} : ${(payload[0].value*100).toFixed(4) + "%"}`}</p>
+                <p className="intro">{getIntroOfPage(label)}</p>
+            </div>
+        );
+    }
+
+    return null;
+};
+
 
 export default function CTEBarChart(data:any) {
     console.log(data.data)
@@ -51,7 +82,7 @@ export default function CTEBarChart(data:any) {
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis type={'number'} domain={[0,1]} hide/>
                 <YAxis width={200} dx={-25} name={"test"} type={'category'} dataKey="name" />
-                <Tooltip />
+                <Tooltip content={<CustomTooltip />} />
                 <Bar dataKey="value" label={CustBarLabel}>
                     {data.data.map((entry: any, index: any) => (
                         <Cell key={`cell-${index}`} fill={COLORS[index % 20]} />

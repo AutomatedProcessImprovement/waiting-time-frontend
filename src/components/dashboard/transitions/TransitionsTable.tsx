@@ -108,6 +108,11 @@ export default function TransitionsTable(data:any) {
                 rowsPerPageOptions={[5]}
                 components={{ Toolbar: GridToolbar }}
                 onRowDoubleClick={onEvent}
+                initialState={{
+                    sorting: {
+                        sortModel: [{ field: 'total_wt', sort: 'desc' }],
+                    },
+                }}
             />
             <RowDialog
                 open={open}

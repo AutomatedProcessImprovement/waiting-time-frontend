@@ -77,6 +77,21 @@ function AdditionalData(data: any) {
     return data.sort((f: { total_wt: number; }, s: { total_wt: number; }) => 0 - (f.total_wt > s.total_wt ? 1 : -1))
 
 }
+const CustomTooltip = ({ active, payload, label }: any) => {
+    if (active && payload && payload.length) {
+        return (
+            <div className="tooltip">
+                <p className="label">{`Waiting times between activities: ${label}`}</p>
+                {payload.map((entry: any) => (
+                    <p>{entry.name} : {moment.duration(entry.value, 'seconds').format('d[D] HH[H] mm[M]')}</p>
+                ))}
+                <p>This bar represents and representation of each waiting time type between activities: {label}</p>
+            </div>
+        );
+    }
+
+    return null;
+};
 
 function TransitionsBarChart(data: any) {
     let data_copy = [...data.data]
@@ -104,7 +119,7 @@ function TransitionsBarChart(data: any) {
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis type={'number'} hide/>
                     <YAxis width={200} dx={-25} name={"test"} type={'category'} dataKey="bar_label" />
-                    <Tooltip />
+                    <Tooltip content={<CustomTooltip />} />
                     <Legend />
                     <Bar name={"Batching"} dataKey="batching_wt" stackId="a" fill="#6C8EBF" >
                         <LabelList dataKey="batch_wt_perc" content={<CustBarLabel x={0} y={0} value={1}/>}/>

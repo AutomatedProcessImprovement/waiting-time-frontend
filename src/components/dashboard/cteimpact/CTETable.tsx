@@ -120,6 +120,11 @@ export default function CTETable(data:any) {
                 rowsPerPageOptions={[5]}
                 components={{ Toolbar: GridToolbar }}
                 onRowDoubleClick={onEvent}
+                initialState={{
+                    sorting: {
+                        sortModel: [{ field: 'cte_impact_total', sort: 'desc' }],
+                    },
+                }}
             />
             <RowDialog
                 open={open}

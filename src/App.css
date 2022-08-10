@@ -36,3 +36,22 @@
 .centeredContent {
   text-align: center;
 }
+
+.tooltip {
+  background-color: white;
+  border-left-style: solid;
+  border-right-style: solid;
+  border-top-style: solid;
+  border-bottom-style: solid;
+  border-left-color: navy;
+  border-radius: 5px;
+  border-left-width: 4px;
+  border-top-width: 2px;
+  border-right-width: 2px;
+  border-bottom-width: 2px;
+  color: black;
+  padding: 2px;
+}
+.tooltip p {
+  margin-left: 5px;
+}
