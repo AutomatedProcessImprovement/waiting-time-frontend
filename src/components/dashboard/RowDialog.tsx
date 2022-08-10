@@ -97,14 +97,6 @@ const cte_columns: GridColDef[] = [
         width: 150
     },
     {
-        field: 'cte_impact_total',
-        headerName: 'Total Waiting Time',
-        width: 150,
-        type: 'number',
-        valueFormatter: params =>
-            ((params?.value * 100).toFixed(2)) + "%"
-    },
-    {
         field: 'batching_impact',
         headerName: 'Total Batching',
         width: 150,
@@ -164,6 +156,7 @@ export default function RowDialog(props: SimpleDialogProps) {
     const handleClose = () => {
         onClose(selectedValue);
     };
+    console.log(selectedValue)
 
     const style = {
         position: 'absolute' as 'absolute',

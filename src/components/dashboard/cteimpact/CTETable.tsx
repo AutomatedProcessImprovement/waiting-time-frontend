@@ -105,7 +105,6 @@ export default function CTETable(data:any) {
     const onEvent: GridEventListener<'rowDoubleClick'> = (
         params, // GridRowParams
     ) => {
-        // TODO Pop up dialog of wt_by_resource information
         setOpen(true)
         setSelectedValue(params.row.wt_by_resource as string[])
 

@@ -85,7 +85,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
                 {payload.map((entry: any) => (
                     <p>{entry.name} : {moment.duration(entry.value, 'seconds').format('d[D] HH[H] mm[M]')}</p>
                 ))}
-                <p>This bar represents and representation of each waiting time type between activities: {label}</p>
+                <p>This bar represents each waiting time type between activities: {label}</p>
             </div>
         );
     }
@@ -137,7 +137,7 @@ function TransitionsBarChart(data: any) {
                         <LabelList dataKey="extr_wt_perc" content={<CustBarLabel x={0} y={0} value={1}/>}/>
                     </Bar>
                     {/*TODO Create second custom label that contains all the total values of the row. to replace BLACK colored label at end of bar*/}
-                    <Bar dataKey="" stackId="a" label={<CustEndLabel x={-10} y={-10} value={1}/>}/>
+                    <Bar name={"Total WT"} dataKey="" stackId="a" label={<CustEndLabel x={-10} y={-10} value={1}/>}/>
                 </BarChart>
             </ResponsiveContainer>
         </>

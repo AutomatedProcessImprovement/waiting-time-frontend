@@ -30,19 +30,19 @@ const CustBarLabel = (props: { x: any; y:any, value: any; }) => {
 
 const getIntroOfPage = (label: string) => {
     if (label === "Batching") {
-        return "This bar represents the CTE value if all batching waiting time is eliminated";
+        return "This bar represents the process CTE value if all batching waiting time is eliminated";
     }
     if (label === "Prioritization") {
-        return "This bar represents the CTE value if all prioritization waiting time is eliminated";
+        return "This bar represents the process CTE value if all prioritization waiting time is eliminated";
     }
     if (label === "Resource Contention") {
-        return "This bar represents the CTE value if all resource contention waiting time is eliminated";
+        return "This bar represents the process CTE value if all resource contention waiting time is eliminated";
     }
     if (label === "Resource Unavailability") {
-        return "This bar represents the CTE value if all resource unavailability waiting time is eliminated";
+        return "This bar represents the process CTE value if all resource unavailability waiting time is eliminated";
     }
     if (label === "Extraneous") {
-        return "This bar represents the CTE value if all extraneous waiting time is eliminated";
+        return "This bar represents the process CTE value if all extraneous waiting time is eliminated";
     }
     return "";
 };

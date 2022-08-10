@@ -1,4 +1,4 @@
-import {Box, Grid} from "@mui/material";
+import {Box, Card, CardContent, Grid} from "@mui/material";
 import Infobox from "../Infobox";
 import * as React from "react";
 import Typography from "@mui/material/Typography";
@@ -71,18 +71,26 @@ function Cteimpact(data:any) {
                 </Grid>
                 <Grid item xs={6}>
                     <Grid item xs={12}>
-                        <Typography align={"left"} variant="h5" component="div" sx={{ fontSize: 18 }} color="text.primary" gutterBottom>
-                            Potential CTE improvement per waiting time cause
-                        </Typography>
-                        <Typography  align={"left"} variant="h6" sx={{ fontSize: 16 }} color="text.secondary" component="div">
-                            Potential CTE values when waiting time causes are eliminated
-                        </Typography>
-                        <CTEBarChart data={visData}/>
+                        <Card>
+                            <CardContent>
+                                <Typography align={"left"} variant="h5" component="div" sx={{ fontSize: 18 }} color="text.primary" gutterBottom>
+                                    Potential CTE improvement per waiting time cause
+                                </Typography>
+                                <Typography  align={"left"} variant="h6" sx={{ fontSize: 16 }} color="text.secondary" component="div">
+                                    Potential CTE values when waiting time causes are eliminated
+                                </Typography>
+                                <CTEBarChart data={visData}/>
+                            </CardContent>
+                        </Card>
                     </Grid>
                 </Grid>
-
             </Grid>
-            <CTETable data={data.data}/>
+            <br/>
+            <Card>
+                <CardContent>
+                    <CTETable data={data.data}/>
+                </CardContent>
+            </Card>
         </Box>
 
     )
