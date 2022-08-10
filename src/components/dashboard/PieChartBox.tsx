@@ -10,7 +10,6 @@ let colordict = {
     contention: "#D7B500",
     unavailability: "#63B7B0",
     extraneous: "#B3B3B3",
-
 }
 const COLORS = [colordict.extraneous, colordict.batching, colordict.unavailability, colordict.contention, colordict.prioritization]
 
