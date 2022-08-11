@@ -10,43 +10,6 @@ import Papa from 'papaparse'
 import MappingDialog from "./upload/Mapping";
 import CustomizedSnackbar from "./CustomizedSnackBar";
 
-// import config from '../owncloud.json'
-
-// const owncloud = require('owncloud-sdk');
-// let oc = new owncloud({
-//     baseUrl: config.OWNCLOUDURL,
-//     auth: {
-//         basic: {
-//             username: config.USERNAME,
-//             password: config.PASSWORD
-//         }
-//     }
-// });
-//
-// // Login
-// oc.login().then((status: any) => {
-//     // STUFF
-//     console.log(status)
-// }).catch((error: any) => {
-//     // HANDLE ERROR
-//     console.log(error)
-// });
-//
-// // Share File With Link
-// oc.shares.shareFileWithLink('linkToYourFile').then((shareInfo: { getLink: () => string; }) => {
-//     console.log("Link is : " + shareInfo.getLink());
-// }).catch((error: any) => {
-//     console.log(error)
-//     // HANDLE ERROR
-// });
-//
-// // List all files
-// oc.files.list('https://owncloud.ut.ee/owncloud/index.php/s/DAynoadkJJdDWJE').then((files: any) => {
-//     console.log(files);
-// }).catch((error: any) => {
-//     console.log(error);
-// });
-
 
 const Upload = () => {
     const [loading, setLoading] = useState<boolean>(false);
@@ -128,7 +91,6 @@ const Upload = () => {
         )
             .then(((res:any) => {
                 let job = res.data
-                console.log(job)
                 let f = setInterval(() => {
                     axios.get(
                         'http://193.40.11.233/jobs/' + job.id,
@@ -149,41 +111,32 @@ const Upload = () => {
                     })
                 }, 30000)
             })).catch((error: any) => {
-            console.log("Need to handle this: " + error)
+                setErrorMessage(error)
             setLoading(false)
         })
     }
 
     return (
         <>
+            <br/>
+            <br/>
             <Grid container alignItems="center" justifyContent="center" spacing={4} style={{ paddingTop: '10px' }} className="centeredContent">
-                <Grid item xs={12}>
-                    <Grid item>
-                        <Typography variant="subtitle1">
-                            Upload an event log to start the waiting time analysis. (CSV format)
-                        </Typography>
-                    </Grid>
-                </Grid>
                 <Grid item xs={2.5}>
                     <Paper elevation={5} sx={{ p: 3, minHeight: '30vw' }}>
                         <Grid container spacing={2}>
                             <Grid item xs={12}>
-                                <Typography variant="h6" align="left">
+                                <Typography variant="h6" align="left" sx={{color: 'red', fontWeight: 'medium'}}>
                                     NOTICE:
                                 </Typography>
-                                <Typography align={"left"}>
+                                <Typography align={"left"} sx={{color: 'red'}}>
                                     Please format your event_log for now like the following example:
-                                    <br/>
-                                    <br/>
-                                    - Case ID ={'>'} case:concept:name
-                                    <br/>
-                                    - Activity ={'>'} concept:name
-                                    <br/>
-                                    - Start Timestamp ={'>'} start_timestamp
-                                    <br/>
-                                    - End Timestamp ={'>'} time:timestamp
-                                    <br/>
-                                    - Resource ={'>'} org:resource
+                                    <ul className={'noticeList'}>
+                                        <li>Case ID → case:concept:name</li>
+                                        <li>Activity → concept:name</li>
+                                        <li>Start Timestamp → start_timestamp</li>
+                                        <li>End Timestamp → time:timestamp</li>
+                                        <li>Resource → org:resource</li>
+                                    </ul>
                                 </Typography>
                             </Grid>
                             <Grid item xs={12}>
@@ -195,9 +148,40 @@ const Upload = () => {
                     <Paper elevation={5} sx={{ p: 3, minHeight: '30vw' }}>
                         <Grid container spacing={2}>
                             <Grid item xs={12}>
-                                <Typography variant="h6" align="left">
-                                    Event log
+                                <Typography variant="h4" align="center">
+                                    Upload an event log
                                 </Typography>
+                                <br/>
+                                <Grid container>
+                                    <Grid item xs={12}>
+                                        <Grid container>
+                                            <Grid item xs={3}>
+                                                <Typography variant="body1" align="left" sx={{fontWeight: 'bold'}}>
+                                                    Supported extension:
+                                                </Typography>
+                                            </Grid>
+                                            <Grid item xs={9}>
+                                                <Typography variant="body1" align="left">
+                                                    CSV
+                                                </Typography>
+                                            </Grid>
+                                        </Grid>
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <Grid container>
+                                            <Grid item xs={3}>
+                                                <Typography variant="body1" align="left" sx={{fontWeight: 'bold'}}>
+                                                    Required data:
+                                                </Typography>
+                                            </Grid>
+                                            <Grid item xs={9}>
+                                                <Typography variant="body1" align="left">
+                                                    Case ID, Activity, Start time, End time, Resource
+                                                </Typography>
+                                            </Grid>
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
                             </Grid>
                             <Grid item xs={12}>
                                 <CustomDropzoneArea

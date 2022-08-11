@@ -92,7 +92,6 @@ const add_index = (data:any) => {
 
 export default function CTETable(data:any) {
     let table_data = add_index(data.data.report)
-    console.log(table_data)
 
     let [open, setOpen] = React.useState(false);
     const [selectedValue, setSelectedValue] = React.useState<string[]>([]);

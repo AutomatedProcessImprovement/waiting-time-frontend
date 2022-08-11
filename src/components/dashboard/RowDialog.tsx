@@ -156,7 +156,6 @@ export default function RowDialog(props: SimpleDialogProps) {
     const handleClose = () => {
         onClose(selectedValue);
     };
-    console.log(selectedValue)
 
     const style = {
         position: 'absolute' as 'absolute',

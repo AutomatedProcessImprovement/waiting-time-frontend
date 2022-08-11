@@ -15,7 +15,6 @@ const COLORS = [colordict.extraneous, colordict.batching, colordict.unavailabili
 
 const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
-        console.log(payload)
         return (
             <div className="tooltip">
                 {payload.map((entry: any) => (

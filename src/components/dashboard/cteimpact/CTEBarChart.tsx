@@ -30,19 +30,19 @@ const CustBarLabel = (props: { x: any; y:any, value: any; }) => {
 
 const getIntroOfPage = (label: string) => {
     if (label === "Batching") {
-        return "This bar represents the process CTE value if all batching waiting time is eliminated";
+        return <><p>This bar represents the process CTE</p><p>value if all batching waiting time is eliminated.</p></>
     }
     if (label === "Prioritization") {
-        return "This bar represents the process CTE value if all prioritization waiting time is eliminated";
+        return <><p>This bar represents the process CTE</p><p>value if all prioritization waiting time is eliminated.</p></>
     }
     if (label === "Resource Contention") {
-        return "This bar represents the process CTE value if all resource contention waiting time is eliminated";
+        return <><p>This bar represents the process CTE</p><p>value if all resource contention waiting time is eliminated.</p></>
     }
     if (label === "Resource Unavailability") {
-        return "This bar represents the process CTE value if all resource unavailability waiting time is eliminated";
+        return <><p>This bar represents the process CTE</p><p>value if all resource unavailability waiting time is eliminated.</p></>
     }
     if (label === "Extraneous") {
-        return "This bar represents the process CTE value if all extraneous waiting time is eliminated";
+        return <><p>This bar represents the process CTE</p><p>value if all extraneous waiting time is eliminated.</p></>
     }
     return "";
 };
@@ -51,7 +51,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
         return (
             <div className="tooltip">
                 <p className="label">{`CTE after eliminating ${label} : ${(payload[0].value*100).toFixed(4) + "%"}`}</p>
-                <p className="intro">{getIntroOfPage(label)}</p>
+                <div className="intro">{getIntroOfPage(label)}</div>
             </div>
         );
     }
@@ -61,12 +61,11 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 
 
 export default function CTEBarChart(data:any) {
-    console.log(data.data)
     return (
         <>
             <ResponsiveContainer width={"100%"} height={400} min-width={400}>
             <BarChart
-                width={2160}
+                width={1000}
                 height={300}
                 data={data.data}
                 margin={{

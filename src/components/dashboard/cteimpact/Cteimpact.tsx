@@ -5,12 +5,6 @@ import Typography from "@mui/material/Typography";
 import CTEBarChart from "./CTEBarChart";
 import CTETable from "./CTETable";
 
-function cteImpactCalculations(data:any) {
-    console.log(data)
-}
-
-cteImpactCalculations(1)
-
 function secondsToDhm(seconds: number) {
     seconds = Number(seconds);
     let d = Math.floor(seconds / (3600*24));
@@ -32,7 +26,6 @@ function Cteimpact(data:any) {
         {name: 'Resource Unavailability', value: data.data.cte_impact.unavailability_impact},
         {name: 'Extraneous', value: data.data.cte_impact.extraneous_impact}
     ]
-    console.log(visData)
 
     return (
         <Box sx={{

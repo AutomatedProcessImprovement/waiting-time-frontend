@@ -5,9 +5,8 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
-import ConstructionIcon from '@mui/icons-material/Construction';
 import { Link } from 'react-router-dom';
-
+import QueryStatsIcon from '@mui/icons-material/QueryStats';
 interface MenuOptions {
     title: string,
     to: string
@@ -29,9 +28,10 @@ function NavBar() {
                         color="inherit"
                         aria-label="menu"
                         sx={{ mr: 2 }}
-                        disabled
+                        component={Link}
+                        to={'/upload'}
                     >
-                        <ConstructionIcon />
+                        <QueryStatsIcon />
                     </IconButton>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                         Waiting Time Analyser

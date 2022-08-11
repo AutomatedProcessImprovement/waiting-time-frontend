@@ -73,7 +73,6 @@ const columns: GridColDef[] = [
 ];
 
 const add_index = (data:any) => {
-    console.log(data)
     for (let i = 0; i < data.length; i++) {
         data[i].id = i+1
     }

@@ -148,7 +148,7 @@ const BasicTabs = () => {
     };
 
     const handleClick = () => {
-        console.info(`You clicked ${options[selectedIndex]}`);
+        onDownload(report, 0)
     };
 
     const handleToggle = () => {

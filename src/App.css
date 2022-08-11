@@ -55,3 +55,11 @@
 .tooltip p {
   margin-left: 5px;
 }
+
+.noticeList {
+  list-style-type: circle;
+}
+
+.noticeList li {
+  font-weight: bold;
+}
