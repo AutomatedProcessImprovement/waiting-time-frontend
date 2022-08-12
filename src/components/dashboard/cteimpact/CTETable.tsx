@@ -1,6 +1,17 @@
 import * as React from 'react';
-import {DataGrid, GridColDef, GridEventListener, GridToolbar} from '@mui/x-data-grid';
+import {
+    DataGrid,
+    GridColDef,
+    GridEventListener,
+    GridToolbarColumnsButton,
+    GridToolbarContainer, GridToolbarDensitySelector, GridToolbarFilterButton
+} from '@mui/x-data-grid';
 import RowDialog from '../RowDialog';
+import {Button} from "@mui/material";
+import ViewModuleIcon from '@mui/icons-material/ViewModule';
+import TableHeatmap from "./heatmap/TableHeatmap";
+
+
 const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID'},
     { field: 'source_activity', headerName: 'Source Activity', width: 120},
@@ -88,17 +99,21 @@ const add_index = (data:any) => {
     return data
 }
 
-
-
 export default function CTETable(data:any) {
     let table_data = add_index(data.data.report)
 
     let [open, setOpen] = React.useState(false);
+    let [heatmapOpen, setHeatmapOpen] = React.useState(false);
     const [selectedValue, setSelectedValue] = React.useState<string[]>([]);
+
+
 
     const handleClose = () => {
         setOpen(false);
+    };
 
+    const handleHeatmapClose = () => {
+        setHeatmapOpen(false);
     };
 
     const onEvent: GridEventListener<'rowDoubleClick'> = (
@@ -108,6 +123,32 @@ export default function CTETable(data:any) {
         setSelectedValue(params.row.wt_by_resource as string[])
 
     }
+    const handleClick = () => {
+        setHeatmapOpen(true)
+    }
+
+    const GridToolbarHeatmap = () => {
+        return (
+            <Button
+                startIcon={<ViewModuleIcon />}
+                onClick={handleClick}
+                size={'small'}
+            >
+                Show Heatmap
+            </Button>
+        )
+    }
+
+    function CustomToolbar() {
+        return (
+            <GridToolbarContainer>
+                <GridToolbarColumnsButton />
+                <GridToolbarFilterButton />
+                <GridToolbarDensitySelector />
+                <GridToolbarHeatmap/>
+            </GridToolbarContainer>
+        );
+    }
 
     return (
         <div style={{ height: 400, width: '100%' }}>
@@ -116,11 +157,25 @@ export default function CTETable(data:any) {
                 columns={columns}
                 pageSize={5}
                 rowsPerPageOptions={[5]}
-                components={{ Toolbar: GridToolbar }}
+                components={{ Toolbar: CustomToolbar }}
                 onRowDoubleClick={onEvent}
                 initialState={{
                     sorting: {
                         sortModel: [{ field: 'cte_impact_total', sort: 'desc' }],
+                    },
+                }}
+                componentsProps={{
+                    panel: {
+                        sx: {
+
+                            '& .MuiTypography-root': {
+                                color: 'dodgerblue',
+                                fontSize: 15,
+                            },
+                            '& .MuiButton-root': {
+                                fontSize: 15
+                            }
+                        },
                     },
                 }}
             />
@@ -129,6 +184,8 @@ export default function CTETable(data:any) {
                 onClose={handleClose}
                 selectedValue={add_index(selectedValue)}
                 type={1}/>
+            <TableHeatmap
+             onClose={handleHeatmapClose} open={heatmapOpen} values={table_data} />
         </div>
     );
 }
