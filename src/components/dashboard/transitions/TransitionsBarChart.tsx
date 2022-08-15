@@ -15,7 +15,6 @@ require("moment-duration-format");
 const CustEndLabel = (props: { x: any; y: any; value: number;}) => {
     const { x, y, value } = props;
 
-
     if (value < 1) {
         return (
             <text

@@ -2,19 +2,8 @@ import React from "react";
 import {Collapse, IconButton, Table, TableBody, TableCell, TableHead, TableRow} from "@mui/material";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-
-function secondsToDhm(seconds: number) {
-    seconds = Number(seconds);
-    let d = Math.floor(seconds / (3600*24));
-    let h = Math.floor(seconds % (3600*24) / 3600);
-    let m = Math.floor(seconds % 3600 / 60);
-    let res: [number, number, number] = [d,h,m]
-    return res
-}
-
-function dhmToString(time: [number, number, number]) {
-    return time[0] + "D " + time[1] + "H " + time[2] + "M"
-}
+import {secondsToDhm} from "../../helpers/SecondsToDhm";
+import {dhmToString} from "../../helpers/dhmToString";
 
 function Row(props: { row: any }) {
     const {row} = props;

@@ -10,7 +10,6 @@ export interface SimpleDialogProps {
 
 export default function TableHeatmap(props: SimpleDialogProps) {
     const { onClose, open, values } = props;
-
     let series = prepareHeatmapData(values)
 
     const handleClose = () => {
@@ -28,8 +27,6 @@ export default function TableHeatmap(props: SimpleDialogProps) {
         boxShadow: 12,
         p: 6,
     };
-
-
 
     const options : ApexOptions = {
         chart: {

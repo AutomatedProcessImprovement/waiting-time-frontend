@@ -9,15 +9,14 @@ import {
 } from "recharts";
 import * as React from "react";
 
-let colordict = {
+const _colorDict = {
     batching: "#6C8EBF",
     prioritization: "#B8544F",
     contention: "#D7B500",
     unavailability: "#63B7B0",
     extraneous: "#B3B3B3",
 }
-const COLORS = [ colordict.batching,colordict.prioritization,colordict.contention, colordict.unavailability, colordict.extraneous]
-
+const COLORS = [ _colorDict.batching,_colorDict.prioritization,_colorDict.contention, _colorDict.unavailability, _colorDict.extraneous]
 
 const CustBarLabel = (props: { x: any; y:any, value: any; }) => {
     const { x, y, value } = props;
@@ -46,6 +45,7 @@ const getIntroOfPage = (label: string) => {
     }
     return "";
 };
+
 const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
         return (
@@ -55,10 +55,8 @@ const CustomTooltip = ({ active, payload, label }: any) => {
             </div>
         );
     }
-
     return null;
 };
-
 
 export default function CTEBarChart(data:any) {
     return (

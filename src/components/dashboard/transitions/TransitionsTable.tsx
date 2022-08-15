@@ -69,7 +69,6 @@ const columns: GridColDef[] = [
         valueFormatter: params =>
             moment.duration(params?.value, 'seconds').format('d[D] HH[H] mm[M]')
     },
-
 ];
 
 const add_index = (data:any) => {
@@ -81,13 +80,11 @@ const add_index = (data:any) => {
 
 export default function TransitionsTable(data:any) {
     let table_data = add_index(data.data.report)
-
     let [open, setOpen] = React.useState(false);
     const [selectedValue, setSelectedValue] = React.useState<string[]>([]);
 
     const handleClose = () => {
         setOpen(false);
-
     };
 
     const onEvent: GridEventListener<'rowDoubleClick'> = (

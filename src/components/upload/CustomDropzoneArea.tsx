@@ -31,7 +31,6 @@ const CustomDropzoneArea = (props: CustomDropzoneAreaProps) => {
             classes={{
                 root: classes.root
             }}
-            // Icon={<FileUploadIcon />}
             acceptedFiles={acceptedFiles}
             filesLimit={1}
             showPreviews={true}

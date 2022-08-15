@@ -4,14 +4,14 @@ import * as React from "react";
 import Typography from "@mui/material/Typography";
 var moment = require("moment");
 require("moment-duration-format");
-let colordict = {
+const _colorDict = {
     batching: "#6C8EBF",
     prioritization: "#B8544F",
     contention: "#D7B500",
     unavailability: "#63B7B0",
     extraneous: "#B3B3B3",
 }
-const COLORS = [colordict.extraneous, colordict.batching, colordict.unavailability, colordict.contention, colordict.prioritization]
+const COLORS = [_colorDict.extraneous, _colorDict.batching, _colorDict.unavailability, _colorDict.contention, _colorDict.prioritization]
 
 const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
@@ -23,7 +23,6 @@ const CustomTooltip = ({ active, payload, label }: any) => {
             </div>
         );
     }
-
     return null;
 };
 

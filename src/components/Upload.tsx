@@ -3,7 +3,6 @@ import {AlertColor, Grid, Paper, Typography} from "@mui/material";
 import {useNavigate} from 'react-router-dom';
 import CustomDropzoneArea from './upload/CustomDropzoneArea';
 import {LoadingButton} from '@mui/lab';
-// TODO REPLACE LATER
 import axios from "axios";
 import paths from "../router/paths";
 import Papa from 'papaparse'
@@ -130,14 +129,24 @@ const Upload = () => {
                                 </Typography>
                                 <Typography align={"left"} sx={{color: 'red'}}>
                                     Please format your event_log for now like the following example:
-                                    <ul className={'noticeList'}>
-                                        <li>Case ID → case:concept:name</li>
-                                        <li>Activity → concept:name</li>
-                                        <li>Start Timestamp → start_timestamp</li>
-                                        <li>End Timestamp → time:timestamp</li>
-                                        <li>Resource → org:resource</li>
-                                    </ul>
                                 </Typography>
+                                <ul className={'noticeList'}>
+                                    <li><Typography align={"left"} sx={{color: 'red', fontWeight: 'bold'}}>
+                                        Case ID → case:concept:name
+                                    </Typography></li>
+                                    <li><Typography align={"left"} sx={{color: 'red', fontWeight: 'bold'}}>
+                                        Activity → concept:name
+                                    </Typography></li>
+                                    <li><Typography align={"left"} sx={{color: 'red', fontWeight: 'bold'}}>
+                                        Start Timestamp → start_timestamp
+                                    </Typography></li>
+                                    <li><Typography align={"left"} sx={{color: 'red', fontWeight: 'bold'}}>
+                                        End Timestamp → time:timestamp
+                                    </Typography></li>
+                                    <li><Typography align={"left"} sx={{color: 'red', fontWeight: 'bold'}}>
+                                        Resource → org:resource
+                                    </Typography></li>
+                                </ul>
                             </Grid>
                             <Grid item xs={12}>
                             </Grid>

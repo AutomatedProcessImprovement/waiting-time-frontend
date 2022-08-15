@@ -43,39 +43,38 @@ export default function MappingDialog(props: SimpleDialogProps) {
     };
 
     const handleClose = (cancel:boolean ) => {
-        var cidnum = 0;
-        var actnum = 0;
-        var startnum = 0;
-        var endnum = 0;
-        var resnum = 0;
+        let _cidNum = 0;
+        let _actNum = 0;
+        let _startNum = 0;
+        let _endNum = 0;
+        let _resNum = 0;
         for (const val in ogmapping) {
             switch (ogmapping[val]) {
                 case 'case:concept:name':
-                    cidnum++;
+                    _cidNum++;
                     break;
                 case 'concept:name':
-                    actnum++;
+                    _actNum++;
                     break;
                 case 'start_timestamp':
-                    startnum++;
+                    _startNum++;
                     break;
                 case 'time:timestamp':
-                    endnum++;
+                    _endNum++;
                     break;
                 case 'org:resource':
-                    resnum++;
+                    _resNum++;
                     break;
             }
         }
-        if (cidnum > 1 || actnum > 1 || startnum > 1 || endnum > 1 || resnum > 1) {
+        if (_cidNum > 1 || _actNum > 1 || _startNum > 1 || _endNum > 1 || _resNum > 1) {
             setErrorMessage('Each type can only be assigned once. Please adjust the mapping and try again.')
-        } else if (cidnum < 1 || actnum < 1 || startnum < 1 || endnum < 1 || resnum < 1) {
+        } else if (_cidNum < 1 || _actNum < 1 || _startNum < 1 || _endNum < 1 || _resNum < 1) {
             setErrorMessage('Each type must be assigned at least once. Please adjust the mapping and try again.');
         } else {
             onClose(cancel, selectedValue);
         }
     };
-
 
     return (
         <Dialog onClose={handleClose} open={open}>
@@ -124,6 +123,5 @@ export default function MappingDialog(props: SimpleDialogProps) {
                 onSnackbarClose={onSnackbarClose}
             />}
         </Dialog>
-
     );
 }

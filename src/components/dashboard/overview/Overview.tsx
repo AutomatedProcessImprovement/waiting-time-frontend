@@ -4,20 +4,11 @@ import Grid from '@mui/material/Grid';
 
 import Infobox from "../Infobox";
 import PieChartBox from "../PieChartBox";
+import {secondsToDhm} from "../../../helpers/SecondsToDhm";
+import { dhmToString } from '../../../helpers/dhmToString';
 var moment = require("moment");
 require("moment-duration-format");
-function secondsToDhm(seconds: number) {
-    seconds = Number(seconds);
-    let d = Math.floor(seconds / (3600*24));
-    let h = Math.floor(seconds % (3600*24) / 3600);
-    let m = Math.floor(seconds % 3600 / 60);
-    let res: [number, number, number] = [d,h,m]
-    return res
-}
 
-function dhmToString(time: [number, number, number]) {
-    return time[0] + "D " + time[1] + "H " + time[2] + "M"
-}
 
 
 
