@@ -14,6 +14,10 @@ Frontend client for Waiting Time Analysis tool.
     ```
     npm install
     ```
+   If you run into issues with the previous command run the following command:
+   ```
+   npm install --save --legacy-peer-deps
+   ```
 2) Start the client
     ```
     npm start
@@ -31,6 +35,7 @@ Frontend client for Waiting Time Analysis tool.
 - Sorting and filtering for tables
 - Download of report in CSV and JSON format
 - Custom tooltips for most dashboard charts and info boxes
+- Heatmap to easily spot improvement opportunities
 
 ## Upcoming functionalities:
 - Event log mapping | WIP => Frontend OK. Backend server needs to accept mapping object in request for processing
@@ -53,5 +58,7 @@ Frontend client for Waiting Time Analysis tool.
 ![](./screenshots/Dashboard-CTEIMPACT.PNG)
 ### Dashboard - CTE Impact Table details
 ![](./screenshots/Dashboard-CTEIMPACT-Table-Details.PNG)
+### Dashboard - CTE Impact Heatmap
+![](./screenshots/Dashboard-CTEIMPACT-Table-Heatmap.PNG)
 ### Dashboard - Download Report
 ![](./screenshots/Dashboard-DownloadReport.PNG)
