@@ -101,7 +101,6 @@ const add_index = (data:any) => {
 
 export default function CTETable(data:any) {
     let table_data = add_index(data.data.report)
-
     let [open, setOpen] = React.useState(false);
     let [heatmapOpen, setHeatmapOpen] = React.useState(false);
     const [selectedValue, setSelectedValue] = React.useState<string[]>([]);
@@ -185,7 +184,7 @@ export default function CTETable(data:any) {
                 selectedValue={add_index(selectedValue)}
                 type={1}/>
             <TableHeatmap
-             onClose={handleHeatmapClose} open={heatmapOpen} values={table_data} />
+             onClose={handleHeatmapClose} open={heatmapOpen} values={table_data} p_cte={data.data.process_cte} />
         </div>
     );
 }

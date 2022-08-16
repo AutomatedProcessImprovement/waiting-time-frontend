@@ -5,11 +5,12 @@ import { ApexOptions } from "apexcharts";
 export interface SimpleDialogProps {
     open: boolean;
     onClose: () => void;
-    values: object[]
+    values: object[];
+    p_cte: number
 }
 
 export default function TableHeatmap(props: SimpleDialogProps) {
-    const { onClose, open, values } = props;
+    const { onClose, open, values, p_cte } = props;
     let series = prepareHeatmapData(values)
 
     const handleClose = () => {
@@ -43,29 +44,36 @@ export default function TableHeatmap(props: SimpleDialogProps) {
                 radius: 0,
                 useFillColorAsStroke: true,
                 colorScale: {
-                    ranges: [{
+                    ranges: [
+                    {
                         from: 0.00,
-                        to: 0.45,
-                        name: 'Very Poor',
-                        color: '#B23A48'
+                        to: p_cte*100-0.001,
+                        name: 'Deterioration',
+                        color: '#EF476F'
                     },
                     {
-                        from: 0.45,
-                        to: 0.60,
+                        from: p_cte*100-0.001,
+                        to: p_cte*100+0.001,
+                        name: 'No Change',
+                        color: '#FF8166'
+                    },
+                    {
+                        from: 45,
+                        to: 60,
                         name: 'Poor',
-                        color: '#C44900'
+                        color: '#06D6A0'
                     },
                     {
-                        from: 0.60,
-                        to: 0.80,
+                        from: 60,
+                        to: 80,
                         name: 'Medium',
-                        color: '#62A87C'
+                        color: '#118AB2'
                     },
                     {
-                        from: 0.80,
-                        to: 1.00,
+                        from: 80,
+                        to: 100,
                         name: 'Good',
-                        color: '#0B6E4F'
+                        color: '#073B4C'
                     }
                     ]
                 }
@@ -83,19 +91,27 @@ export default function TableHeatmap(props: SimpleDialogProps) {
             width: 1
         },
         title: {
-            text: 'CTE impact improvement heatmap'
+            text: 'CTE impact improvement heatmap | Current CTE: ' + (p_cte* 100).toFixed(2) + '%'
         },
     };
     function prepareHeatmapData(data:any) {
-        let dataseries = []
+        function convert(x:number[]){
+            let res = []
+            for (const xKey in x) {
+                res.push(Number.parseFloat((x[xKey]*100).toFixed(2)))
+            }
+            return res
+        }
+
+        let _dataSeries = []
         for (const dataKey in data) {
-            dataseries.push({
+            _dataSeries.push({
                 name: data[dataKey].source_activity + " - " + data[dataKey].target_activity,
-                data: Object.values(data[dataKey].cte_impact) as number[]
+                data: Object.values(convert(data[dataKey].cte_impact)) as number[]
             })
         }
 
-       return dataseries.reverse()
+       return _dataSeries.reverse()
     }
 
     return (

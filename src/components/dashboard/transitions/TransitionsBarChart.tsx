@@ -35,7 +35,7 @@ const CustEndLabel = (props: { x: any; y: any; value: number;}) => {
         <text
             x={x}
             y={y}
-            dx={"1%"}
+            dx={"50px"}
             dy={20}
             fontSize="15"
             fontWeight="bold"
@@ -57,7 +57,7 @@ const CustBarLabel = (props: { x: any; y:any, value: any; }) => {
         );
     }
     return (
-        <text x={x} y={y} dy={20} dominantBaseline="auto" textAnchor="start">
+        <text x={x} y={y} dx={'5px'} dy={20} dominantBaseline="auto" textAnchor="start">
             {value + "%"}
         </text>
     );
@@ -116,7 +116,7 @@ function TransitionsBarChart(data: any) {
                 >
 
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis type={'number'} hide/>
+                    <XAxis type={'number'} hide domain={[(dataMin: number) => (0 - Math.abs(dataMin)), (dataMax: number) => (dataMax * 1.5)]}/>
                     <YAxis width={200} dx={-25} name={"test"} type={'category'} dataKey="bar_label" />
                     <Tooltip content={<CustomTooltip />} />
                     <Legend />

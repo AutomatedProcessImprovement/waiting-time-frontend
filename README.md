@@ -7,7 +7,20 @@ Frontend client for Waiting Time Analysis tool.
 [//]: # (Will try to make this work)
 [//]: # (https://dev.to/salehmubashar/search-bar-in-react-js-545l#:~:text=Creating%20the%20Search%20Bar&text=In%20your%20app.,"%20import%20".%2FApp.)
 
-## Expected functionalities:
+## Start the client locally (via npm)
+
+> Please, note that you need to have `Node.js` and `npm` installed on your computer in order to follow these steps. The instructions on how to do that could be found here: https://docs.npmjs.com/downloading-and-installing-node-js-and-npm#overview
+1) Install all dependencies
+    ```
+    npm install
+    ```
+2) Start the client
+    ```
+    npm start
+    ```
+
+
+## Included functionalities:
 
 - Upload of event log (CSV format)
 - Mapping of selected event log (required parameters)
@@ -17,14 +30,12 @@ Frontend client for Waiting Time Analysis tool.
   - CTE Impact ```Information about Cycle time efficiency impacts```
 - Sorting and filtering for tables
 - Download of report in CSV and JSON format
-## Missing functionalities:
+- Custom tooltips for most dashboard charts and info boxes
+
+## Upcoming functionalities:
 - Event log mapping | WIP => Frontend OK. Backend server needs to accept mapping object in request for processing
 
-#### Flair:
-
-- Tooltips for most items
-
-## Presentable progress:
+## Visual showcase:
 
 ### Home - Upload:
 ![](./screenshots/Home-Upload.PNG)

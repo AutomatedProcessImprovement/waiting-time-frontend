@@ -7,7 +7,7 @@
       "esnext"
     ],
     "types": [
-      "node"
+      "node", "react/next", "react-dom/next"
     ],
     "allowJs": true,
     "skipLibCheck": true,
