@@ -38,16 +38,16 @@ const columns: GridColDef[] = [
             moment.duration(params?.value, 'seconds').format('d[D] HH[H] mm[M]')
     },
     {
-        field: 'contention_wt',
-        headerName: 'R. Contention',
+        field: 'prioritization_wt',
+        headerName: 'Prioritization',
         width: 150,
         type: 'number',
         valueFormatter: params =>
             moment.duration(params?.value, 'seconds').format('d[D] HH[H] mm[M]')
     },
     {
-        field: 'prioritization_wt',
-        headerName: 'Prioritization',
+        field: 'contention_wt',
+        headerName: 'R. Contention',
         width: 150,
         type: 'number',
         valueFormatter: params =>

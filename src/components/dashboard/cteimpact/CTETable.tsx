@@ -49,16 +49,6 @@ const columns: GridColDef[] = [
             ((params?.value * 100).toFixed(2)) + "%"
     },
     {
-        field: 'contention_impact',
-        headerName: 'Total R. Contention',
-        width: 150,
-        type: 'number',
-        valueGetter: params =>
-            params.row.cte_impact.contention_impact,
-        valueFormatter: params =>
-            ((params?.value * 100).toFixed(2)) + "%"
-    },
-    {
         field: 'prioritization_impact',
         headerName: 'Total Prioritization',
         width: 150,
@@ -68,6 +58,16 @@ const columns: GridColDef[] = [
         valueFormatter: params =>
             ((params?.value * 100).toFixed(2)) + "%"
 
+    },
+    {
+        field: 'contention_impact',
+        headerName: 'Total R. Contention',
+        width: 150,
+        type: 'number',
+        valueGetter: params =>
+            params.row.cte_impact.contention_impact,
+        valueFormatter: params =>
+            ((params?.value * 100).toFixed(2)) + "%"
     },
     {
         field: 'unavailability_impact',
