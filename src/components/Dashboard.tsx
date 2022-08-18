@@ -176,13 +176,13 @@ const BasicTabs = () => {
     };
 
     return (
-        <Box sx={{ width: '100%' }}>
+        <Box sx={{ width: '100%', mt:1 }}>
             <Box>
                 <Grid
                     container
                     spacing={3}
                     alignItems={"stretch"}
-                    justifyContent="space-between"
+                    justifyContent="space-around"
                     direction="row"
                 >
                     <Grid item>
