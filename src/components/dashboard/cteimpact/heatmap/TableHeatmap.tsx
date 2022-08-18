@@ -47,13 +47,13 @@ export default function TableHeatmap(props: SimpleDialogProps) {
                     ranges: [
                     {
                         from: 0.00,
-                        to: p_cte*100-0.001,
+                        to: p_cte*100-1,
                         name: 'Deterioration',
                         color: '#EF476F'
                     },
                     {
-                        from: p_cte*100-0.001,
-                        to: p_cte*100+0.001,
+                        from: p_cte*100-0.1,
+                        to: p_cte*100+0.1,
                         name: 'No Change',
                         color: '#FF8166'
                     },
