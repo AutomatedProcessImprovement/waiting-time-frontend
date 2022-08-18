@@ -6,6 +6,7 @@ import CTEBarChart from "./CTEBarChart";
 import CTETable from "./CTETable";
 import {secondsToDhm} from "../../../helpers/SecondsToDhm";
 import {dhmToString} from "../../../helpers/dhmToString";
+import CTELineChart from "./CTELineChart";
 
 function Cteimpact(data:any) {
     const visData = [
@@ -66,6 +67,20 @@ function Cteimpact(data:any) {
                         </Card>
                     </Grid>
                 </Grid>
+                <Grid item xs={12}>
+                    <Card>
+                        <CardContent>
+                            <Typography align={"left"} variant="h5" component="div" sx={{ fontSize: 18 }} color="text.primary" gutterBottom>
+                                Processing time vs Waiting time
+                            </Typography>
+                            <Typography  align={"left"} variant="h6" sx={{ fontSize: 16 }} color="text.secondary" component="div">
+                                Per case
+                            </Typography>
+                            <br/>
+                            <CTELineChart data={data.data.per_case_wt}/>
+                        </CardContent>
+                    </Card>
+                </Grid>
             </Grid>
             <br/>
             <Card>
@@ -73,6 +88,7 @@ function Cteimpact(data:any) {
                     <CTETable data={data.data}/>
                 </CardContent>
             </Card>
+
         </Box>
 
     )

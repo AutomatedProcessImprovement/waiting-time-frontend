@@ -43,36 +43,41 @@ export default function MappingDialog(props: SimpleDialogProps) {
     };
 
     const handleClose = (cancel:boolean ) => {
-        let _cidNum = 0;
-        let _actNum = 0;
-        let _startNum = 0;
-        let _endNum = 0;
-        let _resNum = 0;
-        for (const val in ogmapping) {
-            switch (ogmapping[val]) {
-                case 'case:concept:name':
-                    _cidNum++;
-                    break;
-                case 'concept:name':
-                    _actNum++;
-                    break;
-                case 'start_timestamp':
-                    _startNum++;
-                    break;
-                case 'time:timestamp':
-                    _endNum++;
-                    break;
-                case 'org:resource':
-                    _resNum++;
-                    break;
-            }
-        }
-        if (_cidNum > 1 || _actNum > 1 || _startNum > 1 || _endNum > 1 || _resNum > 1) {
-            setErrorMessage('Each type can only be assigned once. Please adjust the mapping and try again.')
-        } else if (_cidNum < 1 || _actNum < 1 || _startNum < 1 || _endNum < 1 || _resNum < 1) {
-            setErrorMessage('Each type must be assigned at least once. Please adjust the mapping and try again.');
-        } else {
+        if (cancel) {
             onClose(cancel, selectedValue);
+        } else {
+            let _cidNum = 0;
+            let _actNum = 0;
+            let _startNum = 0;
+            let _endNum = 0;
+            let _resNum = 0;
+            for (const val in ogmapping) {
+                switch (ogmapping[val]) {
+                    case 'case:concept:name':
+                        _cidNum++;
+                        break;
+                    case 'concept:name':
+                        _actNum++;
+                        break;
+                    case 'start_timestamp':
+                        _startNum++;
+                        break;
+                    case 'time:timestamp':
+                        _endNum++;
+                        break;
+                    case 'org:resource':
+                        _resNum++;
+                        break;
+                }
+            }
+            if (_cidNum > 1 || _actNum > 1 || _startNum > 1 || _endNum > 1 || _resNum > 1) {
+                setErrorMessage('Each type can only be assigned once. Please adjust the mapping and try again.')
+            } else if (_cidNum < 1 || _actNum < 1 || _startNum < 1 || _endNum < 1 || _resNum < 1) {
+                setErrorMessage('Each type must be assigned at least once. Please adjust the mapping and try again.');
+            }
+            if (!cancel) {
+                onClose(cancel, selectedValue);
+            }
         }
     };
 
