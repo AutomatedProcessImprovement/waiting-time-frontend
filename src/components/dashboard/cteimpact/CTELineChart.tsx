@@ -25,7 +25,7 @@ export default function CTELineChart(data: any) {
                 <LineChart width={730} height={250} data={chart_data}
                            margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="case:concept:name" padding={{ left: 30, right: 30 }}>
+                    <XAxis dataKey="case_id" padding={{ left: 30, right: 30 }}>
                         <Label
                             style={{
                                 textAnchor: "middle",
