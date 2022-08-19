@@ -15,7 +15,7 @@ import CustomizedSnackbar from '../CustomizedSnackBar';
 export interface SimpleDialogProps {
     open: boolean;
     selectedValue: string[];
-    onClose: (cancel:boolean, values: string[]) => void;
+    onClose: (cancel:boolean, values: object) => void;
 }
 
 
@@ -26,9 +26,34 @@ export default function MappingDialog(props: SimpleDialogProps) {
 
     let headerMapping = selectedValue
     let ogmapping = [...selectedValue]
+    let mapping_object = {
+        'case': ogmapping[0],
+        'activity': ogmapping[0],
+        'start_timestamp': ogmapping[0],
+        'end_timestamp': ogmapping[0],
+        'resource': ogmapping[0],
+    }
 
     const handleChange = (e: SelectChangeEvent, index:number) => {
-        ogmapping[index] = e.target.value;
+        // ogmapping[index] = e.target.value;
+        let value = e.target.value
+        switch (value) {
+            case 'case':
+                mapping_object.case = ogmapping[index];
+                break
+            case 'activity':
+                mapping_object.activity = ogmapping[index];
+                break
+            case 'start_timestamp':
+                mapping_object.start_timestamp = ogmapping[index];
+                break
+            case 'end_timestamp':
+                mapping_object.end_timestamp = ogmapping[index];
+                break
+            case 'resource':
+                mapping_object.resource = ogmapping[index];
+                break
+        }
     };
 
     const setErrorMessage = (value: string) => {
@@ -53,19 +78,19 @@ export default function MappingDialog(props: SimpleDialogProps) {
             let _resNum = 0;
             for (const val in ogmapping) {
                 switch (ogmapping[val]) {
-                    case 'case:concept:name':
+                    case 'case':
                         _cidNum++;
                         break;
-                    case 'concept:name':
+                    case 'activity':
                         _actNum++;
                         break;
                     case 'start_timestamp':
                         _startNum++;
                         break;
-                    case 'time:timestamp':
+                    case 'end_timestamp':
                         _endNum++;
                         break;
-                    case 'org:resource':
+                    case 'resource':
                         _resNum++;
                         break;
                 }
@@ -76,7 +101,7 @@ export default function MappingDialog(props: SimpleDialogProps) {
                 setErrorMessage('Each type must be assigned at least once. Please adjust the mapping and try again.');
             }
             if (!cancel) {
-                onClose(cancel, selectedValue);
+                onClose(cancel, mapping_object);
             }
         }
     };
@@ -104,11 +129,11 @@ export default function MappingDialog(props: SimpleDialogProps) {
                                     <MenuItem value="">
                                         <em>None</em>
                                     </MenuItem>
-                                    <MenuItem value={"case:concept:name"}>Case ID</MenuItem>
-                                    <MenuItem value={"concept:name"}>Activity</MenuItem>
+                                    <MenuItem value={"case"}>Case ID</MenuItem>
+                                    <MenuItem value={"activity"}>Activity</MenuItem>
                                     <MenuItem value={"start_timestamp"}>Start Timestamp</MenuItem>
-                                    <MenuItem value={"time:timestamp"}>End Timestamp</MenuItem>
-                                    <MenuItem value={"org:resource"}>Resource</MenuItem>
+                                    <MenuItem value={"end_timestamp"}>End Timestamp</MenuItem>
+                                    <MenuItem value={"resource"}>Resource</MenuItem>
                                     <MenuItem value={"other"}>Other</MenuItem>
                                 </Select>
                             </FormControl>

@@ -20,7 +20,7 @@ const Upload = () => {
     const [snackColor, setSnackColor] = useState<AlertColor | undefined>(undefined)
 
 
-    const handleClose = (cancel:boolean, values: string[]) => {
+    const handleClose = (cancel:boolean, values: object) => {
         if (cancel) {
             setLoading(false);
         } else {
@@ -73,13 +73,16 @@ const Upload = () => {
         });
     };
 
-    const handleValidRequest = (values: string[]) => {
+    const handleValidRequest = (values: any) => {
         // TODO values => mapping of header of csv.
         //  needs to be passed along or need to update file before sending request.
         console.log(values)
+        let map_string = `case=${values.case}&activity=${values.activity}&resource=${values.resource}&start_timestamp=${values.start_timestamp}&end_timestamp=${values.end_timestamp}`
+
+        console.log('http://193.40.11.233/jobs?' + map_string)
         const config = {
             method: 'post',
-            url: 'http://193.40.11.233/jobs',
+            url: 'http://193.40.11.233/jobs?' + map_string,
             headers: {
                 'Content-Type': 'text/csv'
             },
