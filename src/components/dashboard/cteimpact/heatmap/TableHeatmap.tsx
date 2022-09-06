@@ -12,6 +12,7 @@ export interface SimpleDialogProps {
 export default function TableHeatmap(props: SimpleDialogProps) {
     const { onClose, open, values, p_cte } = props;
     let series = prepareHeatmapData(values)
+    const p_cte_val = p_cte*100
 
     const handleClose = () => {
         onClose();
@@ -46,32 +47,32 @@ export default function TableHeatmap(props: SimpleDialogProps) {
                 colorScale: {
                     ranges: [
                     {
-                        from: 0.00,
-                        to: p_cte*100-1,
+                        from: 0.0,
+                        to: p_cte_val-1,
                         name: 'Deterioration',
                         color: '#EF476F'
                     },
                     {
-                        from: p_cte*100-0.1,
-                        to: p_cte*100+0.1,
+                        from: p_cte_val-(p_cte_val*0.001),
+                        to: p_cte_val+(p_cte_val*0.001),
                         name: 'No Change',
                         color: '#FF8166'
                     },
                     {
-                        from: 45,
-                        to: 60,
+                        from: p_cte_val+(p_cte_val*0.001),
+                        to: p_cte_val+(p_cte_val*0.1),
                         name: 'Poor',
                         color: '#06D6A0'
                     },
                     {
-                        from: 60,
-                        to: 80,
+                        from: p_cte_val+(p_cte_val*0.10),
+                        to: p_cte_val+(p_cte_val*0.5),
                         name: 'Medium',
                         color: '#118AB2'
                     },
                     {
-                        from: 80,
-                        to: 100,
+                        from: p_cte_val+(p_cte_val*0.5),
+                        to: 100.0,
                         name: 'Good',
                         color: '#073B4C'
                     }
@@ -91,7 +92,7 @@ export default function TableHeatmap(props: SimpleDialogProps) {
             width: 1
         },
         title: {
-            text: 'CTE impact improvement heatmap | Current CTE: ' + (p_cte* 100).toFixed(2) + '%'
+            text: 'CTE impact improvement heatmap | Current CTE: ' + (p_cte_val).toFixed(2) + '%'
         },
     };
     function prepareHeatmapData(data:any) {
