@@ -17,10 +17,20 @@ export default function TableHeatmap(props: SimpleDialogProps) {
     const handleClose = () => {
         onClose();
     };
+    let height = 350
+    if (series.length > 20) {
+        height = 600
+    }
+    if (series.length > 50) {
+        height = 800
+    }
+    if (series.length > 70) {
+        height = 1200
+    }
 
     const style = {
         position: 'absolute' as 'absolute',
-        top: '40%',
+        top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
         width: 1550,
@@ -32,10 +42,10 @@ export default function TableHeatmap(props: SimpleDialogProps) {
 
     const options : ApexOptions = {
         chart: {
-            height: 350,
+            height: 1000,
             type: 'heatmap',
             zoom: {
-                enabled: false
+                enabled: true
             }
         },
         series: prepareHeatmapData(values),
@@ -122,7 +132,7 @@ export default function TableHeatmap(props: SimpleDialogProps) {
                     type={'heatmap'}
                     series={series}
                     options={options}
-                    height={350}
+                    height={height}
                 />
             </Box>
         </Modal>

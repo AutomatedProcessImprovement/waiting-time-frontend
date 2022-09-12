@@ -7,7 +7,8 @@ import CTETable from "./CTETable";
 import {secondsToDhm} from "../../../helpers/SecondsToDhm";
 import {dhmToString} from "../../../helpers/dhmToString";
 import CTELineChart from "./CTELineChart";
-
+var moment = require("moment");
+require("moment-duration-format");
 function Cteimpact(data:any) {
     const visData = [
         {name: 'Batching', value: data.data.cte_impact.batching_impact},
@@ -45,10 +46,10 @@ function Cteimpact(data:any) {
                             <Infobox data={{title: "Process CTE", subtitle: "Cycle Time Efficiency of the process", value: (data.data.process_cte* 100).toFixed(2) + '%'}}/>
                         </Grid>
                         <Grid item xs={12}>
-                            <Infobox data={{title: "Processing time (PT)", subtitle: "Total processing time", value: dhmToString(secondsToDhm(data.data.total_pt))}}/>
+                            <Infobox data={{title: "Processing time (PT)", subtitle: "Total processing time", value: moment.duration(data.data.total_pt, 'seconds').format('d[D] HH[H] mm[M]')}}/>
                         </Grid>
                         <Grid item xs={12}>
-                            <Infobox data={{title: "Waiting time (WT)", subtitle: "Total waiting time", value: dhmToString(secondsToDhm(data.data.total_wt))}}/>
+                            <Infobox data={{title: "Waiting time (WT)", subtitle: "Total waiting time of the process", value: moment.duration(data.data.total_wt, 'seconds').format('d[D] HH[H] mm[M]')}}/>
                         </Grid>
                     </Grid>
                 </Grid>
@@ -60,7 +61,7 @@ function Cteimpact(data:any) {
                                     Potential CTE improvement per waiting time cause
                                 </Typography>
                                 <Typography  align={"left"} variant="h6" sx={{ fontSize: 16 }} color="text.secondary" component="div">
-                                    Potential CTE values when waiting time causes are eliminated
+                                    Potential CTE values if waiting times of a particular cause are eliminated
                                 </Typography>
                                 <CTEBarChart data={visData}/>
                             </CardContent>
@@ -71,10 +72,7 @@ function Cteimpact(data:any) {
                     <Card>
                         <CardContent>
                             <Typography align={"left"} variant="h5" component="div" sx={{ fontSize: 18 }} color="text.primary" gutterBottom>
-                                Processing time vs Waiting time
-                            </Typography>
-                            <Typography  align={"left"} variant="h6" sx={{ fontSize: 16 }} color="text.secondary" component="div">
-                                Per case
+                                Processing time vs Waiting time per case
                             </Typography>
                             <br/>
                             <CTELineChart data={data.data.per_case_wt}/>

@@ -22,6 +22,8 @@
     "cors": "^2.8.5",
     "crypto-browserify": "^3.12.0",
     "https-browserify": "^1.0.0",
+    "lodash": "^4.17.21",
+    "lodash.clonedeep": "^4.5.0",
     "material-ui-dropzone": "^3.5.0",
     "moment": "^2.29.4",
     "moment-duration-format": "^2.3.2",
@@ -66,6 +68,7 @@
     ]
   },
   "devDependencies": {
+    "@types/lodash.clonedeep": "^4.5.7",
     "@types/node": "^16.11.43"
   },
   "browser": {

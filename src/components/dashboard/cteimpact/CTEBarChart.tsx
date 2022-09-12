@@ -27,31 +27,30 @@ const CustBarLabel = (props: { x: any; y:any, value: any; }) => {
     );
 };
 
-const getIntroOfPage = (label: string) => {
-    if (label === "Batching") {
-        return <><p>This bar represents the process CTE</p><p>value if all batching waiting time is eliminated.</p></>
-    }
-    if (label === "Prioritization") {
-        return <><p>This bar represents the process CTE</p><p>value if all prioritization waiting time is eliminated.</p></>
-    }
-    if (label === "Resource Contention") {
-        return <><p>This bar represents the process CTE</p><p>value if all resource contention waiting time is eliminated.</p></>
-    }
-    if (label === "Resource Unavailability") {
-        return <><p>This bar represents the process CTE</p><p>value if all resource unavailability waiting time is eliminated.</p></>
-    }
-    if (label === "Extraneous") {
-        return <><p>This bar represents the process CTE</p><p>value if all extraneous waiting time is eliminated.</p></>
-    }
-    return "";
-};
+// const getIntroOfPage = (label: string) => {
+//     if (label === "Batching") {
+//         return <><p>CTE after eliminating waiting</p><p>time due to batching</p></>
+//     }
+//     if (label === "Prioritization") {
+//         return <><p>This bar represents the process CTE</p><p>value if all prioritization waiting time is eliminated.</p></>
+//     }
+//     if (label === "Resource Contention") {
+//         return <><p>This bar represents the process CTE</p><p>value if all resource contention waiting time is eliminated.</p></>
+//     }
+//     if (label === "Resource Unavailability") {
+//         return <><p>This bar represents the process CTE</p><p>value if all resource unavailability waiting time is eliminated.</p></>
+//     }
+//     if (label === "Extraneous") {
+//         return <><p>This bar represents the process CTE</p><p>value if all extraneous waiting time is eliminated.</p></>
+//     }
+//     return "";
+// };
 
 const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
         return (
             <div className="tooltip">
-                <p className="label">{`CTE after eliminating ${label} : ${(payload[0].value*100).toFixed(4) + "%"}`}</p>
-                <div className="intro">{getIntroOfPage(label)}</div>
+                <p className="label">{`CTE after eliminating waiting time due to ${label} : ${(payload[0].value*100).toFixed(4) + "%"} `} </p>
             </div>
         );
     }

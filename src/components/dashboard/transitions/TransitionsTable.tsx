@@ -4,14 +4,14 @@ import RowDialog from "../RowDialog";
 var moment = require("moment");
 require("moment-duration-format");
 const columns: GridColDef[] = [
-    { field: 'id', headerName: 'ID'},
-    { field: 'source_activity', headerName: 'Source Activity', width: 120},
-    { field: 'target_activity', headerName: 'Target activity', width: 120},
+    { field: 'id', headerName: 'ID', flex: 0.01, hide:true},
+    { field: 'source_activity', headerName: 'Source Activity', flex: 0.03},
+    { field: 'target_activity', headerName: 'Target activity', flex: 0.03},
     {
         field: 'case_freq',
         headerName: 'Case Frequency',
         type: 'number',
-        width: 150,
+        flex: 0.01,
         valueFormatter: params =>
             ((params?.value * 100).toFixed(2) ) + "%"
     },
@@ -19,12 +19,12 @@ const columns: GridColDef[] = [
         field: 'total_freq',
         headerName: 'Total Frequency',
         type: 'number',
-        width: 150
+        flex: 0.01,
     },
     {
         field: 'total_wt',
         headerName: 'Total Waiting Time',
-        width: 150,
+        flex: 0.01,
         type: 'number',
         valueFormatter: params =>
             moment.duration(params?.value, 'seconds').format('d[D] HH[H] mm[M]')
@@ -32,7 +32,7 @@ const columns: GridColDef[] = [
     {
         field: 'batching_wt',
         headerName: 'Batching',
-        width: 150,
+        flex: 0.01,
         type: 'number',
         valueFormatter: params =>
             moment.duration(params?.value, 'seconds').format('d[D] HH[H] mm[M]')
@@ -40,7 +40,7 @@ const columns: GridColDef[] = [
     {
         field: 'prioritization_wt',
         headerName: 'Prioritization',
-        width: 150,
+        flex: 0.01,
         type: 'number',
         valueFormatter: params =>
             moment.duration(params?.value, 'seconds').format('d[D] HH[H] mm[M]')
@@ -48,7 +48,7 @@ const columns: GridColDef[] = [
     {
         field: 'contention_wt',
         headerName: 'R. Contention',
-        width: 150,
+        flex: 0.01,
         type: 'number',
         valueFormatter: params =>
             moment.duration(params?.value, 'seconds').format('d[D] HH[H] mm[M]')
@@ -56,7 +56,7 @@ const columns: GridColDef[] = [
     {
         field: 'unavailability_wt',
         headerName: 'R. Unavailability',
-        width: 150,
+        flex: 0.01,
         type: 'number',
         valueFormatter: params =>
             moment.duration(params?.value, 'seconds').format('d[D] HH[H] mm[M]')
@@ -64,7 +64,7 @@ const columns: GridColDef[] = [
     {
         field: 'extraneous_wt',
         headerName: 'Extraneous',
-        width: 150,
+        flex: 0.01,
         type: 'number',
         valueFormatter: params =>
             moment.duration(params?.value, 'seconds').format('d[D] HH[H] mm[M]')
@@ -82,6 +82,7 @@ export default function TransitionsTable(data:any) {
     let table_data = add_index(data.data.report)
     let [open, setOpen] = React.useState(false);
     const [selectedValue, setSelectedValue] = React.useState<string[]>([]);
+    const [selectedTitle, setSelectedTitle] = React.useState<string>("");
 
     const handleClose = () => {
         setOpen(false);
@@ -92,16 +93,17 @@ export default function TransitionsTable(data:any) {
     ) => {
         setOpen(true)
         setSelectedValue(params.row.wt_by_resource as string[])
+        setSelectedTitle(params.row.source_activity + " - " + params.row.target_activity )
 
     }
 
     return (
-        <div style={{ height: 400, width: '100%' }}>
+        <div style={{ height: 675, width: '100%' }}>
             <DataGrid
                 rows={table_data}
                 columns={columns}
-                pageSize={5}
-                rowsPerPageOptions={[5]}
+                pageSize={10}
+                rowsPerPageOptions={[10]}
                 components={{ Toolbar: GridToolbar }}
                 onRowDoubleClick={onEvent}
                 initialState={{
@@ -114,6 +116,7 @@ export default function TransitionsTable(data:any) {
                 open={open}
                 onClose={handleClose}
                 selectedValue={add_index(selectedValue)}
+                selectedTitle={selectedTitle}
                 type={0}/>
         </div>
     );

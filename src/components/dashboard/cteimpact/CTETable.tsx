@@ -13,14 +13,14 @@ import TableHeatmap from "./heatmap/TableHeatmap";
 
 
 const columns: GridColDef[] = [
-    { field: 'id', headerName: 'ID'},
-    { field: 'source_activity', headerName: 'Source Activity', width: 120},
-    { field: 'target_activity', headerName: 'Target activity', width: 120},
+    { field: 'id', headerName: 'ID', hide:true, flex:0.01},
+    { field: 'source_activity', headerName: 'Source Activity', flex:0.05},
+    { field: 'target_activity', headerName: 'Target activity', flex:0.05},
     {
         field: 'case_freq',
         headerName: 'Case Frequency',
         type: 'number',
-        width: 150,
+        flex:0.02,
         valueFormatter: params =>
             ((params?.value).toFixed(2) * 100) + "%"
     },
@@ -28,20 +28,20 @@ const columns: GridColDef[] = [
         field: 'total_freq',
         headerName: 'Total Frequency',
         type: 'number',
-        width: 150
+        flex:0.02
     },
     {
         field: 'cte_impact_total',
         headerName: 'Total Waiting Time',
-        width: 150,
+        flex:0.02,
         type: 'number',
         valueFormatter: params =>
             ((params?.value * 100).toFixed(2)) + "%"
     },
     {
         field: 'batching_impact',
-        headerName: 'Total Batching',
-        width: 150,
+        headerName: 'Batching',
+        flex:0.02,
         type: 'number',
         valueGetter: params =>
             params.row.cte_impact.batching_impact,
@@ -50,8 +50,8 @@ const columns: GridColDef[] = [
     },
     {
         field: 'prioritization_impact',
-        headerName: 'Total Prioritization',
-        width: 150,
+        headerName: 'Prioritization',
+        flex:0.02,
         type: 'number',
         valueGetter: params =>
             params.row.cte_impact.prioritization_impact,
@@ -61,8 +61,8 @@ const columns: GridColDef[] = [
     },
     {
         field: 'contention_impact',
-        headerName: 'Total R. Contention',
-        width: 150,
+        headerName: 'Resource Contention',
+        flex:0.02,
         type: 'number',
         valueGetter: params =>
             params.row.cte_impact.contention_impact,
@@ -71,8 +71,8 @@ const columns: GridColDef[] = [
     },
     {
         field: 'unavailability_impact',
-        headerName: 'Total R. Unavailability',
-        width: 150,
+        headerName: 'Resource Unavailability',
+        flex:0.02,
         type: 'number',
         valueGetter: params =>
             params.row.cte_impact.unavailability_impact,
@@ -82,7 +82,7 @@ const columns: GridColDef[] = [
     {
         field: 'extraneous_impact',
         headerName: 'Total Extraneous',
-        width: 150,
+        flex:0.02,
         type: 'number',
         valueGetter: params =>
             params.row.cte_impact.extraneous_impact,
@@ -104,7 +104,7 @@ export default function CTETable(data:any) {
     let [open, setOpen] = React.useState(false);
     let [heatmapOpen, setHeatmapOpen] = React.useState(false);
     const [selectedValue, setSelectedValue] = React.useState<string[]>([]);
-
+    const [selectedTitle, setSelectedTitle] = React.useState<string>("");
 
 
     const handleClose = () => {
@@ -120,7 +120,7 @@ export default function CTETable(data:any) {
     ) => {
         setOpen(true)
         setSelectedValue(params.row.wt_by_resource as string[])
-
+        setSelectedTitle(params.row.source_activity + " - " + params.row.target_activity )
     }
     const handleClick = () => {
         setHeatmapOpen(true)
@@ -182,6 +182,7 @@ export default function CTETable(data:any) {
                 open={open}
                 onClose={handleClose}
                 selectedValue={add_index(selectedValue)}
+                selectedTitle={selectedTitle}
                 type={1}/>
             <TableHeatmap
              onClose={handleHeatmapClose} open={heatmapOpen} values={table_data} p_cte={data.data.process_cte} />
