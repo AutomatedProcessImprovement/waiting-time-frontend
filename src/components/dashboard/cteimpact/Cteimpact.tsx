@@ -4,8 +4,6 @@ import * as React from "react";
 import Typography from "@mui/material/Typography";
 import CTEBarChart from "./CTEBarChart";
 import CTETable from "./CTETable";
-import {secondsToDhm} from "../../../helpers/SecondsToDhm";
-import {dhmToString} from "../../../helpers/dhmToString";
 import CTELineChart from "./CTELineChart";
 var moment = require("moment");
 require("moment-duration-format");

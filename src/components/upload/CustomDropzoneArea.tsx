@@ -45,6 +45,7 @@ const CustomDropzoneArea = (props: CustomDropzoneAreaProps) => {
             onDelete={onDelete}
             onChange={onChange}
             onAlert={onAlert}
+            maxFileSize={50000000}
 
         />
     )
