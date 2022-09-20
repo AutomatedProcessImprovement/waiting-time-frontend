@@ -9,6 +9,7 @@ var moment = require("moment");
 require("moment-duration-format");
 function Cteimpact(data:any) {
     const visData = [
+        {name: 'Current CTE', value: data.data.process_cte},
         {name: 'Batching', value: data.data.cte_impact.batching_impact},
         {name: 'Prioritization', value: data.data.cte_impact.prioritization_impact},
         {name: 'Resource Contention', value: data.data.cte_impact.contention_impact},

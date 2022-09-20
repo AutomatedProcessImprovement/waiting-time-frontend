@@ -1,5 +1,16 @@
 import * as React from "react";
-import {LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Label} from 'recharts';
+import {
+    LineChart,
+    Line,
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    Tooltip,
+    Legend,
+    ResponsiveContainer,
+    Label,
+    Brush
+} from 'recharts';
 var moment = require("moment");
 require("moment-duration-format");
 
@@ -8,14 +19,25 @@ const CustomTooltip = ({ active, payload, label }: any) => {
         let case_data = payload[0].payload
         return (
             <div className="tooltip">
-                <p style={{fontWeight: 'bold'}} className="label">{`${ moment.duration(case_data.pt_total, 'seconds').format('d[D] HH[H] mm[M]')}`}</p>
-                <p className="label">{`Case ID:`} <strong>{label}</strong></p>
-                <p className="label">{`Case CTE:`} <strong>{(case_data.cte_impact*100).toFixed(2) + "%"}</strong></p>
+                <div className="label">{`Case ID:`} <strong>{label}</strong></div>
+                <div className="label">{`Case CTE:`} <strong>{(case_data.cte_impact*100).toFixed(2) + "%"}</strong></div>
+                <div className="label">{`Processing time:`} <strong>{` ${ moment.duration(case_data.pt_total, 'seconds').format('d[D] HH[H] mm[M]')}`}</strong></div>
+                <div className="label">{`Waiting time:`} <strong>{`${ moment.duration(case_data.wt_total, 'seconds').format('d[D] HH[H] mm[M]')}`}</strong></div>
             </div>
         );
     }
     return null;
 };
+
+const YAxisFormatter = (number: number) => {
+    if (number / 60 / 60 > 24) {
+        return (number / 60 / 60 / 24).toFixed(2).toString() + "D"
+    }
+    if (number / 60 > 60) {
+        return (number/60).toFixed(2).toString() + "H";
+    }
+    return (number).toFixed(2).toString() + "M";
+}
 
 export default function CTELineChart(data: any) {
     let chart_data = data.data
@@ -25,6 +47,7 @@ export default function CTELineChart(data: any) {
                 <LineChart width={730} height={250} data={chart_data}
                            margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
                     <CartesianGrid strokeDasharray="3 3" />
+                    <Brush dataKey="name" height={30} stroke="#8884d8"/>
                     <XAxis dataKey="case_id" padding={{ left: 30, right: 30 }}>
                         <Label
                             style={{
@@ -33,10 +56,10 @@ export default function CTELineChart(data: any) {
                                 fill: "black",
                             }}
                             dy={27}
-                            dx={-250}
+                            dx={0}
                             value={"Case ID"} />
                     </XAxis>
-                    <YAxis type={"number"}>
+                    <YAxis type={"number"} domain={['dataMin', 'dataMax']} tickFormatter={YAxisFormatter} tickCount={8}>
                         <Label
                             style={{
                                 textAnchor: "middle",
@@ -44,9 +67,10 @@ export default function CTELineChart(data: any) {
                                 fill: "black",
                                 fontWeight:'bold'
                             }}
-                            dx={-30}
+                            dy={20}
+                            dx={-40}
                             angle={270}
-                            value={"Time (min.)"} />
+                            value={"Time"} />
                     </YAxis>
                     <Tooltip content={CustomTooltip}/>
                     <Legend />

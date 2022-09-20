@@ -10,18 +10,19 @@ import {
 import * as React from "react";
 
 const _colorDict = {
+    gray: "#666",
     batching: "#6C8EBF",
     prioritization: "#B8544F",
     contention: "#D7B500",
     unavailability: "#63B7B0",
     extraneous: "#B3B3B3",
 }
-const COLORS = [ _colorDict.batching,_colorDict.prioritization,_colorDict.contention, _colorDict.unavailability, _colorDict.extraneous]
+const COLORS = [_colorDict.gray, _colorDict.batching,_colorDict.prioritization,_colorDict.contention, _colorDict.unavailability, _colorDict.extraneous]
 
 const CustBarLabel = (props: { x: any; y:any, value: any; }) => {
     const { x, y, value } = props;
     return (
-        <text x={x} y={y} dx={'60%'} dy={20} dominantBaseline="auto" textAnchor="start">
+        <text x={x} y={y} dx={'20%'} dy={20} dominantBaseline="auto" textAnchor="end" fontWeight={"bolder"}>
             {(value*100).toFixed(2) + "%"}
         </text>
     );
@@ -48,11 +49,19 @@ const CustBarLabel = (props: { x: any; y:any, value: any; }) => {
 
 const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
-        return (
-            <div className="tooltip">
-                <p className="label">{`CTE after eliminating waiting time due to ${label} : ${(payload[0].value*100).toFixed(4) + "%"} `} </p>
-            </div>
-        );
+        if (payload[0].payload.name === "Current CTE") {
+            return (
+                <div className="tooltip">
+                    <p className="label">{`Current CTE : ${(payload[0].value * 100).toFixed(4) + "%"} `} </p>
+                </div>
+            );
+        } else {
+            return (
+                <div className="tooltip">
+                    <p className="label">{`CTE after eliminating waiting time due to ${label} : ${(payload[0].value*100).toFixed(4) + "%"} `} </p>
+                </div>
+            );
+        }
     }
     return null;
 };
