@@ -42,6 +42,7 @@ const Upload = () => {
     };
 
     const onSnackbarClose = () => {
+        setInfoMessage("")
         setErrorMessage("")
     };
 
@@ -74,48 +75,84 @@ const Upload = () => {
     };
 
     const handleValidRequest = (values: any) => {
-        // TODO values => mapping of header of csv.
-        //  needs to be passed along or need to update file before sending request.
-        console.log(values)
         let map_string = `case=${values.case}&activity=${values.activity}&resource=${values.resource}&start_timestamp=${values.start_timestamp}&end_timestamp=${values.end_timestamp}`
+        try {
+            const config = {
+                method: 'post',
+                url: 'http://193.40.11.233/jobs?' + map_string,
+                headers: {
+                    'Content-Type': 'text/csv'
+                },
+                data: new Blob([selectedLogFile as Blob], {type: "text/csv"})
+            };
+            axios(
+                config
+            )
+                .then(((res:any) => {
+                    let job = res.data
+                    console.log(job.id)
+                    let counter = 0
+                    let f = setInterval(() => {
+                        axios.get(
+                            'http://193.40.11.233/jobs/' + job.id,
+                        ).then((r:any)  => {
+                            let j = r.data
+                            console.log(j.status)
+                            if (j.status === 'completed') {
+                                clearInterval(f)
+                                let logN = selectedLogFile?.name
+                                navigate(paths.DASHBOARD_PATH, {
+                                    state: {
+                                        jsonLog: j.result,
+                                        report: j,
+                                        logName: logN
+                                    }
+                                })
+                                setLoading(false)
+                            }
+                            if (j.status === 'duplicate') {
+                                clearInterval(f);
+                                if (r.data.error) {
+                                    setErrorMessage(r.data.error.split(';')[0]);
+                                    setLoading(false);
+                                } else {
+                                    let logN = selectedLogFile?.name
+                                    navigate(paths.DASHBOARD_PATH, {
+                                        state: {
+                                            jsonLog: j.result,
+                                            report: j,
+                                            logName: logN
+                                        }
+                                    })
 
-        console.log('http://193.40.11.233/jobs?' + map_string)
-        const config = {
-            method: 'post',
-            url: 'http://193.40.11.233/jobs?' + map_string,
-            headers: {
-                'Content-Type': 'text/csv'
-            },
-            data: new Blob([selectedLogFile as Blob], {type: "text/csv"})
-        };
-        axios(
-            config
-        )
-            .then(((res:any) => {
-                let job = res.data
-                let f = setInterval(() => {
-                    axios.get(
-                        'http://193.40.11.233/jobs/' + job.id,
-                    ).then((r:any)  => {
-                        let j = r.data
-                        if (j.status === 'completed' || j.status === 'duplicate') {
-                            clearInterval(f)
-                            let logN = selectedLogFile?.name
-                            navigate(paths.DASHBOARD_PATH, {
-                                state: {
-                                    jsonLog: j.result,
-                                    report: j,
-                                    logName: logN
                                 }
-                            })
-                            setLoading(false)
-                        }
-                    })
-                }, 30000)
-            })).catch((error: any) => {
+                                setLoading(false)
+                            }
+                            if (j.status === 'failed' || j.status === 'error') {
+                                setErrorMessage(r.data.error.split(';')[0]);
+                                setLoading(false);
+                            }
+
+                            if (j.status === 'running' || j.status === 'pending') {
+                                console.log(counter)
+                                counter++
+                                if (counter === 4) {
+                                    setInfoMessage("Analysis still in progress...");
+                                    counter = 0
+                                }
+                            }
+                        })
+                    }, 30000)
+                })).catch((error: any) => {
+
                 setErrorMessage(error)
+                setLoading(false)
+            })
+        } catch (error: any) {
+            setErrorMessage(error)
             setLoading(false)
-        })
+        }
+
     }
 
     return (
