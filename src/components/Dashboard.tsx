@@ -134,7 +134,7 @@ const BasicTabs = () => {
     const [value, setValue] = React.useState(0);
     const [open, setOpen] = React.useState(false);
     const anchorRef = React.useRef<HTMLDivElement>(null);
-    const [selectedIndex, setSelectedIndex] = React.useState(1);
+    const [selectedIndex, setSelectedIndex] = React.useState(3);
 
     const {state} = useLocation()
     const {report} = state as LocationState
@@ -204,15 +204,15 @@ const BasicTabs = () => {
                         </Tabs>
                     </Grid>
                     <Grid item>
-                        <Search>
-                            <SearchIconWrapper>
-                                <SearchIcon />
-                            </SearchIconWrapper>
-                            <StyledInputBase
-                                placeholder="Search…"
-                                inputProps={{ 'aria-label': 'search' }}
-                            />
-                        </Search>
+                        {/*<Search>*/}
+                        {/*    <SearchIconWrapper>*/}
+                        {/*        <SearchIcon />*/}
+                        {/*    </SearchIconWrapper>*/}
+                        {/*    <StyledInputBase*/}
+                        {/*        placeholder="Search…"*/}
+                        {/*        inputProps={{ 'aria-label': 'search' }}*/}
+                        {/*    />*/}
+                        {/*</Search>*/}
 
                     </Grid>
                     <Grid item>

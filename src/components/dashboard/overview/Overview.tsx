@@ -51,22 +51,22 @@ function Dashboard(data: any) {
                             alignItems={"stretch"}
                     >
                         <Grid item xs={6}>
-                            <Infobox data={{title: "Cases", subtitle: "Total number of cases", value: data.data.num_cases}}/>
+                            <Infobox data={{title: "Cases", subtitle: "Total number of cases", value: Intl.NumberFormat('en-US').format(data.data.num_cases)}}/>
                         </Grid>
                         <Grid item xs={6}>
                             <Infobox data={{title: "Waiting time (WT)", subtitle: "Total waiting time of the process", value: moment.duration(data.data.total_wt, 'seconds').format('d[D] HH[H] mm[M]')}}/>
                         </Grid>
                         <Grid item xs={6}>
-                            <Infobox data={{title: "Activities", subtitle: "Total number of activities", value: data.data.num_activities}}/>
+                            <Infobox data={{title: "Activities", subtitle: "Total number of activities", value: Intl.NumberFormat('en-US').format(data.data.num_activities)}}/>
                         </Grid>
                         <Grid item xs={6}>
-                            <Infobox data={{title: "Activity instances", subtitle: "Total number of activity executions", value: data.data.num_activity_instances}}/>
+                            <Infobox data={{title: "Activity instances", subtitle: "Total number of activity executions", value: Intl.NumberFormat('en-US').format(data.data.num_activity_instances)}}/>
                         </Grid>
                         <Grid item xs={6}>
-                            <Infobox data={{title: "Activity transitions", subtitle: "Total number of activity pairs where transitions occur", value: data.data.num_transitions}}/>
+                            <Infobox data={{title: "Activity transitions", subtitle: "Total number of activity pairs where transitions occur", value: Intl.NumberFormat('en-US').format(data.data.num_transitions)}}/>
                         </Grid>
                         <Grid item xs={6}>
-                            <Infobox data={{title: "Activity instance transitions", subtitle: "Total number of transition executions between activities", value: data.data.num_transition_instances}}/>
+                            <Infobox data={{title: "Activity instance transitions", subtitle: "Total number of transition executions between activities", value: Intl.NumberFormat('en-US').format(data.data.num_transition_instances)}}/>
                         </Grid>
                     </Grid>
                 </Grid>

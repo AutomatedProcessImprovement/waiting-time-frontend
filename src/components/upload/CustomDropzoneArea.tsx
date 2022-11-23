@@ -46,6 +46,7 @@ const CustomDropzoneArea = (props: CustomDropzoneAreaProps) => {
             onChange={onChange}
             onAlert={onAlert}
             maxFileSize={50000000}
+            dropzoneText={"Drag and drop a file here or click to browse files"}
 
         />
     )

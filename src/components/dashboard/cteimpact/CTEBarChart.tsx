@@ -58,7 +58,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
         } else {
             return (
                 <div className="tooltip">
-                    <p className="label">{`CTE after eliminating waiting time due to ${label} : ${(payload[0].value*100).toFixed(4) + "%"} `} </p>
+                    <p className="label">{`CTE after eliminating ${label} waiting time: ${(payload[0].value*100).toFixed(4) + "%"} `} </p>
                 </div>
             );
         }

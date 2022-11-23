@@ -5,13 +5,13 @@ var moment = require("moment");
 require("moment-duration-format");
 const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID', flex: 0.01, hide:true},
-    { field: 'source_activity', headerName: 'Source Activity', flex: 0.03},
-    { field: 'target_activity', headerName: 'Target activity', flex: 0.03},
+    { field: 'source_activity', headerName: 'Source Activity', flex: 0.015},
+    { field: 'target_activity', headerName: 'Target activity', flex: 0.015},
     {
         field: 'case_freq',
         headerName: 'Case Frequency',
         type: 'number',
-        flex: 0.01,
+        flex: 0.007,
         valueFormatter: params =>
             ((params?.value * 100).toFixed(2) ) + "%"
     },
@@ -19,7 +19,7 @@ const columns: GridColDef[] = [
         field: 'total_freq',
         headerName: 'Total Frequency',
         type: 'number',
-        flex: 0.01,
+        flex: 0.007,
     },
     {
         field: 'total_wt',

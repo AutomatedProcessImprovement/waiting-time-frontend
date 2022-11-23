@@ -117,7 +117,7 @@ function TransitionsBarChart(data: any) {
 
     return (
         // <>
-            <ResponsiveContainer width={"100%"} height={"100%"} minHeight={400}>
+            <ResponsiveContainer width={"98%"} height={"98%"} minHeight={400}>
 
                 <BarChart
                     width={1920}
@@ -126,7 +126,7 @@ function TransitionsBarChart(data: any) {
                     margin={{
                         top: 20,
                         right: 10,
-                        left: 10,
+                        left: 50,
                         bottom: 5,
                     }}
                     barGap={'5%'}
@@ -145,10 +145,10 @@ function TransitionsBarChart(data: any) {
                     <Bar name={"Prioritization"} dataKey="prioritization_wt" stackId="a" fill="#B8544F">
                         <LabelList dataKey="prio_wt_perc" content={<CustBarLabel x={0} y={0} value={1}/>}/>
                     </Bar>
-                    <Bar name={"Resource Contention"} dataKey="contention_wt" stackId="a" fill="#D7B500">
+                    <Bar name={"Resource contention"} dataKey="contention_wt" stackId="a" fill="#D7B500">
                         <LabelList dataKey="cont_wt_perc" content={<CustBarLabel x={0} y={0} value={1}/>}/>
                     </Bar>
-                    <Bar name={"Resource Unavailability"} dataKey="unavailability_wt" stackId="a" fill="#63B7B0" >
+                    <Bar name={"Resource unavailability"} dataKey="unavailability_wt" stackId="a" fill="#63B7B0" >
                         <LabelList dataKey="unav_wt_perc" content={<CustBarLabel x={0} y={0} value={1}/>}/>
                     </Bar>
                     <Bar name={"Extraneous"} dataKey="extraneous_wt" stackId="a" fill="#B3B3B3">

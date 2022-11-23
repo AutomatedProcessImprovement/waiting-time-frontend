@@ -30,13 +30,33 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 };
 
 const YAxisFormatter = (number: number) => {
-    if (number / 60 / 60 > 24) {
-        return (number / 60 / 60 / 24).toFixed(2).toString() + "D"
+
+    var Days=Math.floor(number/60/60/24);
+    var Remainder=number % 24;
+    var Hours=Math.floor(Remainder);
+    var Minutes=Math.floor(60*(Remainder-Hours));
+    if (Days >= 1) {
+        return Days+"d"
     }
-    if (number / 60 > 60) {
-        return (number/60).toFixed(2).toString() + "H";
+    if (Hours >= 1) {
+        return Hours + "h"
     }
-    return (number).toFixed(2).toString() + "M";
+    if (Minutes >= 1) {
+        return Minutes+"m";
+    }
+    // console.log(Math.floor(number / 60 / 60 / 24))
+    // console.log(Math.floor(number / 24 / 60))
+    // console.log(Math.floor(number / 60))
+    // if (Math.floor(number / 60 / 60 / 24) > 1) {
+    //     return (number / 60 / 60 / 24).toFixed(2).toString() + "d"
+    // }
+    // if (Math.floor(number / 24 / 60) > 60) {
+    //     return (number/ 24 / 60).toFixed(2).toString() + "h";
+    // }
+    // if (Math.floor(number / 60) > 60) {
+    //     return (number/ 60).toFixed(2).toString() + "m";
+    // }
+    return (number/ 60).toFixed(0).toString() + "m";
 }
 
 export default function CTELineChart(data: any) {

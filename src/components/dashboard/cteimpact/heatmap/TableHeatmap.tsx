@@ -25,7 +25,7 @@ export default function TableHeatmap(props: SimpleDialogProps) {
         height = 800
     }
     if (series.length > 70) {
-        height = 1200
+        height = 1000
     }
 
     const style = {
