@@ -9,12 +9,12 @@ var moment = require("moment");
 require("moment-duration-format");
 function Cteimpact(data:any) {
     const visData = [
-        {name: 'Current CTE', value: data.data.process_cte},
-        {name: 'Batching', value: data.data.cte_impact.batching_impact},
-        {name: 'Prioritization', value: data.data.cte_impact.prioritization_impact},
-        {name: 'Resource contention', value: data.data.cte_impact.contention_impact},
-        {name: 'Resource unavailability', value: data.data.cte_impact.unavailability_impact},
-        {name: 'Extraneous', value: data.data.cte_impact.extraneous_impact}
+        {name: 'Current CTE', y: data.data.process_cte},
+        {name: 'Batching', y: data.data.cte_impact.batching_impact},
+        {name: 'Prioritization', y: data.data.cte_impact.prioritization_impact},
+        {name: 'Resource contention', y: data.data.cte_impact.contention_impact},
+        {name: 'Resource unavailability', y: data.data.cte_impact.unavailability_impact},
+        {name: 'Extraneous', y: data.data.cte_impact.extraneous_impact}
     ]
 
     return (
@@ -56,12 +56,6 @@ function Cteimpact(data:any) {
                     <Grid item xs={12}>
                         <Card>
                             <CardContent>
-                                <Typography align={"left"} variant="h5" component="div" sx={{ fontSize: 18 }} color="text.primary" gutterBottom>
-                                    Potential CTE improvement per waiting time cause
-                                </Typography>
-                                <Typography  align={"left"} variant="h6" sx={{ fontSize: 16 }} color="text.secondary" component="div">
-                                    Potential CTE values if waiting times of a particular cause are eliminated
-                                </Typography>
                                 <CTEBarChart data={visData}/>
                             </CardContent>
                         </Card>
