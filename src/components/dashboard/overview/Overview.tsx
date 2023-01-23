@@ -19,7 +19,7 @@ function Dashboard(data: any) {
         {name: 'Batching', value: data.data.total_batching_wt, label: "BATCHING\n" + dhmToString(secondsToDhm(data.data.total_extraneous_wt))},
         {name: 'Resource Unavailability', value: data.data.total_unavailability_wt, label: "UNAVAILABILITY\n" + dhmToString(secondsToDhm(data.data.total_extraneous_wt))},
         {name: 'Resource Contention', value: data.data.total_contention_wt, label: "CONTENTION\n" + dhmToString(secondsToDhm(data.data.total_extraneous_wt))},
-        {name: 'Prioritization', value: data.data.total_prioritization_wt, label: "PRIORITIZATION\n" + dhmToString(secondsToDhm(data.data.total_extraneous_wt))}
+        {name: 'Resource Prioritization', value: data.data.total_prioritization_wt, label: "PRIORITIZATION\n" + dhmToString(secondsToDhm(data.data.total_extraneous_wt))}
     ]
 
 

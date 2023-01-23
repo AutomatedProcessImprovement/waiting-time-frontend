@@ -4,7 +4,7 @@ import RowDialog from "../RowDialog";
 var moment = require("moment");
 require("moment-duration-format");
 const columns: GridColDef[] = [
-    { field: 'id', headerName: 'ID', flex: 0.01, hide:true},
+    { field: 'id', headerName: 'ID', flex: 0.01, hide:true },
     { field: 'source_activity', headerName: 'Source Activity', flex: 0.015},
     { field: 'target_activity', headerName: 'Target activity', flex: 0.015},
     {
@@ -99,6 +99,7 @@ export default function TransitionsTable(data:any) {
 
     return (
         <div style={{ height: 675, width: '100%' }}>
+
             <DataGrid
                 rows={table_data}
                 columns={columns}

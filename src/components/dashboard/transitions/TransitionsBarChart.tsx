@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
     BarChart,
     Bar,
@@ -114,6 +114,41 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 function TransitionsBarChart(data: any) {
     const data_copy = cloneDeep(data.data);
     const bar_data = AdditionalData(data_copy)
+    console.log()
+    let tickFormatter = (value: string, index: number) => {
+        const limit = 20; // put your maximum character
+        if (value.length < limit) return value;
+        return `${value.substring(0, limit)}...`;
+    };
+    const [state, setState] = useState({ startIndex: 0, endIndex: 10 });
+    const { startIndex, endIndex } = state;
+
+    function handleChange(evt: Object, max_len: number, state: any) {
+        if (Object.values(evt)[0] <= 0 || Object.values(evt)[1]-10 <= 0) {
+            setState({
+                ...state,
+                startIndex: 0,
+                endIndex: 10
+            });
+            return
+        }
+        if (Object.values(evt)[0] + 10 >= max_len || Object.values(evt)[1] >= max_len) {
+            setState({
+                ...state,
+                startIndex: max_len -11,
+                endIndex: max_len -1
+            });
+            return
+        }
+        if (Object.values(evt)[0] + 10 !== Object.values(evt)[1]) {
+            setState({
+                ...state,
+                startIndex: Object.values(evt)[0],
+                endIndex: Object.values(evt)[0] + 10
+            });
+            return
+        }
+    }
 
     return (
         // <>
@@ -132,11 +167,15 @@ function TransitionsBarChart(data: any) {
                     barGap={'5%'}
                     layout={'vertical'}
                     barSize={30}
+
                 >
-                    <Brush dataKey="name" height={30} stroke="#8884d8" startIndex={0} endIndex={10}/>
+
+                    <Brush dataKey="name" height={30} stroke="purple" startIndex={startIndex} endIndex={endIndex}
+                           onChange={(evt) => handleChange(evt,bar_data.length, state)}
+                    />
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis type={'number'} hide domain={[(dataMin: number) => (0 - Math.abs(dataMin)), (dataMax: number) => (dataMax * 1.5)]}/>
-                    <YAxis width={200} dx={-25} name={"test"} type={'category'} dataKey="bar_label" />
+                    <YAxis width={200} dx={-25} name={"test"} type={'category'} dataKey="bar_label" tickFormatter={tickFormatter}/>
                     <Tooltip content={<CustomTooltip />} />
                     <Legend />
                     <Bar name={"Batching"} dataKey="batching_wt" stackId="a" fill="#6C8EBF" >

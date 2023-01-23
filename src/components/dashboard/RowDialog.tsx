@@ -12,14 +12,14 @@ export interface SimpleDialogProps {
 }
 
 const transitions_columns: GridColDef[] = [
-    { field: 'id', headerName: 'ID', hide:true},
-    { field: 'source_resource', headerName: 'Source resource', flex:0.05},
-    { field: 'target_resource', headerName: 'Target resource', flex:0.05},
+    { field: 'id', headerName: 'ID',flex: 0.01, hide:true},
+    { field: 'source_resource', headerName: 'Source resource', flex:0.015},
+    { field: 'target_resource', headerName: 'Target resource', flex:0.015},
     {
         field: 'case_freq',
         headerName: 'Case frequency',
         type: 'number',
-        flex:0.02,
+        flex:0.007,
         valueFormatter: params =>
             ((params?.value * 100).toFixed(2) ) + "%"
     },
@@ -27,12 +27,12 @@ const transitions_columns: GridColDef[] = [
         field: 'total_freq',
         headerName: 'Cases',
         type: 'number',
-        flex:0.02,
+        flex:0.007,
     },
     {
         field: 'total_wt',
         headerName: 'Total waiting time',
-        flex:0.02,
+        flex:0.01,
         type: 'number',
         valueFormatter: params =>
             moment.duration(params?.value, 'seconds').format('d[D] HH[H] mm[M]')
@@ -40,7 +40,7 @@ const transitions_columns: GridColDef[] = [
     {
         field: 'batching_wt',
         headerName: 'Batching',
-        flex:0.02,
+        flex:0.01,
         type: 'number',
         valueFormatter: params =>
             moment.duration(params?.value, 'seconds').format('d[D] HH[H] mm[M]')
@@ -48,7 +48,7 @@ const transitions_columns: GridColDef[] = [
     {
         field: 'contention_wt',
         headerName: 'Resource contention',
-        flex:0.02,
+        flex:0.01,
         type: 'number',
         valueFormatter: params =>
             moment.duration(params?.value, 'seconds').format('d[D] HH[H] mm[M]')
@@ -56,7 +56,7 @@ const transitions_columns: GridColDef[] = [
     {
         field: 'prioritization_wt',
         headerName: 'Prioritization',
-        flex:0.02,
+        flex:0.01,
         type: 'number',
         valueFormatter: params =>
             moment.duration(params?.value, 'seconds').format('d[D] HH[H] mm[M]')
@@ -64,7 +64,7 @@ const transitions_columns: GridColDef[] = [
     {
         field: 'unavailability_wt',
         headerName: 'Resource unavailability',
-        flex:0.02,
+        flex:0.01,
         type: 'number',
         valueFormatter: params =>
             moment.duration(params?.value, 'seconds').format('d[D] HH[H] mm[M]')
@@ -72,7 +72,7 @@ const transitions_columns: GridColDef[] = [
     {
         field: 'extraneous_wt',
         headerName: 'Extraneous',
-        flex:0.02,
+        flex:0.01,
         type: 'number',
         valueFormatter: params =>
             moment.duration(params?.value, 'seconds').format('d[D] HH[H] mm[M]')

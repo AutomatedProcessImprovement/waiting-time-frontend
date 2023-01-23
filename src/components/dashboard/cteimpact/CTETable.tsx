@@ -22,7 +22,7 @@ const columns: GridColDef[] = [
         type: 'number',
         flex:0.02,
         valueFormatter: params =>
-            ((params?.value).toFixed(2) * 100) + "%"
+            ((params?.value * 100).toFixed(2) ) + "%"
     },
     {
         field: 'total_freq',
@@ -148,7 +148,6 @@ export default function CTETable(data:any) {
             </GridToolbarContainer>
         );
     }
-
     return (
         <div style={{ height: 400, width: '100%' }}>
             <DataGrid

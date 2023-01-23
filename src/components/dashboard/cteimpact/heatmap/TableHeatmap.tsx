@@ -50,7 +50,9 @@ export default function TableHeatmap(props: SimpleDialogProps) {
         },
         series: prepareHeatmapData(values),
         plotOptions: {
+
             heatmap: {
+
                 shadeIntensity: 0.5,
                 radius: 0,
                 useFillColorAsStroke: true,

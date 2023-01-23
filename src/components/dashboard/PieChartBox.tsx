@@ -29,7 +29,11 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 export default function PieChartBox(data:any) {
 
     return (
-        <Card sx={{ minWidth: 275 }}>
+        <Card sx={{ minWidth: 275 }} style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+        }}>
             <CardContent>
                 <Typography align={"left"} variant="h5" component="div" sx={{ fontSize: 18 }} color="text.primary" gutterBottom>
                     Waiting time causes
@@ -37,7 +41,7 @@ export default function PieChartBox(data:any) {
                 <Typography  align={"left"} variant="h6" sx={{ fontSize: 16 }} color="text.secondary" component="div">
                     Total waiting time of the process by its cause
                 </Typography>
-                <PieChart height={500} width={800} margin={{top: 5, bottom: 5}}>
+                <PieChart height={700} width={700} margin={{top: 5, bottom: 5}}>
                     <Pie
                         data={data.data}
                         cx="50%"
@@ -71,8 +75,8 @@ export default function PieChartBox(data:any) {
                                     className="recharts-text recharts-label"
 
                                 >
-                                    <tspan x={x} y={y} fill="grey" alignmentBaseline="middle" fontSize="18">{(data.data[index].name).toUpperCase()}</tspan>
-                                    <tspan x={x} y={y + 20} fill="black" alignmentBaseline="middle" fontSize="16">{moment.duration(value, 'seconds').format('d[D] HH[H] mm[M]')}</tspan>
+                                    <tspan x={x} y={y} fill="grey" alignmentBaseline="middle" fontSize="14">{(data.data[index].name).toUpperCase()}</tspan>
+                                    <tspan x={x} y={y + 20} fill="black" alignmentBaseline="middle" fontSize="12">{moment.duration(value, 'seconds').format('d[D] HH[H] mm[M]')}</tspan>
                                 </text>
                             );
                         }}
