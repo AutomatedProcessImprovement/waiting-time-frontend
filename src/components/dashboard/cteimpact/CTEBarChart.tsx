@@ -1,16 +1,6 @@
-import {
-    Bar,
-    CartesianGrid,
-    Tooltip,
-    XAxis,
-    YAxis,
-    BarChart,
-    ResponsiveContainer, Cell
-} from "recharts";
 import * as React from "react";
 import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import moment from "moment";
 
 const _colorDict = {
     gray: "#666",
@@ -21,55 +11,6 @@ const _colorDict = {
     extraneous: "#B3B3B3",
 }
 const COLORS = [_colorDict.gray, _colorDict.batching,_colorDict.prioritization,_colorDict.contention, _colorDict.unavailability, _colorDict.extraneous]
-
-const CustBarLabel = (props: { x: any; y:any, value: any; }) => {
-    const { x, y, value } = props;
-    return (
-        <text x={x} y={y} dx={'20%'} dy={20} dominantBaseline="auto" textAnchor="end" fontWeight={"bolder"}>
-            {(value*100).toFixed(2) + "%"}
-        </text>
-    );
-};
-
-// const getIntroOfPage = (label: string) => {
-//     if (label === "Batching") {
-//         return <><p>CTE after eliminating waiting</p><p>time due to batching</p></>
-//     }
-//     if (label === "Prioritization") {
-//         return <><p>This bar represents the process CTE</p><p>value if all prioritization waiting time is eliminated.</p></>
-//     }
-//     if (label === "Resource Contention") {
-//         return <><p>This bar represents the process CTE</p><p>value if all resource contention waiting time is eliminated.</p></>
-//     }
-//     if (label === "Resource Unavailability") {
-//         return <><p>This bar represents the process CTE</p><p>value if all resource unavailability waiting time is eliminated.</p></>
-//     }
-//     if (label === "Extraneous") {
-//         return <><p>This bar represents the process CTE</p><p>value if all extraneous waiting time is eliminated.</p></>
-//     }
-//     return "";
-// };
-
-const CustomTooltip = ({ active, payload, label }: any) => {
-    if (active && payload && payload.length) {
-        if (payload[0].payload.name === "Current CTE") {
-            return (
-                <div className="tooltip">
-                    <p className="label">{`Current CTE : ${(payload[0].value * 100).toFixed(4) + "%"} `} </p>
-                </div>
-            );
-        } else {
-            return (
-                <div className="tooltip" style={{
-                    paddingRight: 5
-                }}>
-                    <p className="label">{`CTE after eliminating ${label}`} </p> <p> {`waiting time: ${(payload[0].value*100).toFixed(4) + "%"} `} </p>
-                </div>
-            );
-        }
-    }
-    return null;
-};
 
 export default function CTEBarChart(data:any) {
     console.log(data.data)

@@ -1,7 +1,5 @@
-import {Cell, Pie, PieChart, Tooltip} from "recharts";
-import {Card, CardContent} from "@mui/material";
+import {Card} from "@mui/material";
 import * as React from "react";
-import Typography from "@mui/material/Typography";
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 var moment = require("moment");
@@ -14,19 +12,6 @@ const _colorDict = {
     extraneous: "#B3B3B3",
 }
 const COLORS = [_colorDict.extraneous, _colorDict.batching, _colorDict.unavailability, _colorDict.contention, _colorDict.prioritization]
-
-const CustomTooltip = ({ active, payload, label }: any) => {
-    if (active && payload && payload.length) {
-        return (
-            <div className="tooltip">
-                {payload.map((entry: any) => (
-                    <p>{entry.name} : {moment.duration(entry.value, 'seconds').format('d[D] HH[H] mm[M]')}</p>
-                ))}
-            </div>
-        );
-    }
-    return null;
-};
 
 export default function PieChartBox(data:any) {
     const processed_data = []

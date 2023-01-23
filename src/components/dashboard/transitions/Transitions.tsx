@@ -2,7 +2,6 @@ import {Box, Card, CardContent,} from "@mui/material";
 import React from "react";
 import TransitionsBarChart from "./TransitionsBarChart";
 import TransitionsTable from "./TransitionsTable";
-import Typography from "@mui/material/Typography";
 
 function Transitions(data:any) {
     return (
