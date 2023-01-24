@@ -44,7 +44,11 @@ export default function CTELineChart(data: any) {
         },
 
         chart: {
-            zoomType: 'x'
+            zoomType: 'x',
+            style: {
+                fontFamily: 'Roboto',
+                fontSize: 18
+            }
         },
         xAxis: {
             title : {

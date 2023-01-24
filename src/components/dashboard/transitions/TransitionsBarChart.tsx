@@ -80,7 +80,11 @@ function TransitionsBarChart(data: any) {
             type: 'bar',
             padding: [0, 0, 0, 0],
             margin: [60, 50, 125, 250],
-            height: 550
+            height: 550,
+            style: {
+                fontFamily: 'Roboto',
+                fontSize: 18
+            }
         },
         title: {
             text: 'Waiting time causes in activity transitions',

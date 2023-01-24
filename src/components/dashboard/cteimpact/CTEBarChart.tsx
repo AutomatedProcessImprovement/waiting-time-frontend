@@ -23,7 +23,11 @@ export default function CTEBarChart(data:any) {
             type: 'bar',
             padding: [0, 0, 0, 0],
             margin: [60, 50, 125, 50],
-            height: 550
+            height: 550,
+            style: {
+                fontFamily: 'Roboto',
+                fontSize: 18
+            }
         },
         title: {
             text: 'Potential CTE improvement per waiting time cause',

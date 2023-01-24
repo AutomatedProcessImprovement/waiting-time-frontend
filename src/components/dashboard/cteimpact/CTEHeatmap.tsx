@@ -44,7 +44,11 @@ export default function CTEHeatmap(data: any) {
             marginTop: 40,
             marginBottom: 80,
             marginRight: 20,
-            plotBorderWidth: 1
+            plotBorderWidth: 1,
+            style: {
+                fontFamily: 'Roboto',
+                fontSize: 18
+            }
         },
         title: {
             text: 'Top 10 transitions with the highest potential CTE improvement',

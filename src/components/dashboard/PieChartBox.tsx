@@ -32,14 +32,24 @@ export default function PieChartBox(data:any) {
             plotBorderWidth: null,
             plotShadow: false,
             type: 'pie',
+            style: {
+                fontFamily: 'Roboto',
+                fontSize: 18
+            }
         },
         title: {
             text: 'Waiting time causes',
-            align: 'left'
+            align: 'left',
+            style: {
+                fontFamily: 'Roboto'
+            }
         },
         subtitle: {
             text: 'Total waiting time of the process by its cause',
-            align: 'left'
+            align: 'left',
+            style: {
+                fontFamily: 'Roboto'
+            }
         },
         tooltip: {
             pointFormat: '<b>{point.custom.label_info}</b>'
