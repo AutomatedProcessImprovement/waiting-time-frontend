@@ -6,7 +6,6 @@ require("moment-duration-format");
 
 export default function CTELineChart(data: any) {
     let chart_data = [...data.data]
-    console.log(chart_data)
 
     let processed_data = []
     let wt_out = {
@@ -24,7 +23,6 @@ export default function CTELineChart(data: any) {
         pt_out.data.push(chart_data[chartDataKey].pt_total)
     }
     processed_data.push(wt_out, pt_out)
-    console.log(processed_data)
     const options = {
         title: {
             text: 'Top 50 cases with the lowest CTE',
