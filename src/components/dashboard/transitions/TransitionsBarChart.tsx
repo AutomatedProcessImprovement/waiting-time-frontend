@@ -73,7 +73,6 @@ function TransitionsBarChart(data: any) {
     }
     processed_data.push(batching,prio,conten,unav,extra)
 
-    console.log(processed_data)
     const options = {
         b_totals: [],
         colors: COLORS.reverse(),
@@ -103,10 +102,11 @@ function TransitionsBarChart(data: any) {
         },
         yAxis: {
             title: {
-                text: 'Votes',
+                text: 'Time',
                 align: 'high'
             },
             labels: {
+
                 formatter(this: any) {
                     // your code
                     return moment.duration(this.value, 'seconds').format('d[D] HH[H] mm[M]')
@@ -124,9 +124,10 @@ function TransitionsBarChart(data: any) {
             series: {
                 stacking: 'normal',
                 dataLabels: {
-                    enabled: true,
+                    enabled: false,
                     formatter(this: any) {
                         // your code
+
                         return moment.duration(this.y, 'seconds').format('d[D] HH[H] mm[M]')
                     }
                 }
@@ -139,7 +140,7 @@ function TransitionsBarChart(data: any) {
         tooltip: {
             formatter(this: Highcharts.TooltipFormatterContextObject) {
                 // your code
-                return moment.duration(this.y, 'seconds').format('d[D] HH[H] mm[M]')
+                return this.series.name + ": " +moment.duration(this.y, 'seconds').format('d[D] HH[H] mm[M]')
             }
         },
 

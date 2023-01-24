@@ -1,10 +1,11 @@
 import {Box, Card, CardContent, Grid} from "@mui/material";
 import Infobox from "../Infobox";
 import * as React from "react";
-import Typography from "@mui/material/Typography";
 import CTEBarChart from "./CTEBarChart";
 import CTETable from "./CTETable";
 import CTELineChart from "./CTELineChart";
+import CTEHeatmap from "./CTEHeatmap";
+import CTETable2 from "./CTETable2";
 var moment = require("moment");
 require("moment-duration-format");
 function Cteimpact(data:any) {
@@ -17,6 +18,12 @@ function Cteimpact(data:any) {
         {name: 'Extraneous', y: data.data.cte_impact.extraneous_impact}
     ]
 
+    let per_case_wt = [...data.data.per_case_wt]
+    let sorted_cases_per_wt = per_case_wt.sort(
+        (p1: any, p2:any) => (p1.cte_impact < p2.cte_impact ? 1 : (p1.cte_impact > p2.cte_impact) ? -1: 0)
+    )
+
+    let significant_data = sorted_cases_per_wt.reverse().slice(0,50)
     return (
         <Box sx={{
             justifyContent: 'center',
@@ -64,11 +71,7 @@ function Cteimpact(data:any) {
                 <Grid item xs={12}>
                     <Card>
                         <CardContent>
-                            <Typography align={"left"} variant="h5" component="div" sx={{ fontSize: 18 }} color="text.primary" gutterBottom>
-                                Processing time vs Waiting time per case
-                            </Typography>
-                            <br/>
-                            <CTELineChart data={data.data.per_case_wt}/>
+                            <CTEHeatmap data={data.data}/>
                         </CardContent>
                     </Card>
                 </Grid>
@@ -77,6 +80,18 @@ function Cteimpact(data:any) {
             <Card>
                 <CardContent>
                     <CTETable data={data.data}/>
+                </CardContent>
+            </Card>
+            <br/>
+            <Card>
+                <CardContent>
+                    <CTELineChart data={significant_data}/>
+                </CardContent>
+            </Card>
+            <br/>
+            <Card>
+                <CardContent>
+                    <CTETable2 data={significant_data}/>
                 </CardContent>
             </Card>
 

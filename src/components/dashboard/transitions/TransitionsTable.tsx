@@ -98,9 +98,10 @@ export default function TransitionsTable(data:any) {
     }
 
     return (
-        <div style={{ height: 675, width: '100%' }}>
+        <>
 
             <DataGrid
+                autoHeight={true}
                 rows={table_data}
                 columns={columns}
                 pageSize={10}
@@ -119,6 +120,6 @@ export default function TransitionsTable(data:any) {
                 selectedValue={add_index(selectedValue)}
                 selectedTitle={selectedTitle}
                 type={0}/>
-        </div>
+        </>
     );
 }

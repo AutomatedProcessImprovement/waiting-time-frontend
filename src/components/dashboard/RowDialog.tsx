@@ -25,7 +25,7 @@ const transitions_columns: GridColDef[] = [
     },
     {
         field: 'total_freq',
-        headerName: 'Cases',
+        headerName: 'Total frequency',
         type: 'number',
         flex:0.007,
     },
@@ -46,14 +46,6 @@ const transitions_columns: GridColDef[] = [
             moment.duration(params?.value, 'seconds').format('d[D] HH[H] mm[M]')
     },
     {
-        field: 'contention_wt',
-        headerName: 'Resource contention',
-        flex:0.01,
-        type: 'number',
-        valueFormatter: params =>
-            moment.duration(params?.value, 'seconds').format('d[D] HH[H] mm[M]')
-    },
-    {
         field: 'prioritization_wt',
         headerName: 'Prioritization',
         flex:0.01,
@@ -62,8 +54,16 @@ const transitions_columns: GridColDef[] = [
             moment.duration(params?.value, 'seconds').format('d[D] HH[H] mm[M]')
     },
     {
+        field: 'contention_wt',
+        headerName: 'R. contention',
+        flex:0.01,
+        type: 'number',
+        valueFormatter: params =>
+            moment.duration(params?.value, 'seconds').format('d[D] HH[H] mm[M]')
+    },
+    {
         field: 'unavailability_wt',
-        headerName: 'Resource unavailability',
+        headerName: 'R. unavailability',
         flex:0.01,
         type: 'number',
         valueFormatter: params =>
@@ -81,8 +81,8 @@ const transitions_columns: GridColDef[] = [
 ];
 const cte_columns: GridColDef[] = [
     { field: 'id', headerName: 'ID', hide:true},
-    { field: 'source_resource', headerName: 'Source Resource', width: 120},
-    { field: 'target_resource', headerName: 'Target Resource', width: 120},
+    { field: 'source_resource', headerName: 'Source Resource', flex: 0.045},
+    { field: 'target_resource', headerName: 'Target Resource', flex: 0.045},
     {
         field: 'case_freq',
         headerName: 'Case Frequency',
@@ -98,22 +98,20 @@ const cte_columns: GridColDef[] = [
         flex:0.02,
     },
     {
+        field: 'total_wt',
+        headerName: 'Total waiting time',
+        flex:0.02,
+        type: 'number',
+        valueFormatter: params =>
+            moment.duration(params?.value, 'seconds').format('d[D] HH[H] mm[M]')
+    },
+    {
         field: 'batching_impact',
         headerName: 'Batching',
         flex:0.02,
         type: 'number',
         valueGetter: params =>
             params.row.cte_impact.batching_impact,
-        valueFormatter: params =>
-            ((params?.value * 100).toFixed(2)) + "%"
-    },
-    {
-        field: 'contention_impact',
-        headerName: 'Resource contention',
-        flex:0.02,
-        type: 'number',
-        valueGetter: params =>
-            params.row.cte_impact.contention_impact,
         valueFormatter: params =>
             ((params?.value * 100).toFixed(2)) + "%"
     },
@@ -129,8 +127,18 @@ const cte_columns: GridColDef[] = [
 
     },
     {
+        field: 'contention_impact',
+        headerName: 'R. contention',
+        flex:0.02,
+        type: 'number',
+        valueGetter: params =>
+            params.row.cte_impact.contention_impact,
+        valueFormatter: params =>
+            ((params?.value * 100).toFixed(2)) + "%"
+    },
+    {
         field: 'unavailability_impact',
-        headerName: 'Resource unavailability',
+        headerName: 'R. unavailability',
         flex:0.02,
         type: 'number',
         valueGetter: params =>
@@ -170,7 +178,6 @@ export default function RowDialog(props: SimpleDialogProps) {
         boxShadow: 12,
         p: 6,
     };
-    console.log(selectedValue)
     if (type === 0) {
         return (
             <Modal onClose={handleClose} open={open}>
@@ -179,15 +186,21 @@ export default function RowDialog(props: SimpleDialogProps) {
                         {selectedTitle}
                     </Typography>
                     <Typography id="modal-modal-description" sx={{mt: 2}}>
-                        Potential CTE values per resource pairs if waiting time of a particular cause are eliminated in the selected transition
+                        Waiting times per resource pairs in the selected transition
                     </Typography>
-                    <div style={{height: 400, width: '100%'}}>
-                        <DataGrid columns={transitions_columns} rows={selectedValue} initialState={{
-                            sorting: {
-                                sortModel: [{ field: 'total_wt', sort: 'desc' }],
-                            },
+                    <>
+                        <DataGrid
+                            autoHeight={true}
+                            pageSize={10}
+                            rowsPerPageOptions={[10]}
+                            columns={transitions_columns}
+                            rows={selectedValue}
+                            initialState={{
+                                sorting: {
+                                    sortModel: [{ field: 'total_wt', sort: 'desc' }],
+                                },
                         }}/>
-                    </div>
+                    </>
                     <Button onClick={() => handleClose()}>Close</Button>
                 </Box>
             </Modal>
@@ -201,11 +214,19 @@ export default function RowDialog(props: SimpleDialogProps) {
                         {selectedTitle}
                     </Typography>
                     <Typography id="modal-modal-description" sx={{mt: 2}}>
-                        In depth information of selected row
+                        Potential CTE values per resource pairs if a particular waiting time is eliminated in the selected transition
                     </Typography>
-                    <div style={{height: 400, width: '100%'}}>
-                        <DataGrid columns={cte_columns} rows={selectedValue} />
-                    </div>
+                    <>
+                        <DataGrid autoHeight={true}
+                                  pageSize={10}
+                                  rowsPerPageOptions={[10]}
+                                  columns={cte_columns} rows={selectedValue}
+                                  initialState={{
+                                    sorting: {
+                                        sortModel: [{ field: 'total_wt', sort: 'desc' }],
+                                    }}}
+                            />
+                    </>
                     <Button onClick={() => handleClose()}>Close</Button>
                 </Box>
             </Modal>

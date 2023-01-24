@@ -13,7 +13,6 @@ const _colorDict = {
 const COLORS = [_colorDict.gray, _colorDict.batching,_colorDict.prioritization,_colorDict.contention, _colorDict.unavailability, _colorDict.extraneous]
 
 export default function CTEBarChart(data:any) {
-    console.log(data.data)
     let processed_data = [] as number[]
     for (const dataKey in data.data) {
         processed_data.push(data.data[dataKey].y)
@@ -61,10 +60,18 @@ export default function CTEBarChart(data:any) {
             }
 
         },
+        tooltip: {
+            formatter(this: Highcharts.TooltipFormatterContextObject) {
 
-        series: [{
-            name: "Current CTE",
-            data: [data.data[0].y],
+                // @ts-ignore
+                return "CTE after eliminating waiting time due to " + this.series.name + ": " + (this.y*100).toFixed(2) + "%"
+            }
+        },
+
+        series: [
+            {
+                name: "Current CTE",
+                data: [data.data[0].y],
             },
             {
                 name: "Batching",

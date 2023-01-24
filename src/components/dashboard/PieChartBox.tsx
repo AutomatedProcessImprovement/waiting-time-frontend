@@ -16,7 +16,6 @@ const COLORS = [_colorDict.extraneous, _colorDict.batching, _colorDict.unavailab
 export default function PieChartBox(data:any) {
     const processed_data = []
     for (const dataKey in data.data) {
-        console.log(data.data[dataKey])
         let out = {
             name:data.data[dataKey].name,
             y: data.data[dataKey].value,
