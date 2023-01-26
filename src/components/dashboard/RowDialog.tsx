@@ -98,12 +98,12 @@ const cte_columns: GridColDef[] = [
         flex:0.02,
     },
     {
-        field: 'total_wt',
+        field: 'new_cte',
         headerName: 'Total waiting time',
         flex:0.02,
         type: 'number',
         valueFormatter: params =>
-            moment.duration(params?.value, 'seconds').format('d[D] HH[H] mm[M]')
+            ((params?.value * 100).toFixed(2)) + "%"
     },
     {
         field: 'batching_impact',
@@ -207,6 +207,7 @@ export default function RowDialog(props: SimpleDialogProps) {
         );
     //    Can be expanded to be used in multiple different types
     } else {
+        console.log(selectedValue)
         return (
             <Modal onClose={handleClose} open={open}>
                 <Box sx={style}>

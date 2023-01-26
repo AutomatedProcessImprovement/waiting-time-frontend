@@ -88,6 +88,13 @@ const columns: GridColDef[] = [
     },
 
 ];
+const add_index_and_pt = (data:any, global_total_pt:number, global_total_wt:number) => {
+    for (let i = 0; i < data.length; i++) {
+        data[i].id = i+1
+        data[i].new_cte = global_total_pt / (global_total_pt + global_total_wt - data[i].total_wt)
+    }
+    return data
+}
 
 const add_index = (data:any) => {
     for (let i = 0; i < data.length; i++) {
@@ -98,6 +105,7 @@ const add_index = (data:any) => {
 
 export default function CTETable(data:any) {
     let table_data = add_index(data.data.report)
+
     let [open, setOpen] = React.useState(false);
     const [selectedValue, setSelectedValue] = React.useState<string[]>([]);
     const [selectedTitle, setSelectedTitle] = React.useState<string>("");
@@ -161,7 +169,7 @@ export default function CTETable(data:any) {
             <RowDialog
                 open={open}
                 onClose={handleClose}
-                selectedValue={add_index(selectedValue)}
+                selectedValue={add_index_and_pt(selectedValue, data.data.total_pt, data.data.total_wt)}
                 selectedTitle={selectedTitle}
                 type={1}/>
             {/*<TableHeatmap*/}
