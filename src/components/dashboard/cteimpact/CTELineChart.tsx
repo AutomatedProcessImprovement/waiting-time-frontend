@@ -6,6 +6,10 @@ require("moment-duration-format");
 
 export default function CTELineChart(data: any) {
     let chart_data = [...data.data]
+    let categories = [] as number[]
+    for (const chartDataKey in chart_data) {
+        categories.push(chart_data[chartDataKey].case_id)
+    }
 
     let processed_data = []
     let wt_out = {
@@ -49,15 +53,20 @@ export default function CTELineChart(data: any) {
             }
         },
         xAxis: {
-            title : {
+            categories: categories,
+            title: {
                 text: 'Case ID'
             },
-            tickInterval: 1
         },
         tooltip: {
-            formatter(this: Highcharts.TooltipFormatterContextObject) {
-                return this.series.name + ": " +moment.duration(this.y, 'seconds').format('d[D] HH[H] mm[M]')
-            }
+            formatter(this: any) {
+                let title = `<b>Case ID:</b>: ${this.x}`
+                let str1 = `<b>${this.points[0].series.name}</b>: ${moment.duration(this.points[0].y, 'seconds').format('d[D] HH[H] mm[M]')}`
+                let str2 = `<b>${this.points[1].series.name}</b>: ${moment.duration(this.points[1].y, 'seconds').format('d[D] HH[H] mm[M]')}`
+                let str3 = `<b>CTE</b>: ${(this.points[1].y / this.points[0].y * 100).toFixed(2)}%`
+                return title + '<br/>' + str1 + '<br/>' + str2 + '<br/>' + str3
+            },
+            shared: true,
         },
 
         legend: {

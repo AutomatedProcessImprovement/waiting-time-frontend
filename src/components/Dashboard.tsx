@@ -135,7 +135,7 @@ const BasicTabs = () => {
     };
 
     return (
-        <Box sx={{ width: '100%', mt:1 }}>
+        <Box sx={{ width: '100%', mt:1, zIndex: 100000 }}>
             <Box>
                 <Grid
                     container
@@ -182,7 +182,7 @@ const BasicTabs = () => {
                         </Tooltip>
                     </Grid>
                     <Grid item>
-                        <ButtonGroup variant="contained" ref={anchorRef} aria-label="split button">
+                        <ButtonGroup variant="contained" ref={anchorRef} aria-label="split button" sx={{zIndex: 100000}}>
                             <Tooltip title={'Download as CSV'}>
                                 <Button size="small"
                                         aria-controls={open ? 'split-button-menu' : undefined}
@@ -210,7 +210,9 @@ const BasicTabs = () => {
                             anchorEl={anchorRef.current}
                             role={undefined}
                             transition
-                            disablePortal
+                            disablePortal={false}
+                            sx={{zIndex: 100000}}
+                            style={{zIndex: 100000}}
                         >
                             {({ TransitionProps, placement }) => (
                                 <Grow
@@ -218,17 +220,20 @@ const BasicTabs = () => {
                                     style={{
                                         transformOrigin:
                                             placement === 'bottom' ? 'center top' : 'center bottom',
+                                        zIndex: 100000
                                     }}
+
                                 >
-                                    <Paper>
-                                        <ClickAwayListener onClickAway={handleClose}>
-                                            <MenuList id="split-button-menu" autoFocusItem>
+                                    <Paper sx={{zIndex: 100000}}>
+                                        <ClickAwayListener onClickAway={handleClose} sx={{zIndex: 100000}}>
+                                            <MenuList id="split-button-menu" autoFocusItem sx={{zIndex: 100000}}>
                                                 {options.map((option, index) => (
                                                     <MenuItem
                                                         key={option}
                                                         disabled={index === 2}
                                                         selected={index === selectedIndex}
                                                         onClick={(event) => handleMenuItemClick(event, index)}
+                                                        sx={{zIndex: 100000}}
                                                     >
                                                         {option}
                                                     </MenuItem>
@@ -244,7 +249,7 @@ const BasicTabs = () => {
 
             </Box>
             <TabPanel value={value} index={0}>
-                <Overview data={data} />
+                <Overview data={data}/>
             </TabPanel>
             <TabPanel value={value} index={1}>
                 <Transitions data={data} sx={{ mx: "2rem" }}/>

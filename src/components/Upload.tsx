@@ -24,7 +24,6 @@ const Upload = () => {
         if (cancel) {
             setLoading(false);
         } else {
-            setInfoMessage('Analysis in progress...')
             handleValidRequest(values)
         }
         setOpen(false);
@@ -91,6 +90,7 @@ const Upload = () => {
                 .then(((res:any) => {
                     let job = res.data
                     console.log(job.id)
+                    setInfoMessage("'Analysis in progress...\n Job ID: " + job.id);
                     let counter = 0
                     let f = setInterval(() => {
                         axios.get(
@@ -160,41 +160,8 @@ const Upload = () => {
             <br/>
             <br/>
             <Grid container alignItems="center" justifyContent="center" spacing={4} style={{ paddingTop: '10px' }} className="centeredContent">
-                {/*<Grid item xs={2.5}>*/}
-                {/*    <Paper elevation={5} sx={{ p: 3, minHeight: '30vw' }}>*/}
-                {/*        <Grid container spacing={2}>*/}
-                {/*            <Grid item xs={12}>*/}
-                {/*                <Typography variant="h6" align="left" sx={{color: 'red', fontWeight: 'medium'}}>*/}
-                {/*                    NOTICE:*/}
-                {/*                </Typography>*/}
-                {/*                <Typography align={"left"} sx={{color: 'red'}}>*/}
-                {/*                    Please format your event_log for now like the following example:*/}
-                {/*                </Typography>*/}
-                {/*                <ul className={'noticeList'}>*/}
-                {/*                    <li><Typography align={"left"} sx={{color: 'red', fontWeight: 'bold'}}>*/}
-                {/*                        Case ID → case:concept:name*/}
-                {/*                    </Typography></li>*/}
-                {/*                    <li><Typography align={"left"} sx={{color: 'red', fontWeight: 'bold'}}>*/}
-                {/*                        Activity → concept:name*/}
-                {/*                    </Typography></li>*/}
-                {/*                    <li><Typography align={"left"} sx={{color: 'red', fontWeight: 'bold'}}>*/}
-                {/*                        Start Timestamp → start_timestamp*/}
-                {/*                    </Typography></li>*/}
-                {/*                    <li><Typography align={"left"} sx={{color: 'red', fontWeight: 'bold'}}>*/}
-                {/*                        End Timestamp → time:timestamp*/}
-                {/*                    </Typography></li>*/}
-                {/*                    <li><Typography align={"left"} sx={{color: 'red', fontWeight: 'bold'}}>*/}
-                {/*                        Resource → org:resource*/}
-                {/*                    </Typography></li>*/}
-                {/*                </ul>*/}
-                {/*            </Grid>*/}
-                {/*            <Grid item xs={12}>*/}
-                {/*            </Grid>*/}
-                {/*        </Grid>*/}
-                {/*    </Paper>*/}
-                {/*</Grid>*/}
                 <Grid item xs={6}>
-                    <Paper elevation={5} sx={{ p: 3, minHeight: '30vw' }}>
+                    <Paper elevation={5} sx={{ p: 3, minHeight: '20vw' }}>
                         <Grid container spacing={2}>
                             <Grid item xs={12}>
                                 <Typography variant="h4" align="center">

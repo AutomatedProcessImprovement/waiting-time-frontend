@@ -78,7 +78,7 @@ export default function PieChartBox(data:any) {
     }
 
     return(
-        <Card sx={{ minWidth: 500, minHeight: 450 }}>
+        <Card sx={{ minWidth: 500, minHeight: 450, zIndex: 100 }} >
             <HighchartsReact
                 highcharts={Highcharts}
                 options={options}

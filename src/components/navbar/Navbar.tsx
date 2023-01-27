@@ -14,6 +14,7 @@ interface MenuOptions {
 
 const menuOptions: Array<MenuOptions> =
     [
+        { title: "Find a result", to: "/search" },
         { title: "Upload event log", to: "/upload" }
     ]
 
@@ -43,7 +44,7 @@ function NavBar() {
                             to={to}
                             sx={{ my: 2, color: 'white', display: 'block' }}
                         >
-                            {title}
+                            {title} |
                         </Button>
                     ))}
                 </Toolbar>
