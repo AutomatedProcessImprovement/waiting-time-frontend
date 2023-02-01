@@ -34,7 +34,7 @@ export default function CTEBarChart(data:any) {
             align: 'left'
         },
         subtitle: {
-            text: 'Potential CTE values if waiting times of a particular cause are eliminated',
+            text: 'Potential CTE if waiting times of a particular cause are eliminated\n',
             align: 'left'
         },
         xAxis: {
@@ -42,7 +42,7 @@ export default function CTEBarChart(data:any) {
         },
         yAxis: {
             title: {
-                text: '% improvement',
+                text: null,
                 align: 'high'
             },
             labels: {
@@ -66,9 +66,12 @@ export default function CTEBarChart(data:any) {
         },
         tooltip: {
             formatter(this: Highcharts.TooltipFormatterContextObject) {
-
-                // @ts-ignore
-                return "CTE after eliminating waiting time due to " + this.series.name + ": " + (this.y*100).toFixed(2) + "%"
+                if (this.colorIndex === 0) {
+                    return "Current CTE";
+                } else {
+                    // @ts-ignore
+                    return "CTE after eliminating waiting time due to " + this.series.name + ": " + (this.y*100).toFixed(2) + "%";
+                }
             }
         },
 

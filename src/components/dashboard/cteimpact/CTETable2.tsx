@@ -66,8 +66,8 @@ export default function CTETable2(data:any) {
     }
     return (
         <>
-            <Typography id="modal-modal-title" variant="h6" component="h2">
-                CTE per case
+            <Typography variant="h5" component="div" sx={{ fontSize: 18 }}>
+                Top 50 cases with the lowest CTE
             </Typography>
             <DataGrid
                 autoHeight={true}

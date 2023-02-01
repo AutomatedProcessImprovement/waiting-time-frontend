@@ -62,6 +62,7 @@ const Upload = () => {
         setLoading(true)
         if (!areFilesPresent()) {
             setLoading(false)
+            setErrorMessage("Upload a file to continue");
             return
         }
         Papa.parse(selectedLogFile!, {
@@ -215,6 +216,7 @@ const Upload = () => {
                 />
                 <Grid item xs={12}>
                     <LoadingButton
+                        disabled={!areFilesPresent()}
                         variant="contained"
                         onClick={onContinueClick}
                         loading={loading}

@@ -17,13 +17,13 @@ const columns: GridColDef[] = [
     },
     {
         field: 'total_freq',
-        headerName: 'Total Frequency',
+        headerName: 'Total frequency',
         type: 'number',
         flex: 0.007,
     },
     {
         field: 'total_wt',
-        headerName: 'Total Waiting Time',
+        headerName: 'Total waiting time',
         flex: 0.01,
         type: 'number',
         valueFormatter: params =>
@@ -47,7 +47,7 @@ const columns: GridColDef[] = [
     },
     {
         field: 'contention_wt',
-        headerName: 'R. Contention',
+        headerName: 'R. contention',
         flex: 0.01,
         type: 'number',
         valueFormatter: params =>
@@ -55,7 +55,7 @@ const columns: GridColDef[] = [
     },
     {
         field: 'unavailability_wt',
-        headerName: 'R. Unavailability',
+        headerName: 'R. unavailability',
         flex: 0.01,
         type: 'number',
         valueFormatter: params =>

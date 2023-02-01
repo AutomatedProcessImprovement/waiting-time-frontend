@@ -23,7 +23,8 @@ function TransitionsBarChart(data: any) {
     let categories = [] as string[]
     for (const dataKey in data.data) {
         let out = {
-            name: data.data[dataKey].source_activity + ' - ' + data.data[dataKey].target_activity,
+            name: data.data[dataKey].source_activity.trim().charAt(0).toUpperCase() + data.data[dataKey].source_activity.trim().slice(1).toLowerCase() +
+                ' - ' + data.data[dataKey].target_activity.trim().charAt(0).toUpperCase() + data.data[dataKey].target_activity.trim().slice(1).toLowerCase(),
             total_wt: data.data[dataKey].total_wt,
             batching_wt :data.data[dataKey].batching_wt,
             prioritization_wt :data.data[dataKey].prioritization_wt,

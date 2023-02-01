@@ -17,7 +17,7 @@ export default function PieChartBox(data:any) {
     const processed_data = []
     for (const dataKey in data.data) {
         let out = {
-            name:data.data[dataKey].name,
+            name:data.data[dataKey].name.charAt(0).toUpperCase() + data.data[dataKey].name.slice(1).toLowerCase(),
             y: data.data[dataKey].value,
             custom: {label_info: moment.duration(data.data[dataKey].value, 'seconds').format('d[D] HH[H] mm[M]')}
 

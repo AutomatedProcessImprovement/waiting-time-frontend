@@ -135,9 +135,9 @@ export default function CTETable(data:any) {
     }
     return (
         <>
-                <Typography id="modal-modal-title" variant="h6" component="h2">
-                    Potential CTE improvement per transition and waiting time cause
-                </Typography>
+            <Typography variant="h5" component="div" sx={{ fontSize: 18 }}>
+                Potential CTE improvement per transition and waiting time cause
+            </Typography>
             <DataGrid
                 autoHeight={true}
                 rows={table_data}

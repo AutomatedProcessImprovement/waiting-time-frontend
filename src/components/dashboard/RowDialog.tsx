@@ -85,7 +85,7 @@ const cte_columns: GridColDef[] = [
     { field: 'target_resource', headerName: 'Target Resource', flex: 0.045},
     {
         field: 'case_freq',
-        headerName: 'Case Frequency',
+        headerName: 'Case frequency',
         type: 'number',
         flex:0.02,
         valueFormatter: params =>
@@ -93,7 +93,7 @@ const cte_columns: GridColDef[] = [
     },
     {
         field: 'total_freq',
-        headerName: 'Total Frequency',
+        headerName: 'Total frequency',
         type: 'number',
         flex:0.02,
     },
@@ -186,7 +186,7 @@ export default function RowDialog(props: SimpleDialogProps) {
                         {selectedTitle}
                     </Typography>
                     <Typography id="modal-modal-description" sx={{mt: 2}}>
-                        Waiting times per resource pairs in the selected transition
+                        Waiting times per resource pair in the selected transition
                     </Typography>
                     <>
                         <DataGrid
@@ -215,7 +215,7 @@ export default function RowDialog(props: SimpleDialogProps) {
                         {selectedTitle}
                     </Typography>
                     <Typography id="modal-modal-description" sx={{mt: 2}}>
-                        Potential CTE values per resource pairs if a particular waiting time is eliminated in the selected transition
+                        Potential CTE if waiting times of a particular cause are eliminated per resource pair in the selected transition
                     </Typography>
                     <>
                         <DataGrid autoHeight={true}
