@@ -11,7 +11,7 @@ import {Typography} from "@mui/material";
 
 const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID', hide:true, flex:0.01},
-    { field: 'source_activity', headerName: 'Source Activity', flex:0.05},
+    { field: 'source_activity', headerName: 'Source activity', flex:0.05},
     { field: 'target_activity', headerName: 'Target activity', flex:0.05},
     {
         field: 'case_freq',
@@ -58,7 +58,7 @@ const columns: GridColDef[] = [
     },
     {
         field: 'contention_impact',
-        headerName: 'R. Contention',
+        headerName: 'R. contention',
         flex:0.02,
         type: 'number',
         valueGetter: params =>
@@ -68,7 +68,7 @@ const columns: GridColDef[] = [
     },
     {
         field: 'unavailability_impact',
-        headerName: 'R. Unavailability',
+        headerName: 'R. unavailability',
         flex:0.02,
         type: 'number',
         valueGetter: params =>

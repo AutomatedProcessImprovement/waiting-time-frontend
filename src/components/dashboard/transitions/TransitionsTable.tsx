@@ -5,7 +5,7 @@ var moment = require("moment");
 require("moment-duration-format");
 const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID', flex: 0.01, hide:true },
-    { field: 'source_activity', headerName: 'Source Activity', flex: 0.015},
+    { field: 'source_activity', headerName: 'Source activity', flex: 0.015},
     { field: 'target_activity', headerName: 'Target activity', flex: 0.015},
     {
         field: 'case_freq',

@@ -81,8 +81,8 @@ const transitions_columns: GridColDef[] = [
 ];
 const cte_columns: GridColDef[] = [
     { field: 'id', headerName: 'ID', hide:true},
-    { field: 'source_resource', headerName: 'Source Resource', flex: 0.045},
-    { field: 'target_resource', headerName: 'Target Resource', flex: 0.045},
+    { field: 'source_resource', headerName: 'Source resource', flex: 0.045},
+    { field: 'target_resource', headerName: 'Target resource', flex: 0.045},
     {
         field: 'case_freq',
         headerName: 'Case frequency',
