@@ -7,6 +7,7 @@ RUN npm ci
 
 COPY tsconfig.json tsconfig.json
 COPY ./public/ ./public
+COPY config-overrides.js config-overrides.js
 COPY ./src/ ./src
 COPY ./nginx/ ./nginx
 RUN npm run build
