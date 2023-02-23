@@ -1,21 +1,20 @@
-# pull official base image
-FROM node:16.16.0-alpine3.15
+FROM node:alpine as build
 
-# set working directory
 WORKDIR /app
+COPY package.json package.json
+COPY package-lock.json package-lock.json
+RUN npm ci
 
-# add `/app/node_modules/.bin` to $PATH
-ENV PATH /app/node_modules/.bin:$PATH
+COPY tsconfig.json tsconfig.json
+COPY ./public/ ./public
+COPY ./src/ ./src
+COPY ./nginx/ ./nginx
+RUN npm run build
 
-# install app dependencies
-COPY package.json ./
-COPY package-lock.json ./
-RUN npm install --silent
-RUN npm install react-scripts@3.4.1 -g
-RUN npm install -g peer-dependencies
+FROM nginx:stable-alpine as production
+COPY --from=build /app/build /usr/share/nginx/html
 
-# add app
-COPY . ./
-
-# start app
-CMD ["npm", "start"]
+COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
+EXPOSE 80
+EXPOSE 443
+CMD ["nginx", "-g", "daemon off;"]
