@@ -151,15 +151,9 @@ const BasicTabs = () => {
                     </Grid>
                     <Grid item>
                         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" >
-                            <Tooltip title="Report Overview">
-                                <Tab label="Overview" {...a11yProps(0)} />
-                            </Tooltip>
-                            <Tooltip title="Activity Transitions Report">
-                                <Tab label="Transitions" {...a11yProps(1)} />
-                            </Tooltip>
-                            <Tooltip title="CTE Impact Report">
-                                <Tab label="CTE Impact" {...a11yProps(2)} />
-                            </Tooltip>
+                            <Tab label="Overview" {...a11yProps(0)} />
+                            <Tab label="Transitions" {...a11yProps(1)} />
+                            <Tab label="CTE Impact" {...a11yProps(2)} />
                         </Tabs>
                     </Grid>
                     <Grid item>

@@ -67,7 +67,8 @@ export default function CTEBarChart(data:any) {
         tooltip: {
             formatter(this: Highcharts.TooltipFormatterContextObject) {
                 if (this.colorIndex === 0) {
-                    return "Current CTE";
+                    // @ts-ignore
+                    return "Current CTE: " + (this.y*100).toFixed(2) + "%"
                 } else {
                     // @ts-ignore
                     return "CTE after eliminating waiting time due to " + this.series.name + ": " + (this.y*100).toFixed(2) + "%";

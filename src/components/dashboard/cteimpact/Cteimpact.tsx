@@ -52,10 +52,10 @@ function Cteimpact(data:any) {
                             <Infobox data={{title: "Process CTE", subtitle: "Cycle time efficiency of the process", value: (data.data.process_cte* 100).toFixed(2) + '%'}}/>
                         </Grid>
                         <Grid item xs={12}>
-                            <Infobox data={{title: "Processing time (PT)", subtitle: "Total processing time", value: moment.duration(data.data.total_pt, 'seconds').format('d[D] HH[H] mm[M]')}}/>
+                            <Infobox data={{title: "Processing time", subtitle: "Total processing time", value: moment.duration(data.data.total_pt, 'seconds').format('d[D] HH[H] mm[M]')}}/>
                         </Grid>
                         <Grid item xs={12}>
-                            <Infobox data={{title: "Waiting time (WT)", subtitle: "Total waiting time of the process", value: moment.duration(data.data.total_wt, 'seconds').format('d[D] HH[H] mm[M]')}}/>
+                            <Infobox data={{title: "Waiting time", subtitle: "Total waiting time of the process", value: moment.duration(data.data.total_wt, 'seconds').format('d[D] HH[H] mm[M]')}}/>
                         </Grid>
                     </Grid>
                 </Grid>

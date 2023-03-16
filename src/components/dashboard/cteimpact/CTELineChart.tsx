@@ -60,10 +60,10 @@ export default function CTELineChart(data: any) {
         },
         tooltip: {
             formatter(this: any) {
-                let title = `<b>Case ID:</b>: ${this.x}`
+                let title = `<b>Case ID</b>: ${this.x}`
                 let str1 = `<b>${this.points[0].series.name}</b>: ${moment.duration(this.points[0].y, 'seconds').format('d[D] HH[H] mm[M]')}`
                 let str2 = `<b>${this.points[1].series.name}</b>: ${moment.duration(this.points[1].y, 'seconds').format('d[D] HH[H] mm[M]')}`
-                let str3 = `<b>CTE</b>: ${(this.points[1].y / this.points[0].y * 100).toFixed(2)}%`
+                let str3 = `<b>CTE</b>: ${(this.points[1].y / (this.points[1].y + this.points[0].y) * 100).toFixed(2)}%`;
                 return title + '<br/>' + str1 + '<br/>' + str2 + '<br/>' + str3
             },
             shared: true,

@@ -15,7 +15,7 @@ const columns: GridColDef[] = [
     { field: 'target_activity', headerName: 'Target activity', flex:0.05},
     {
         field: 'case_freq',
-        headerName: 'Case Frequency',
+        headerName: 'Case frequency',
         type: 'number',
         flex:0.02,
         valueFormatter: params =>
@@ -23,13 +23,13 @@ const columns: GridColDef[] = [
     },
     {
         field: 'total_freq',
-        headerName: 'Total Frequency',
+        headerName: 'Total frequency',
         type: 'number',
         flex:0.02
     },
     {
         field: 'cte_impact_total',
-        headerName: 'Total Waiting Time',
+        headerName: 'Total waiting time',
         flex:0.02,
         type: 'number',
         valueFormatter: params =>

@@ -9,7 +9,7 @@ const columns: GridColDef[] = [
     { field: 'target_activity', headerName: 'Target activity', flex: 0.015},
     {
         field: 'case_freq',
-        headerName: 'Case Frequency',
+        headerName: 'Case frequency',
         type: 'number',
         flex: 0.007,
         valueFormatter: params =>

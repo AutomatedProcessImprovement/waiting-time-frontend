@@ -54,7 +54,7 @@ function Dashboard(data: any) {
                             <Infobox data={{title: "Cases", subtitle: "Total number of cases", value: Intl.NumberFormat('en-US').format(data.data.num_cases)}}/>
                         </Grid>
                         <Grid item xs={6}>
-                            <Infobox data={{title: "Waiting time (WT)", subtitle: "Total waiting time of the process", value: moment.duration(data.data.total_wt, 'seconds').format('d[D] HH[H] mm[M]')}}/>
+                            <Infobox data={{title: "Waiting time", subtitle: "Total waiting time of the process", value: moment.duration(data.data.total_wt, 'seconds').format('d[D] HH[H] mm[M]')}}/>
                         </Grid>
                         <Grid item xs={6}>
                             <Infobox data={{title: "Activities", subtitle: "Total number of activities", value: Intl.NumberFormat('en-US').format(data.data.num_activities)}}/>
