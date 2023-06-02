@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import { Link } from 'react-router-dom';
-import QueryStatsIcon from '@mui/icons-material/QueryStats';
+import logo from './kronos-logo.png';
 interface MenuOptions {
     title: string,
     to: string
@@ -32,7 +32,11 @@ function NavBar() {
                         component={Link}
                         to={'/upload'}
                     >
-                        <QueryStatsIcon />
+                        <img
+                            src={logo}
+                            alt="Logo"
+                            style={{ height: '40px', marginLeft: '10px' }}
+                        />
                     </IconButton>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                         Waiting Time Analyser
