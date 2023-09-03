@@ -1,13 +1,13 @@
 import * as React from 'react';
-import {useState} from 'react';
+import { useState } from 'react';
 import DialogTitle from '@mui/material/DialogTitle';
 import Dialog from '@mui/material/Dialog';
-import {AlertColor, Button, DialogActions, DialogContent, DialogContentText} from "@mui/material";
+import { AlertColor, Button, DialogActions, DialogContent, DialogContentText } from "@mui/material";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
-import Select, {SelectChangeEvent} from "@mui/material/Select";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import List from "@mui/material/List";
 import CustomizedSnackbar from '../CustomizedSnackBar';
@@ -15,116 +15,84 @@ import CustomizedSnackbar from '../CustomizedSnackBar';
 export interface SimpleDialogProps {
     open: boolean;
     selectedValue: string[];
-    onClose: (cancel:boolean, values: object) => void;
+    onClose: (cancel: boolean, values: object) => void;
 }
-
 
 export default function MappingDialog(props: SimpleDialogProps) {
     const { onClose, selectedValue, open } = props;
-    const [snackMessage, setSnackMessage] = useState("")
-    const [snackColor, setSnackColor] = useState<AlertColor | undefined>(undefined)
+    const [snackMessage, setSnackMessage] = useState("");
+    const [snackColor, setSnackColor] = useState<AlertColor | undefined>(undefined);
+    const [currentMapping, setCurrentMapping] = useState<string[]>(Array(selectedValue.length).fill(""));
 
-    let headerMapping = selectedValue
-    let ogmapping = [...selectedValue]
-    let mapping_object = {
-        'case': ogmapping[0],
-        'activity': ogmapping[0],
-        'start_timestamp': ogmapping[0],
-        'end_timestamp': ogmapping[0],
-        'resource': ogmapping[0],
-    }
-
-    const handleChange = (e: SelectChangeEvent, index:number) => {
-        // ogmapping[index] = e.target.value;
-        let value = e.target.value
-        switch (value) {
-            case 'case':
-                mapping_object.case = ogmapping[index];
-                break
-            case 'activity':
-                mapping_object.activity = ogmapping[index];
-                break
-            case 'start_timestamp':
-                mapping_object.start_timestamp = ogmapping[index];
-                break
-            case 'end_timestamp':
-                mapping_object.end_timestamp = ogmapping[index];
-                break
-            case 'resource':
-                mapping_object.resource = ogmapping[index];
-                break
-        }
+    const handleChange = (e: SelectChangeEvent, index: number) => {
+        const newMapping = [...currentMapping];
+        newMapping[index] = e.target.value as string;
+        setCurrentMapping(newMapping);
     };
 
     const setErrorMessage = (value: string) => {
-        setSnackColor("error")
-        setSnackMessage(value)
-        ogmapping = headerMapping
+        setSnackColor("error");
+        setSnackMessage(value);
     };
 
     const onSnackbarClose = () => {
-        setErrorMessage("")
-        ogmapping = headerMapping
+        setErrorMessage("");
     };
 
-    const handleClose = (cancel:boolean ) => {
+    const handleClose = (cancel: boolean) => {
         if (cancel) {
             onClose(cancel, selectedValue);
-        } else {
-            let _cidNum = 0;
-            let _actNum = 0;
-            let _startNum = 0;
-            let _endNum = 0;
-            let _resNum = 0;
-            for (const val in ogmapping) {
-                switch (ogmapping[val]) {
-                    case 'case':
-                        _cidNum++;
-                        break;
-                    case 'activity':
-                        _actNum++;
-                        break;
-                    case 'start_timestamp':
-                        _startNum++;
-                        break;
-                    case 'end_timestamp':
-                        _endNum++;
-                        break;
-                    case 'resource':
-                        _resNum++;
-                        break;
-                }
-            }
-            if (_cidNum > 1 || _actNum > 1 || _startNum > 1 || _endNum > 1 || _resNum > 1) {
-                setErrorMessage('Each type can only be assigned once. Please adjust the mapping and try again.')
-            } else if (_cidNum < 1 || _actNum < 1 || _startNum < 1 || _endNum < 1 || _resNum < 1) {
-                setErrorMessage('Each type must be assigned at least once. Please adjust the mapping and try again.');
-            }
-            if (!cancel) {
-                onClose(cancel, mapping_object);
-            }
+            return;
         }
+
+        const counts: { [key: string]: number } = {};
+        currentMapping.forEach((val) => {
+            counts[val] = (counts[val] || 0) + 1;
+        });
+
+        const requiredFields = ['case', 'activity', 'start_timestamp', 'end_timestamp', 'resource'];
+        const missingFields = requiredFields.filter(field => !counts[field] || counts[field] < 1);
+        const duplicateFields = requiredFields.filter(field => counts[field] && counts[field] > 1);
+
+        if (missingFields.length > 0) {
+            setErrorMessage('Each type must be assigned at least once. Please adjust the mapping and try again.');
+            return;
+        }
+
+        if (duplicateFields.length > 0) {
+            setErrorMessage('Each type can only be assigned once. Please adjust the mapping and try again.');
+            return;
+        }
+
+        const mapping_object = {
+            'case': selectedValue[currentMapping.indexOf('case')],
+            'activity': selectedValue[currentMapping.indexOf('activity')],
+            'start_timestamp': selectedValue[currentMapping.indexOf('start_timestamp')],
+            'end_timestamp': selectedValue[currentMapping.indexOf('end_timestamp')],
+            'resource': selectedValue[currentMapping.indexOf('resource')],
+        };
+
+        onClose(cancel, mapping_object);
     };
 
     return (
-        <Dialog onClose={handleClose} open={open}>
+        <Dialog onClose={() => handleClose(true)} open={open}>
             <DialogTitle>Map the event log</DialogTitle>
             <DialogContent>
                 <DialogContentText>
                     Here you can assign the right column names to each column for processing.
                 </DialogContentText>
                 <List>
-
-                    {ogmapping.map((columnName, index) => (
+                    {selectedValue.map((columnName, index) => (
                         <ListItem key={columnName}>
-                            <ListItemText primary={columnName}/>
-                            <FormControl sx={{m: 1, minWidth: 250}}>
+                            <ListItemText primary={columnName} />
+                            <FormControl sx={{ m: 1, minWidth: 250 }}>
                                 <InputLabel id="demo-simple-select-helper-label">Type</InputLabel>
                                 <Select
                                     id={columnName}
                                     label="Type"
                                     defaultValue={""}
-                                    onChange={(e) => handleChange(e,index)}
+                                    onChange={(e) => handleChange(e, index)}
                                 >
                                     <MenuItem value="">
                                         <em>None</em>
