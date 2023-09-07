@@ -109,6 +109,87 @@ function Dashboard({ jobId }: { jobId: string }) {
 
     const totalCycleTime = overviewData.waiting_time + overviewData.processing_time;
 
+//     return (
+//         <Box sx={{
+//             display: 'flex',
+//             justifyContent: 'center',
+//             p: 1,
+//             m: 1,
+//             bgcolor: 'background.paper',
+//             borderRadius: 1,
+//             mx: "5rem"
+//         }}>
+//             <Grid container
+//                   spacing={3}
+//                   flexGrow={1}
+//                   justifyContent="flex-start"
+//                   display={"flex"}
+//                   flexDirection={"row"}
+//                   alignItems={"stretch"}
+//             >
+//                 <Grid item xs={6}>
+//                     <Grid   container
+//                             spacing={3}
+//                             flexGrow={1}
+//                             justifyContent="flex-start"
+//                             display={"flex"}
+//                             flexDirection={"column"}
+//                             alignItems={"stretch"}
+//                     >
+//                         <Grid item xs={6}>
+//                             <Infobox data={{title: "Cases", subtitle: "Total number of cases with wt", value: Intl.NumberFormat('en-US').format(overviewData.num_cases)}}/>
+//                         </Grid>
+//                         <Grid item xs={6}>
+//                             <Infobox data={{title: "Activities", subtitle: "Total number of activities", value: Intl.NumberFormat('en-US').format(overviewData.num_activities)}}/>
+//                         </Grid>
+//                         <Grid item xs={6}>
+//                             <Infobox data={{title: "Transitions", value: Intl.NumberFormat('en-US').format(overviewData.num_transitions)}}/>
+//                         </Grid>
+//                     </Grid>
+//                 </Grid>
+//                 <Grid item xs={6}>
+//                     <Grid container spacing={3}>
+//                         <Grid item xs={6}>
+//                             <div style={{ textAlign: 'center' }}>
+//                                 <div style={{ fontSize: 'large', marginBottom: '5px' }}>
+//                                     Cycle Time
+//                                 </div>
+//                                 <div style={{ fontSize: 'small', marginBottom: '10px' }}>
+//                                     Total Cycle Time: {totalCycleTime}
+//                                 </div>
+//                                 <HighchartsReact highcharts={Highcharts} options={cycleTimeOptions} />
+//                             </div>
+//                         </Grid>
+//                         <Grid item xs={6}>
+//                             <PieChartBox data={visData} />
+//                         </Grid>
+//                     </Grid>
+//                 </Grid>
+//                 <Grid item xs={12}>
+//                     <WaitingTimeframe jobId={jobId} />
+//                 </Grid>
+//                 <Grid item xs={12}>
+//                     <TransitionsBarChart data={transitionsData} />
+//                 </Grid>
+//                 <Grid item xs={12} style={{ textAlign: 'center' }}>
+//                     <span onClick={toggleTable} style={{ cursor: 'pointer', display: 'inline-flex', alignItems: 'center', color: 'blue' }}>
+//                         View as a table
+//                         {showTable ?
+//                             <ArrowDropUpIcon style={{ verticalAlign: 'middle', fontSize: '1.5rem' }} /> :
+//                             <ArrowDropDownIcon style={{ verticalAlign: 'middle', fontSize: '1.5rem' }} />
+//                         }
+//                     </span>
+//                 </Grid>
+//                 {showTable && (
+//                     <Grid item xs={12}>
+//                         <TransitionsTable jobId={jobId} />
+//                     </Grid>
+//                 )}
+//             </Grid>
+//         </Box>
+//     );
+// }
+
     return (
         <Box sx={{
             display: 'flex',
@@ -127,62 +208,70 @@ function Dashboard({ jobId }: { jobId: string }) {
                   flexDirection={"row"}
                   alignItems={"stretch"}
             >
-                <Grid item xs={6}>
-                    <Grid   container
-                            spacing={3}
-                            flexGrow={1}
-                            justifyContent="flex-start"
-                            display={"flex"}
-                            flexDirection={"column"}
-                            alignItems={"stretch"}
+                <Grid item xs={2}>
+                    <Grid container
+                          spacing={3}
+                          direction="column"
+                          justifyContent="flex-start"
+                          alignItems="stretch"
                     >
-                        <Grid item xs={6}>
-                            <Infobox data={{title: "Cases", subtitle: "Total number of cases with wt", value: Intl.NumberFormat('en-US').format(overviewData.num_cases)}}/>
+                        <Grid item>
+                            <Infobox data={{
+                                title: "Cases",
+                                subtitle: "Total number of cases with wt",
+                                value: Intl.NumberFormat('en-US').format(overviewData.num_cases)
+                            }}/>
                         </Grid>
-                        <Grid item xs={6}>
-                            <Infobox data={{title: "Activities", subtitle: "Total number of activities", value: Intl.NumberFormat('en-US').format(overviewData.num_activities)}}/>
+                        <Grid item>
+                            <Infobox data={{
+                                title: "Activities",
+                                subtitle: "Total number of activities",
+                                value: Intl.NumberFormat('en-US').format(overviewData.num_activities)
+                            }}/>
                         </Grid>
-                        <Grid item xs={6}>
-                            <Infobox data={{title: "Transitions", value: Intl.NumberFormat('en-US').format(overviewData.num_transitions)}}/>
+                        <Grid item>
+                            <Infobox data={{
+                                title: "Transitions",
+                                value: Intl.NumberFormat('en-US').format(overviewData.num_transitions)
+                            }}/>
                         </Grid>
                     </Grid>
+                </Grid>
+                <Grid item xs={4}>
+                    <div style={{textAlign: 'center', backgroundColor: '#fff', padding: '10px', borderRadius: '8px'}}>
+                        <div style={{fontSize: 'large', marginBottom: '5px'}}>
+                            Cycle Time
+                        </div>
+                        <div style={{fontSize: 'small', marginBottom: '10px'}}>
+                            Total Cycle Time: {totalCycleTime}
+                        </div>
+                        <HighchartsReact highcharts={Highcharts} options={cycleTimeOptions}/>
+                    </div>
                 </Grid>
                 <Grid item xs={6}>
-                    <Grid container spacing={3}>
-                        <Grid item xs={6}>
-                            <div style={{ textAlign: 'center' }}>
-                                <div style={{ fontSize: 'large', marginBottom: '5px' }}>
-                                    Cycle Time
-                                </div>
-                                <div style={{ fontSize: 'small', marginBottom: '10px' }}>
-                                    Total Cycle Time: {totalCycleTime}
-                                </div>
-                                <HighchartsReact highcharts={Highcharts} options={cycleTimeOptions} />
-                            </div>
-                        </Grid>
-                        <Grid item xs={6}>
-                            <PieChartBox data={visData} />
-                        </Grid>
-                    </Grid>
+                    <div style={{textAlign: 'center', backgroundColor: '#fff', padding: '10px', borderRadius: '8px'}}>
+                        <PieChartBox data={visData}/>
+                    </div>
                 </Grid>
                 <Grid item xs={12}>
-                    <WaitingTimeframe jobId={jobId} />
+                    <WaitingTimeframe jobId={jobId}/>
                 </Grid>
                 <Grid item xs={12}>
-                    <TransitionsBarChart data={transitionsData} />
+                    <TransitionsBarChart data={transitionsData}/>
                 </Grid>
-                <Grid item xs={12} style={{ textAlign: 'center' }}>
-                    <span onClick={toggleTable} style={{ cursor: 'pointer', display: 'inline-flex', alignItems: 'center', color: 'blue' }}>
-                        View as a table
-                        {showTable ?
-                            <ArrowDropUpIcon style={{ verticalAlign: 'middle', fontSize: '1.5rem' }} /> :
-                            <ArrowDropDownIcon style={{ verticalAlign: 'middle', fontSize: '1.5rem' }} />
-                        }
-                    </span>
+                <Grid item xs={12} style={{textAlign: 'center'}}>
+                <span onClick={toggleTable}
+                      style={{cursor: 'pointer', display: 'inline-flex', alignItems: 'center', color: 'blue'}}>
+                    View as a table
+                    {showTable ?
+                        <ArrowDropUpIcon style={{verticalAlign: 'middle', fontSize: '1.5rem'}}/> :
+                        <ArrowDropDownIcon style={{verticalAlign: 'middle', fontSize: '1.5rem'}}/>
+                    }
+                </span>
                 </Grid>
                 {showTable && (
                     <Grid item xs={12}>
-                        <TransitionsTable jobId={jobId} />
+                        <TransitionsTable jobId={jobId}/>
                     </Grid>
                 )}
             </Grid>
@@ -190,5 +279,4 @@ function Dashboard({ jobId }: { jobId: string }) {
     );
 }
 
-
-export default Dashboard;
+    export default Dashboard;
