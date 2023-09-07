@@ -2,7 +2,6 @@ import {Card} from "@mui/material";
 import * as React from "react";
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
-var moment = require("moment");
 require("moment-duration-format");
 const _colorDict = {
     batching: "#6C8EBF",
@@ -19,7 +18,7 @@ export default function PieChartBox(data:any) {
         let out = {
             name:data.data[dataKey].name.charAt(0).toUpperCase() + data.data[dataKey].name.slice(1).toLowerCase(),
             y: data.data[dataKey].value,
-            custom: {label_info: moment.duration(data.data[dataKey].value, 'seconds').format('d[D] HH[H] mm[M]')}
+            custom: {label_info: data.data[dataKey].label}
 
         }
         processed_data.push(out)

@@ -14,7 +14,6 @@ import MenuItem from '@mui/material/MenuItem';
 import MenuList from '@mui/material/MenuList';
 import Download from '@mui/icons-material/CloudDownloadOutlined';
 import {useLocation} from "react-router-dom";
-import Cteimpact from "./dashboard/cteimpact/Cteimpact";
 
 
 interface TabPanelProps {
@@ -82,32 +81,25 @@ const onDownload = (report:any, type:number) => {
     }
 };
 
-interface LocationState {
-    jsonLog : File
-    report: any
-    logName: string
-}
 const options = ['Download as CSV', 'Download as JSON'];
 
 const BasicTabs = () => {
     const [value, setValue] = React.useState(0);
     const [open, setOpen] = React.useState(false);
     const anchorRef = React.useRef<HTMLDivElement>(null);
-    const [selectedIndex, setSelectedIndex] = React.useState(3);
+    const [selectedIndex, setSelectedIndex] = React.useState(0);
+    const [transition, setTransition] = React.useState("All transitions");
+    const [timeframe, setTimeframe] = React.useState("All-time");
 
-    const {state} = useLocation()
-    const {report} = state as LocationState
-    const {logName} = state as LocationState
-
-    let clean_data = report.result
-    const data = JSON.parse(JSON.stringify(clean_data));
+    const { state } = useLocation();
+    const { jobId } = state as { jobId: string };
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
     };
 
     const handleClick = () => {
-        onDownload(report, 0)
+        // onDownload(report, 0)
     };
 
     const handleToggle = () => {
@@ -131,11 +123,11 @@ const BasicTabs = () => {
     ) => {
         setSelectedIndex(index);
         setOpen(false);
-        onDownload(report, index)
+        // onDownload(report, index)
     };
 
     return (
-        <Box sx={{ width: '100%', mt:1, zIndex: 100000 }}>
+        <Box sx={{ width: '100%', mt: 1, zIndex: 100000 }}>
             <Box>
                 <Grid
                     container
@@ -150,10 +142,25 @@ const BasicTabs = () => {
                         </Typography>
                     </Grid>
                     <Grid item>
-                        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" >
+                        <select onChange={(e) => setTransition(e.target.value)} value={transition}>
+                            <option>All transitions</option>
+                            <option>Transition 1</option>
+                            <option>Transition 2</option>
+                        </select>
+                        <select onChange={(e) => setTimeframe(e.target.value)} value={timeframe}>
+                            <option>All-time</option>
+                            <option>Last 7 days</option>
+                            <option>Last 30 days</option>
+                        </select>
+                    </Grid>
+                    <Grid item>
+                        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
                             <Tab label="Overview" {...a11yProps(0)} />
-                            <Tab label="Transitions" {...a11yProps(1)} />
-                            <Tab label="CTE Impact" {...a11yProps(2)} />
+                            <Tab label="Batching" {...a11yProps(1)} />
+                            <Tab label="Prioritization" {...a11yProps(2)} />
+                            <Tab label="Resource Contention" {...a11yProps(3)} />
+                            <Tab label="Resource Unavailability" {...a11yProps(4)} />
+                            <Tab label="Extraneous Factors" {...a11yProps(5)} />
                         </Tabs>
                     </Grid>
                     <Grid item>
@@ -171,7 +178,7 @@ const BasicTabs = () => {
                     <Grid item>
                         <Tooltip title="Original Event Log Name">
                             <Typography>
-                                <b>{logName}</b>
+                                <b>Log</b>
                             </Typography>
                         </Tooltip>
                     </Grid>
@@ -243,13 +250,22 @@ const BasicTabs = () => {
 
             </Box>
             <TabPanel value={value} index={0}>
-                <Overview data={data}/>
+                <Overview jobId={jobId} />
             </TabPanel>
             <TabPanel value={value} index={1}>
-                <Transitions data={data} sx={{ mx: "2rem" }}/>
+                {/* Add your Batching component here */}
             </TabPanel>
             <TabPanel value={value} index={2}>
-                <Cteimpact data={data}/>
+                {/* Add your Prioritization component here */}
+            </TabPanel>
+            <TabPanel value={value} index={3}>
+                {/* Add your Resource Contention component here */}
+            </TabPanel>
+            <TabPanel value={value} index={4}>
+                {/* Add your Resource Unavailability component here */}
+            </TabPanel>
+            <TabPanel value={value} index={5}>
+                {/* Add your Extraneous Factors component here */}
             </TabPanel>
         </Box>
     );

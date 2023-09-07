@@ -2,6 +2,8 @@ import React from 'react';
 import HighchartsReact from "highcharts-react-official";
 import * as Highcharts from "highcharts";
 import stockInit from "highcharts/modules/stock"
+import {secondsToDhm} from "../../../helpers/SecondsToDhm";
+import {dhmToString} from "../../../helpers/dhmToString";
 var moment = require("moment");
 require("moment-duration-format");
 
@@ -35,6 +37,7 @@ function TransitionsBarChart(data: any) {
         }
         pre_categories.push(out)
     }
+
 
     let sorted_categories = pre_categories.sort(
         (p1,p2) => (p1.total_wt < p2.total_wt ? 1 : (p1.total_wt > p2.total_wt) ? -1: 0)
@@ -111,17 +114,19 @@ function TransitionsBarChart(data: any) {
                 align: 'high'
             },
             labels: {
-
+                align: 'right',
                 formatter(this: any) {
-                    // your code
-                    return moment.duration(this.value, 'seconds').format('d[D] HH[H] mm[M]')
+                    const [y, d, h, m] = secondsToDhm(this.value);
+                    return dhmToString([y, d, h, m]);
                 }
             },
             stackLabels: {
+                align: 'right',
+                x: 20,
                 enabled: true,
                 formatter(this: any) {
-                    // your code
-                    return moment.duration(this.total, 'seconds').format('d[D] HH[H] mm[M]')
+                    const [y, d, h, m] = secondsToDhm(this.total);
+                    return dhmToString([y, d, h, m]);
                 }
             }
         },
@@ -129,13 +134,17 @@ function TransitionsBarChart(data: any) {
             series: {
                 stacking: 'normal',
                 dataLabels: {
-                    enabled: false,
+                    enabled: true,
+                    align: 'left',
                     formatter(this: any) {
-                        // your code
-
-                        return moment.duration(this.y, 'seconds').format('d[D] HH[H] mm[M]')
+                        if (this.point.stackTotal === 0) return null; // Don't show labels for zero values
+                        const percentage = (this.y / this.point.stackTotal) * 100;
+                        return `${Math.round(percentage)}%`;
+                    },
+                    style: {
+                        fontSize: '10px', // Adjust as needed
                     }
-                }
+                },
             },
         },
         legend: {
@@ -144,13 +153,15 @@ function TransitionsBarChart(data: any) {
         },
         tooltip: {
             formatter(this: Highcharts.TooltipFormatterContextObject) {
-                // your code
-                return this.series.name + ": " +moment.duration(this.y, 'seconds').format('d[D] HH[H] mm[M]')
+                const [y, d, h, m] = secondsToDhm(this.y as number);
+                const timeString = dhmToString([y, d, h, m]);
+                return `${this.series.name}: ${timeString}`;
             }
         },
 
         series: processed_data.reverse()
     }
+
     return (
         <>
             <HighchartsReact
