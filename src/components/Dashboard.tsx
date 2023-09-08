@@ -1,19 +1,25 @@
-import * as React from 'react';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import Box from '@mui/material/Box';
-import Overview from "./dashboard/overview/Overview";
-import Transitions from "./dashboard/transitions/Transitions";
-import {Button, ButtonGroup, Grid, Tooltip, Typography} from "@mui/material";
+import React, { useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import {
+    Box,
+    Button,
+    ButtonGroup,
+    Grid,
+    MenuItem,
+    MenuList,
+    Paper,
+    Popper,
+    Tabs,
+    Tab,
+    Tooltip,
+    Typography,
+    ClickAwayListener,
+    Grow,
+} from '@mui/material';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import ClickAwayListener from '@mui/material/ClickAwayListener';
-import Grow from '@mui/material/Grow';
-import Paper from '@mui/material/Paper';
-import Popper from '@mui/material/Popper';
-import MenuItem from '@mui/material/MenuItem';
-import MenuList from '@mui/material/MenuList';
 import Download from '@mui/icons-material/CloudDownloadOutlined';
-import {useLocation} from "react-router-dom";
+
+import Overview from './dashboard/overview/Overview';
 
 
 interface TabPanelProps {
@@ -84,12 +90,10 @@ const onDownload = (report:any, type:number) => {
 const options = ['Download as CSV', 'Download as JSON'];
 
 const BasicTabs = () => {
-    const [value, setValue] = React.useState(0);
-    const [open, setOpen] = React.useState(false);
+    const [value, setValue] = useState(0);
+    const [open, setOpen] = useState(false);
     const anchorRef = React.useRef<HTMLDivElement>(null);
-    const [selectedIndex, setSelectedIndex] = React.useState(0);
-    const [transition, setTransition] = React.useState("All transitions");
-    const [timeframe, setTimeframe] = React.useState("All-time");
+    const [selectedIndex, setSelectedIndex] = useState(0);
 
     const { state } = useLocation();
     const { jobId } = state as { jobId: string };
@@ -142,19 +146,7 @@ const BasicTabs = () => {
                         </Typography>
                     </Grid>
                     <Grid item>
-                        <select onChange={(e) => setTransition(e.target.value)} value={transition}>
-                            <option>All transitions</option>
-                            <option>Transition 1</option>
-                            <option>Transition 2</option>
-                        </select>
-                        <select onChange={(e) => setTimeframe(e.target.value)} value={timeframe}>
-                            <option>All-time</option>
-                            <option>Last 7 days</option>
-                            <option>Last 30 days</option>
-                        </select>
-                    </Grid>
-                    <Grid item>
-                        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+                        <Tabs value={value} onChange={handleChange} aria-label=" ">
                             <Tab label="Overview" {...a11yProps(0)} />
                             <Tab label="Batching" {...a11yProps(1)} />
                             <Tab label="Prioritization" {...a11yProps(2)} />
@@ -174,13 +166,6 @@ const BasicTabs = () => {
                         {/*    />*/}
                         {/*</Search>*/}
 
-                    </Grid>
-                    <Grid item>
-                        <Tooltip title="Original Event Log Name">
-                            <Typography>
-                                <b>Log</b>
-                            </Typography>
-                        </Tooltip>
                     </Grid>
                     <Grid item>
                         <ButtonGroup variant="contained" ref={anchorRef} aria-label="split button" sx={{zIndex: 100000}}>
