@@ -1,24 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 import {
-    Box,
-    Button,
-    ButtonGroup,
-    Grid,
-    MenuItem,
-    MenuList,
-    Paper,
-    Popper,
-    Tabs,
-    Tab,
-    Tooltip,
-    Typography,
-    ClickAwayListener,
-    Grow,
+    Box, Button, ButtonGroup, ClickAwayListener, FormControl, Grid, Grow, InputLabel,
+    MenuItem, MenuList, Paper, Popper, Select, Tab, Tabs, Tooltip
 } from '@mui/material';
+import { SelectChangeEvent } from "@mui/material/Select";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import Download from '@mui/icons-material/CloudDownloadOutlined';
-
 import Overview from './dashboard/overview/Overview';
 
 
@@ -27,6 +16,21 @@ interface TabPanelProps {
     index: number;
     value: number;
 }
+
+interface ActivityPair {
+    destination_activity: string;
+    source_activity: string;
+}
+
+const useFetchActivityPairs = (jobId: string) => {
+    const [activityPairs, setActivityPairs] = useState<ActivityPair[]>([]);
+    useEffect(() => {
+        axios.get(`http://154.56.63.127:5000/activity_pairs/${jobId}`)
+            .then(response => setActivityPairs(response.data))
+            .catch(error => console.error('Error fetching activity pairs:', error));
+    }, [jobId]);
+    return activityPairs;
+};
 
 function TabPanel(props: TabPanelProps) {
     const { children, value, index, ...other } = props;
@@ -54,6 +58,25 @@ function a11yProps(index: number) {
         'aria-controls': `simple-tabpanel-${index}`,
     };
 }
+
+const ActivityPairSelector = ({ selectedActivityPair, handleActivityPairChange, activityPairs }: any) => (
+    <FormControl variant="outlined" size="small">
+        <InputLabel htmlFor="activity-pair-selector">Activity Pair</InputLabel>
+        <Select
+            label="Activity Pair"
+            id="activity-pair-selector"
+            value={selectedActivityPair}
+            onChange={handleActivityPairChange}
+        >
+            <MenuItem value="All transitions">All transitions</MenuItem>
+            {activityPairs.map((pair: ActivityPair, index: number) => (
+                <MenuItem key={index} value={`${pair.destination_activity} - ${pair.source_activity}`}>
+                    {`${pair.destination_activity} - ${pair.source_activity}`}
+                </MenuItem>
+            ))}
+        </Select>
+    </FormControl>
+);
 
 const onDownload = (report:any, type:number) => {
     const link = document.createElement("a");
@@ -94,13 +117,24 @@ const BasicTabs = () => {
     const [open, setOpen] = useState(false);
     const anchorRef = React.useRef<HTMLDivElement>(null);
     const [selectedIndex, setSelectedIndex] = useState(0);
-
+    const [selectedActivityPair, setSelectedActivityPair] = useState<string>('All transitions');
     const { state } = useLocation();
     const { jobId } = state as { jobId: string };
+    const activityPairs = useFetchActivityPairs(jobId);
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
     };
+
+    const handleActivityPairChange = (event: SelectChangeEvent) => {
+        setSelectedActivityPair(event.target.value as string);
+    };
+
+    const sortedActivityPairs = [...activityPairs].sort((a, b) => {
+        const nameA = `${a.destination_activity} - ${a.source_activity}`;
+        const nameB = `${b.destination_activity} - ${b.source_activity}`;
+        return nameA.localeCompare(nameB);
+    });
 
     const handleClick = () => {
         // onDownload(report, 0)
@@ -140,10 +174,14 @@ const BasicTabs = () => {
                     justifyContent="space-around"
                     direction="row"
                 >
+
                     <Grid item>
-                        <Typography variant={"h4"}>
-                            Dashboard
-                        </Typography>
+                        {/* Activity Pair Selector */}
+                        <ActivityPairSelector
+                            selectedActivityPair={selectedActivityPair}
+                            handleActivityPairChange={handleActivityPairChange}
+                            activityPairs={sortedActivityPairs}
+                        />
                     </Grid>
                     <Grid item>
                         <Tabs value={value} onChange={handleChange} aria-label=" ">
@@ -154,18 +192,6 @@ const BasicTabs = () => {
                             <Tab label="Resource Unavailability" {...a11yProps(4)} />
                             <Tab label="Extraneous Factors" {...a11yProps(5)} />
                         </Tabs>
-                    </Grid>
-                    <Grid item>
-                        {/*<Search>*/}
-                        {/*    <SearchIconWrapper>*/}
-                        {/*        <SearchIcon />*/}
-                        {/*    </SearchIconWrapper>*/}
-                        {/*    <StyledInputBase*/}
-                        {/*        placeholder="Search…"*/}
-                        {/*        inputProps={{ 'aria-label': 'search' }}*/}
-                        {/*    />*/}
-                        {/*</Search>*/}
-
                     </Grid>
                     <Grid item>
                         <ButtonGroup variant="contained" ref={anchorRef} aria-label="split button" sx={{zIndex: 100000}}>
@@ -235,7 +261,7 @@ const BasicTabs = () => {
 
             </Box>
             <TabPanel value={value} index={0}>
-                <Overview jobId={jobId} />
+                <Overview jobId={jobId} selectedActivityPair={selectedActivityPair} />
             </TabPanel>
             <TabPanel value={value} index={1}>
                 {/* Add your Batching component here */}
