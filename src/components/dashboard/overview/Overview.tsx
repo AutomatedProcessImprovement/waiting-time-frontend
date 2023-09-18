@@ -190,7 +190,6 @@ import React, {useEffect, useState} from 'react';
 import AllTransitionsLayout from './AllTransitionsLayout';
 import SpecificTransitionLayout from './SpecificTransitionLayout';
 
-
 function Overview({ jobId, selectedActivityPair }: { jobId: string; selectedActivityPair: string; }) {
     return (
         <div>
