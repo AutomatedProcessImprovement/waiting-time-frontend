@@ -11,6 +11,8 @@ import TransitionsBarChart from "./TransitionsBarChart";
 import TransitionsTable from "./TransitionsTable";
 import { secondsToDhm } from '../../../helpers/SecondsToDhm';
 import { dhmToString } from '../../../helpers/dhmToString';
+import GaugeChart from './GaugeChart';
+import PotentialCteChart from './PotentialCteChart';
 
 interface AllTransitionsLayoutProps {
     jobId: string;
@@ -30,6 +32,7 @@ const useFetchData = (url: string) => {
 const AllTransitionsLayout: React.FC<AllTransitionsLayoutProps> = ({ jobId }) => {
     const overviewData = useFetchData(`http://154.56.63.127:5000/overview/${jobId}`);
     const transitionsData = useFetchData(`http://154.56.63.127:5000/activity_transitions/${jobId}`);
+    const potentialCteData = useFetchData(`http://154.56.63.127:5000/potential_cte/${jobId}`);
     const [showTable, setShowTable] = useState(false);
 
     if (!overviewData || !transitionsData) {
@@ -100,6 +103,7 @@ const AllTransitionsLayout: React.FC<AllTransitionsLayoutProps> = ({ jobId }) =>
     };
 
     const totalCycleTime = overviewData.waiting_time + overviewData.processing_time;
+    const processingTimePercentage = +parseFloat(((overviewData.processing_time / totalCycleTime) * 100).toFixed(1))
 
     return (
         <Box sx={{
@@ -185,6 +189,12 @@ const AllTransitionsLayout: React.FC<AllTransitionsLayoutProps> = ({ jobId }) =>
                         <TransitionsTable jobId={jobId}/>
                     </Grid>
                 )}
+                <Grid item xs={4}>
+                    <GaugeChart value={processingTimePercentage} />
+                </Grid>
+                <Grid item xs={8}>
+                    <PotentialCteChart jsonData={potentialCteData} cte={processingTimePercentage} />
+                </Grid>
             </Grid>
         </Box>
     );

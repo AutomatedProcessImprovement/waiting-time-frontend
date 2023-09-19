@@ -4,12 +4,22 @@ import * as Highcharts from "highcharts";
 import stockInit from "highcharts/modules/stock"
 import {secondsToDhm} from "../../../helpers/SecondsToDhm";
 import {dhmToString} from "../../../helpers/dhmToString";
-var moment = require("moment");
 require("moment-duration-format");
 
 stockInit(Highcharts)
 
 function TransitionsBarChart(data: any) {
+    let dataArray = [];
+    if (Array.isArray(data.data) && data.data.length > 0) {
+        dataArray = data.data;
+    } else if (data.data) {
+        dataArray = [data.data];
+    } else {
+        return <div>No data available</div>;
+    }
+
+    const isActivityType = dataArray.length > 0 && dataArray[0].hasOwnProperty('source_activity');
+    console.log(isActivityType);
 
     const _colorDict = {
         batching: "#6C8EBF",
@@ -23,21 +33,37 @@ function TransitionsBarChart(data: any) {
     let processed_data = []
     let pre_categories = []
     let categories = [] as string[]
-    for (const dataKey in data.data) {
-        let out = {
-            name: data.data[dataKey].source_activity.trim().charAt(0).toUpperCase() + data.data[dataKey].source_activity.trim().slice(1).toLowerCase() +
-                ' - ' + data.data[dataKey].target_activity.trim().charAt(0).toUpperCase() + data.data[dataKey].target_activity.trim().slice(1).toLowerCase(),
-            total_wt: data.data[dataKey].total_wt,
-            batching_wt :data.data[dataKey].batching_wt,
-            prioritization_wt :data.data[dataKey].prioritization_wt,
-            contention_wt :data.data[dataKey].contention_wt,
-            unavailability_wt :data.data[dataKey].unavailability_wt,
-            extraneous_wt :data.data[dataKey].extraneous_wt,
+    if (isActivityType) {
+        for (const dataKey in dataArray) {
+            let out = {
+                name: dataArray[dataKey].source_activity.trim().charAt(0).toUpperCase() + dataArray[dataKey].source_activity.trim().slice(1).toLowerCase() +
+                    ' - ' + dataArray[dataKey].target_activity.trim().charAt(0).toUpperCase() + dataArray[dataKey].target_activity.trim().slice(1).toLowerCase(),
+                total_wt: dataArray[dataKey].total_wt,
+                batching_wt :dataArray[dataKey].batching_wt,
+                prioritization_wt :dataArray[dataKey].prioritization_wt,
+                contention_wt :dataArray[dataKey].contention_wt,
+                unavailability_wt :dataArray[dataKey].unavailability_wt,
+                extraneous_wt :dataArray[dataKey].extraneous_wt,
 
+            }
+            pre_categories.push(out)
         }
-        pre_categories.push(out)
-    }
+    } else {
+        for (const dataKey in dataArray) {
+            let out = {
+                name: dataArray[dataKey].source_resource.trim().charAt(0).toUpperCase() + dataArray[dataKey].source_resource.trim().slice(1).toLowerCase() +
+                    ' - ' + dataArray[dataKey].target_resource.trim().charAt(0).toUpperCase() + dataArray[dataKey].target_resource.trim().slice(1).toLowerCase(),
+                total_wt: dataArray[dataKey].total_wt,
+                batching_wt :dataArray[dataKey].batching_wt,
+                prioritization_wt :dataArray[dataKey].prioritization_wt,
+                contention_wt :dataArray[dataKey].contention_wt,
+                unavailability_wt :dataArray[dataKey].unavailability_wt,
+                extraneous_wt :dataArray[dataKey].extraneous_wt,
 
+            }
+            pre_categories.push(out)
+        }
+    }
 
     let sorted_categories = pre_categories.sort(
         (p1,p2) => (p1.total_wt < p2.total_wt ? 1 : (p1.total_wt > p2.total_wt) ? -1: 0)
@@ -77,6 +103,11 @@ function TransitionsBarChart(data: any) {
     }
     processed_data.push(batching,prio,conten,unav,extra)
 
+    const baseHeight = 200;
+    const additionalHeightPerCategory = 50;
+    const maxHeight = 600;
+    const dynamicHeight = Math.min(maxHeight, baseHeight + (categories.length * additionalHeightPerCategory));
+
     const options = {
         b_totals: [],
         colors: COLORS.reverse(),
@@ -84,7 +115,7 @@ function TransitionsBarChart(data: any) {
             type: 'bar',
             padding: [0, 0, 0, 0],
             margin: [60, 50, 125, 250],
-            height: 550,
+            height: dynamicHeight,
             style: {
                 fontFamily: 'Roboto',
                 fontSize: 18
@@ -102,7 +133,7 @@ function TransitionsBarChart(data: any) {
             type: 'category',
             categories: categories,
             min: 0,
-            max: 8,
+            max: categories.length < 9 ? categories.length - 1 : 8,
             scrollbar: {
                 enabled: true
             },
@@ -133,16 +164,17 @@ function TransitionsBarChart(data: any) {
         plotOptions: {
             series: {
                 stacking: 'normal',
+                pointWidth: 20,
                 dataLabels: {
                     enabled: true,
                     align: 'left',
                     formatter(this: any) {
-                        if (this.point.stackTotal === 0) return null; // Don't show labels for zero values
+                        if (this.point.stackTotal === 0) return null;
                         const percentage = (this.y / this.point.stackTotal) * 100;
                         return `${Math.round(percentage)}%`;
                     },
                     style: {
-                        fontSize: '10px', // Adjust as needed
+                        fontSize: '10px',
                     }
                 },
             },

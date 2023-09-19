@@ -6,7 +6,6 @@ import moment from 'moment';
 import { secondsToDhm } from '../../../helpers/SecondsToDhm';
 import { dhmToString } from '../../../helpers/dhmToString';
 
-
 const _colorDict = {
     batching: "#6C8EBF",
     prioritization: "#B8544F",
@@ -15,7 +14,7 @@ const _colorDict = {
     extraneous: "#B3B3B3",
 };
 
-const WaitingTimeframe = ({ jobId }: { jobId: string }) => {
+const WaitingTimeframe = ({ jobId, sourceActivity, destinationActivity }: { jobId: string; sourceActivity?: string; destinationActivity?: string }) => {
     const [chartData, setChartData] = React.useState<any[]>([]);
     const [timeUnit, setTimeUnit] = React.useState<moment.unitOfTime.StartOf>('day');
 
@@ -44,7 +43,13 @@ const WaitingTimeframe = ({ jobId }: { jobId: string }) => {
     };
 
     React.useEffect(() => {
-        fetch(`http://154.56.63.127:5000/daily_summary/${jobId}`)
+        let url = `http://154.56.63.127:5000/daily_summary/${jobId}`;
+
+        if (sourceActivity && destinationActivity) {
+            url = `http://154.56.63.127:5000/daily_summary/${jobId}/${sourceActivity}/${destinationActivity}`;
+        }
+
+        fetch(url)
             .then((response) => response.json())
             .then((data) => {
                 const aggregatedData = aggregateData(data, timeUnit);
@@ -53,7 +58,7 @@ const WaitingTimeframe = ({ jobId }: { jobId: string }) => {
             .catch((error) => {
                 console.error("Error fetching data: ", error);
             });
-    }, [jobId, timeUnit]);
+    }, [jobId, sourceActivity, destinationActivity, timeUnit]);
 
     const options = {
         chart: {
