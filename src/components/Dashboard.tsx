@@ -9,6 +9,11 @@ import { SelectChangeEvent } from "@mui/material/Select";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import Download from '@mui/icons-material/CloudDownloadOutlined';
 import Overview from './dashboard/overview/Overview';
+import Batching from './dashboard/batching/Batching';
+import Prioritization from "./dashboard/prioritization/Prioritization";
+import Contention from "./dashboard/contention/Contention";
+import Unavailability from "./dashboard/unavailability/Unavailability";
+import Extraneous from "./dashboard/extraneous/Extraneous";
 
 
 interface TabPanelProps {
@@ -264,19 +269,19 @@ const BasicTabs = () => {
                 <Overview jobId={jobId} selectedActivityPair={selectedActivityPair} />
             </TabPanel>
             <TabPanel value={value} index={1}>
-                {/* Add your Batching component here */}
+                <Batching jobId={jobId} selectedActivityPair={selectedActivityPair} />
             </TabPanel>
             <TabPanel value={value} index={2}>
-                {/* Add your Prioritization component here */}
+                <Prioritization jobId={jobId} selectedActivityPair={selectedActivityPair} />
             </TabPanel>
             <TabPanel value={value} index={3}>
-                {/* Add your Resource Contention component here */}
+                <Contention jobId={jobId} selectedActivityPair={selectedActivityPair} />
             </TabPanel>
             <TabPanel value={value} index={4}>
-                {/* Add your Resource Unavailability component here */}
+                <Unavailability jobId={jobId} selectedActivityPair={selectedActivityPair} />
             </TabPanel>
             <TabPanel value={value} index={5}>
-                {/* Add your Extraneous Factors component here */}
+                <Extraneous jobId={jobId} selectedActivityPair={selectedActivityPair} />
             </TabPanel>
         </Box>
     );

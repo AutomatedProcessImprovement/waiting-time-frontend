@@ -6,6 +6,8 @@ import { secondsToDhm } from '../../../helpers/SecondsToDhm';
 import { dhmToString } from '../../../helpers/dhmToString';
 import TransitionsBarChart from './TransitionsBarChart';
 import WaitingTimeframe from "./WaitingTimeframe";
+import GaugeChart from "./GaugeChart";
+import overview from "./Overview";
 
 interface SpecificTransitionLayoutProps {
     jobId: string;
@@ -46,6 +48,13 @@ const SpecificTransitionLayout: React.FC<SpecificTransitionLayoutProps> = ({ job
         return <div>Loading...</div>;
     }
 
+    console.log("Hello: ",overviewData);
+
+    if (overviewData && overviewData.specific_case_count == 0 && overviewData.specific_wttotal_sum == null) {
+        return <strong>This transition has no waiting time</strong>;
+    }
+
+    const specificCte = (overviewData.processing_time / (overviewData.specific_wttotal_sum + overviewData.processing_time)) * 100;
     const isMaxPairDefined = overviewData.max_wttotal_pair && overviewData.max_wttotal_pair[2] !== 0;
     const highestSourceText = isMaxPairDefined
         ? `Handover: ${overviewData.max_wttotal_pair[0]} - ${overviewData.max_wttotal_pair[1]}\n${dhmToString(secondsToDhm(overviewData.max_wttotal_pair[2]))}`
@@ -175,6 +184,9 @@ const SpecificTransitionLayout: React.FC<SpecificTransitionLayoutProps> = ({ job
                 </Grid>
                 <Grid item xs={12}>
                     <TransitionsBarChart data={barChartDataByResource}/>
+                </Grid>
+                <Grid item xs={4}>
+                    <GaugeChart value={specificCte} />
                 </Grid>
             </Grid>
         </Box>
