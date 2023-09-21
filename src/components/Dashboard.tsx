@@ -83,37 +83,23 @@ const ActivityPairSelector = ({ selectedActivityPair, handleActivityPairChange, 
     </FormControl>
 );
 
-const onDownload = (report:any, type:number) => {
+const onDownload = (type: number, jobId: string) => {
     const link = document.createElement("a");
     switch (type) {
         case 0:
-
-            link.href = report.report_csv;
-            link.setAttribute(
-                'download',
-                `report_csv.csv`
-            )
-            link.click();
-            break
+            link.href = `http://154.56.63.127:8080/assets/results/${jobId}/event_log_transitions_report.csv`;
+            link.setAttribute('download', 'event_log_transitions_report.csv');
+            break;
         case 1:
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(report.result));
-            link.href = dataStr;
-            link.setAttribute(
-                'download',
-                `report_json.json`
-            )
-            link.click();
-            break
+            link.href = `http://154.56.63.127:8080/assets/results/${jobId}/event_log_transitions_report.json`;
+            link.setAttribute('download', 'event_log_transitions_report.json');
+            break;
         default:
-            link.href = report.report_csv;
-            link.setAttribute(
-                'download',
-                `report_csv.csv`
-            )
-            link.click();
-            break
+            break;
     }
+    link.click();
 };
+
 
 const options = ['Download as CSV', 'Download as JSON'];
 
@@ -142,7 +128,7 @@ const BasicTabs = () => {
     });
 
     const handleClick = () => {
-        // onDownload(report, 0)
+        onDownload(0, jobId)
     };
 
     const handleToggle = () => {
@@ -166,7 +152,7 @@ const BasicTabs = () => {
     ) => {
         setSelectedIndex(index);
         setOpen(false);
-        // onDownload(report, index)
+        onDownload(index, jobId)
     };
 
     return (
