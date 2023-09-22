@@ -103,8 +103,6 @@ const AllTransitionsLayout: React.FC<AllTransitionsLayoutProps> = ({ jobId }) =>
             }
         ];
 
-    console.log("visdata: ", visData);
-
     const cycleTimeData = displayMode === "average"
         ? [
             ['Waiting Time', overviewData.waiting_time_avg],

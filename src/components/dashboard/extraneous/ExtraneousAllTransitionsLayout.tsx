@@ -103,7 +103,7 @@ const ExtraneousAllTransitionsLayout: React.FC<ExtraneousAllTransitionsLayout> =
                 <Grid item xs={4}>
                     <div style={{ textAlign: 'center', backgroundColor: '#fff', padding: '10px', borderRadius: '8px', border: '1px solid #ccc' }}>
                         <div style={{ fontWeight: 'bold', fontSize: '1.2em' }}>WT due to Extraneous</div>
-                        <div>{overviewData.wt_sum === 0 ? "0" : dhmToString(secondsToDhm(overviewData.total_wt_sum))}</div>
+                        <div>{overviewData.wt_sum === 0 ? "0" : dhmToString(secondsToDhm(overviewData.wt_sum))}</div>
                         <div style={{ width: '100%', height: '300px' }}>
                             <HighchartsReact highcharts={Highcharts} options={waitingTimeOptions} />
                         </div>
