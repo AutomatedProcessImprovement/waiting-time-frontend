@@ -37,15 +37,15 @@ export default function PieChartBox(data:any) {
             }
         },
         title: {
-            text: 'Waiting time causes',
+            text: '',
             align: 'left',
             style: {
                 fontFamily: 'Roboto'
             }
         },
         subtitle: {
-            text: 'Total waiting time of the process by its cause',
-            align: 'left',
+            text: '',
+            align: 'center',
             style: {
                 fontFamily: 'Roboto'
             }

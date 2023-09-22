@@ -30,7 +30,7 @@ const PrioritizationSpecificTransitionsLayout: React.FC<PrioritizationSpecificTr
         return <div>Loading...</div>;
     }
 
-    if (overviewData && overviewData.distinct_cases == 0 && overviewData.wt_sum == 0) {
+    if (overviewData && overviewData.distinct_cases === 0 && overviewData.wt_sum === 0) {
         return <strong>This transition has no waiting time due to prioritization</strong>;
     }
 
@@ -109,7 +109,7 @@ const PrioritizationSpecificTransitionsLayout: React.FC<PrioritizationSpecificTr
                 <Grid item xs={4}>
                     <div style={{ textAlign: 'center', backgroundColor: '#fff', padding: '10px', borderRadius: '8px', border: '1px solid #ccc' }}>
                         <div style={{ fontWeight: 'bold', fontSize: '1.2em' }}>WT due to Prioritization</div>
-                        <div>{overviewData.wt_sum === 0 ? "0" : dhmToString(secondsToDhm(overviewData.total_wt_sum))}</div>
+                        <div>{overviewData.wt_sum === 0 ? "0" : dhmToString(secondsToDhm(overviewData.wt_sum))}</div>
                         <div style={{ width: '100%', height: '300px' }}>
                             <HighchartsReact highcharts={Highcharts} options={waitingTimeOptions} />
                         </div>

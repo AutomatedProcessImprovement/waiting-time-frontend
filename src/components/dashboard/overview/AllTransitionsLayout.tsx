@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { Box, Grid } from '@mui/material';
+import { Box, Grid, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import Highcharts from 'highcharts';
@@ -34,6 +34,8 @@ const AllTransitionsLayout: React.FC<AllTransitionsLayoutProps> = ({ jobId }) =>
     const transitionsData = useFetchData(`http://154.56.63.127:5000/activity_transitions/${jobId}`);
     const potentialCteData = useFetchData(`http://154.56.63.127:5000/potential_cte/${jobId}`);
     const [showTable, setShowTable] = useState(false);
+    const [displayMode, setDisplayMode] = useState("total");
+    const [pieChartDisplayMode, setPieChartDisplayMode] = useState("total");
 
     if (!overviewData || !transitionsData) {
         return <div>Loading...</div>;
@@ -45,33 +47,73 @@ const AllTransitionsLayout: React.FC<AllTransitionsLayoutProps> = ({ jobId }) =>
         return <div>Loading...</div>;
     }
 
-    const visData = [
-        {
-            name: 'Extraneous',
-            value: overviewData.sums.total_extraneous_wt,
-            label: "EXTRANEOUS\n" + dhmToString(secondsToDhm(overviewData.sums.total_extraneous_wt))
-        },
-        {
-            name: 'Batching',
-            value: overviewData.sums.total_batching_wt,
-            label: "BATCHING\n" + dhmToString(secondsToDhm(overviewData.sums.total_batching_wt))
-        },
-        {
-            name: 'Resource Unavailability',
-            value: overviewData.sums.total_unavailability_wt,
-            label: "UNAVAILABILITY\n" + dhmToString(secondsToDhm(overviewData.sums.total_unavailability_wt))
-        },
-        {
-            name: 'Resource Contention',
-            value: overviewData.sums.total_contention_wt,
-            label: "CONTENTION\n" + dhmToString(secondsToDhm(overviewData.sums.total_contention_wt))
-        },
-        {
-            name: 'Prioritization',
-            value: overviewData.sums.total_prioritization_wt,
-            label: "PRIORITIZATION\n" + dhmToString(secondsToDhm(overviewData.sums.total_prioritization_wt))
-        }
-    ];
+    const visData = pieChartDisplayMode === "total"
+        ? [
+            {
+                name: 'Extraneous',
+                value: overviewData.sums.total_extraneous_wt,
+                label: "EXTRANEOUS\n" + dhmToString(secondsToDhm(overviewData.sums.total_extraneous_wt))
+            },
+            {
+                name: 'Batching',
+                value: overviewData.sums.total_batching_wt,
+                label: "BATCHING\n" + dhmToString(secondsToDhm(overviewData.sums.total_batching_wt))
+            },
+            {
+                name: 'Resource Unavailability',
+                value: overviewData.sums.total_unavailability_wt,
+                label: "UNAVAILABILITY\n" + dhmToString(secondsToDhm(overviewData.sums.total_unavailability_wt))
+            },
+            {
+                name: 'Resource Contention',
+                value: overviewData.sums.total_contention_wt,
+                label: "CONTENTION\n" + dhmToString(secondsToDhm(overviewData.sums.total_contention_wt))
+            },
+            {
+                name: 'Prioritization',
+                value: overviewData.sums.total_prioritization_wt,
+                label: "PRIORITIZATION\n" + dhmToString(secondsToDhm(overviewData.sums.total_prioritization_wt))
+            }
+        ]
+        : [
+            {
+                name: 'Extraneous',
+                value: overviewData.avg.avg_extraneous_wt,
+                label: "EXTRANEOUS\n" + dhmToString(secondsToDhm(overviewData.avg.avg_extraneous_wt))
+            },
+            {
+                name: 'Batching',
+                value: overviewData.avg.avg_batching_wt,
+                label: "BATCHING\n" + dhmToString(secondsToDhm(overviewData.avg.avg_batching_wt))
+            },
+            {
+                name: 'Resource Unavailability',
+                value: overviewData.avg.avg_unavailability_wt,
+                label: "UNAVAILABILITY\n" + dhmToString(secondsToDhm(overviewData.avg.avg_unavailability_wt))
+            },
+            {
+                name: 'Resource Contention',
+                value: overviewData.avg.avg_contention_wt,
+                label: "CONTENTION\n" + dhmToString(secondsToDhm(overviewData.avg.avg_contention_wt))
+            },
+            {
+                name: 'Prioritization',
+                value: overviewData.avg.avg_prioritization_wt,
+                label: "PRIORITIZATION\n" + dhmToString(secondsToDhm(overviewData.avg.avg_prioritization_wt))
+            }
+        ];
+
+    console.log("visdata: ", visData);
+
+    const cycleTimeData = displayMode === "average"
+        ? [
+            ['Waiting Time', overviewData.waiting_time_avg],
+            ['Processing Time', overviewData.processing_time_avg]
+        ]
+        : [
+            ['Waiting Time', overviewData.waiting_time],
+            ['Processing Time', overviewData.processing_time]
+        ];
 
     const cycleTimeOptions = {
         title: {
@@ -95,15 +137,13 @@ const AllTransitionsLayout: React.FC<AllTransitionsLayoutProps> = ({ jobId }) =>
         series: [{
             type: 'pie',
             name: 'Time',
-            data: [
-                ['Waiting Time', overviewData.waiting_time],
-                ['Processing Time', overviewData.processing_time]
-            ]
+            data: cycleTimeData
         }]
     };
 
     const totalCycleTime = overviewData.waiting_time + overviewData.processing_time;
     const processingTimePercentage = +parseFloat(((overviewData.processing_time / totalCycleTime) * 100).toFixed(1))
+    let avgCycleTime = overviewData.processing_time_avg + overviewData.waiting_time_avg;
 
     return (
         <Box sx={{
@@ -153,21 +193,66 @@ const AllTransitionsLayout: React.FC<AllTransitionsLayoutProps> = ({ jobId }) =>
                     </Grid>
                 </Grid>
                 <Grid item xs={4}>
-                    <div style={{textAlign: 'center', backgroundColor: '#fff', padding: '10px', borderRadius: '8px'}}>
-                        <div style={{fontSize: 'large', marginBottom: '5px'}}>
-                            Cycle Time
+                    <div style={{ textAlign: 'center', backgroundColor: '#fff', padding: '10px', borderRadius: '8px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+
+                        <div style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+
+                            <div style={{ fontSize: 'large', marginBottom: '5px' }}>
+                                Cycle Time
+                            </div>
+
+                            <div style={{ position: 'absolute', right: 0, top: '50%', transform: 'translateY(-50%)' }}>
+                                <FormControl variant="outlined" size="small" style={{ marginBottom: '10px' }}>
+                                    <InputLabel>Data Mode</InputLabel>
+                                    <Select
+                                        value={displayMode}
+                                        onChange={(event) => setDisplayMode(event.target.value)}
+                                        label="Data Mode"
+                                    >
+                                        <MenuItem value={"total"}>Total</MenuItem>
+                                        <MenuItem value={"average"}>Average</MenuItem>
+                                    </Select>
+                                </FormControl>
+                            </div>
                         </div>
-                        <div style={{fontSize: 'small', marginBottom: '10px'}}>
-                            Total Cycle Time: {dhmToString(secondsToDhm(totalCycleTime))}
+
+                        <div style={{ fontSize: 'small', marginBottom: '10px' }}>
+                            {displayMode === "total"
+                                ? `Total Cycle Time: ${dhmToString(secondsToDhm(totalCycleTime))}`
+                                : `Average Cycle Time: ${dhmToString(secondsToDhm(avgCycleTime))}`}
                         </div>
-                        <HighchartsReact highcharts={Highcharts} options={cycleTimeOptions}/>
+
+                        <HighchartsReact key={displayMode} highcharts={Highcharts} options={cycleTimeOptions} />
                     </div>
                 </Grid>
                 <Grid item xs={6}>
-                    <div style={{textAlign: 'center', backgroundColor: '#fff', padding: '10px', borderRadius: '8px'}}>
-                        <PieChartBox data={visData}/>
+                    <div style={{ textAlign: 'center', backgroundColor: '#fff', padding: '10px', borderRadius: '8px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+
+                        <div style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+
+                            <div style={{ fontSize: 'large' }}>
+                                Waiting Times Distribution
+                            </div>
+
+                            <div style={{ position: 'absolute', right: 0, top: '50%', transform: 'translateY(-50%)' }}>
+                                <FormControl variant="outlined" size="small" style={{ marginBottom: '10px' }}>
+                                    <InputLabel>Data Mode</InputLabel>
+                                    <Select
+                                        value={pieChartDisplayMode}
+                                        onChange={(event) => setPieChartDisplayMode(event.target.value)}
+                                        label="Data Mode"
+                                    >
+                                        <MenuItem value={"total"}>Total</MenuItem>
+                                        <MenuItem value={"average"}>Average</MenuItem>
+                                    </Select>
+                                </FormControl>
+                            </div>
+                        </div>
+
+                        <PieChartBox key={pieChartDisplayMode} data={visData}/>
                     </div>
                 </Grid>
+
                 <Grid item xs={12}>
                     <WaitingTimeframe jobId={jobId}/>
                 </Grid>

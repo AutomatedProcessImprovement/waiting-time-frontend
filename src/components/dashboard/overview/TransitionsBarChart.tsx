@@ -288,18 +288,14 @@ interface Props {
 }
 
 function TransitionsBarChart({ data, selectedWTType }: Props) {
-    console.log("Data: ", data);
     let dataArray = [];
     if (Array.isArray(data.data) && data.data.length > 0) {
         dataArray = data.data;
-        console.log("Three");
     } else if (data.data) {
-        console.log("Two");
         dataArray = [data.data];
     } else if (data && Array.isArray(data)) {
-        console.log("One");
         dataArray = data;
-    } else if (data == []) {
+    } else if (data === []) {
         return <div>No data present</div>;
     } else {
         return <div>No data available</div>;
@@ -515,51 +511,3 @@ function TransitionsBarChart({ data, selectedWTType }: Props) {
     )
 }
 export default TransitionsBarChart
-
-
-{/*<ResponsiveContainer width={"98%"} height={"98%"} minHeight={400}>*/}
-
-{/*    <BarChart*/}
-{/*        width={1920}*/}
-{/*        height={1920}*/}
-{/*        data={bar_data}*/}
-{/*        margin={{*/}
-{/*            top: 20,*/}
-{/*            right: 10,*/}
-{/*            left: 50,*/}
-{/*            bottom: 5,*/}
-{/*        }}*/}
-{/*        barGap={'5%'}*/}
-{/*        layout={'vertical'}*/}
-{/*        barSize={30}*/}
-
-{/*    >*/}
-
-{/*        <Brush dataKey="name" height={30} stroke="purple" startIndex={startIndex} endIndex={endIndex}*/}
-{/*               onChange={(evt) => handleChange(evt,bar_data.length, state)}*/}
-{/*        />*/}
-{/*        <CartesianGrid strokeDasharray="3 3" />*/}
-{/*        <XAxis type={'number'} hide domain={[(dataMin: number) => (0 - Math.abs(dataMin)), (dataMax: number) => (dataMax * 1.5)]}/>*/}
-{/*        <YAxis width={200} dx={-25} name={"test"} type={'category'} dataKey="bar_label" tickFormatter={tickFormatter}/>*/}
-{/*        <Tooltip content={<CustomTooltip />} />*/}
-{/*        <Legend />*/}
-{/*        <Bar name={"Batching"} dataKey="batching_wt" stackId="a" fill="#6C8EBF" >*/}
-{/*            <LabelList dataKey="batch_wt_perc" content={<CustBarLabel x={0} y={0} value={1}/>}/>*/}
-{/*        </Bar>*/}
-{/*        <Bar name={"Prioritization"} dataKey="prioritization_wt" stackId="a" fill="#B8544F">*/}
-{/*            <LabelList dataKey="prio_wt_perc" content={<CustBarLabel x={0} y={0} value={1}/>}/>*/}
-{/*        </Bar>*/}
-{/*        <Bar name={"Resource contention"} dataKey="contention_wt" stackId="a" fill="#D7B500">*/}
-{/*            <LabelList dataKey="cont_wt_perc" content={<CustBarLabel x={0} y={0} value={1}/>}/>*/}
-{/*        </Bar>*/}
-{/*        <Bar name={"Resource unavailability"} dataKey="unavailability_wt" stackId="a" fill="#63B7B0" >*/}
-{/*            <LabelList dataKey="unav_wt_perc" content={<CustBarLabel x={0} y={0} value={1}/>}/>*/}
-{/*        </Bar>*/}
-{/*        <Bar name={"Extraneous"} dataKey="extraneous_wt" stackId="a" fill="#B3B3B3">*/}
-{/*            <LabelList dataKey="extr_wt_perc" content={<CustBarLabel x={0} y={0} value={1}/>}/>*/}
-{/*        </Bar>*/}
-{/*        /!*TODO Create second custom label that contains all the total values of the row. to replace BLACK colored label at end of bar*!/*/}
-{/*        <Bar name={"Total WT"} dataKey="" stackId="a" label={<CustEndLabel x={-10} y={-10} value={1}/>}/>*/}
-{/*    </BarChart>*/}
-{/*</ResponsiveContainer>*/}
-
