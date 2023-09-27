@@ -115,15 +115,18 @@ const Upload = () => {
                                     setErrorMessage(r.data.error.split(';')[0]);
                                     setLoading(false);
                                 } else {
-                                    let logN = selectedLogFile?.name
+                                    const report_csv = r.data.report_csv;
+                                    const url = new URL(report_csv);
+                                    const pathSegments = url.pathname.split('/');
+                                    const jobIdFromUrl = pathSegments[3];
+
                                     navigate(paths.DASHBOARD_PATH, {
                                         state: {
-                                            jobId: job.id
+                                            jobId: jobIdFromUrl
                                         }
-                                    })
-
+                                    });
                                 }
-                                setLoading(false)
+                                setLoading(false);
                             }
                             if (j.status === 'failed' || j.status === 'error') {
                                 setErrorMessage(r.data.error.split(';')[0]);
