@@ -13,6 +13,8 @@ import { secondsToDhm } from '../../../helpers/SecondsToDhm';
 import { dhmToString } from '../../../helpers/dhmToString';
 import GaugeChart from './GaugeChart';
 import PotentialCteChart from './PotentialCteChart';
+import CTEHeatmap from "./CTEHeatmap";
+import CTETable from "./CTETable";
 
 interface AllTransitionsLayoutProps {
     jobId: string;
@@ -34,6 +36,7 @@ const AllTransitionsLayout: React.FC<AllTransitionsLayoutProps> = ({ jobId }) =>
     const transitionsData = useFetchData(`http://154.56.63.127:5000/activity_transitions/${jobId}`);
     const potentialCteData = useFetchData(`http://154.56.63.127:5000/potential_cte/${jobId}`);
     const [showTable, setShowTable] = useState(false);
+    const [showTable2, setShowTable2] = useState(false);
     const [displayMode, setDisplayMode] = useState("total");
     const [pieChartDisplayMode, setPieChartDisplayMode] = useState("total");
 
@@ -42,6 +45,7 @@ const AllTransitionsLayout: React.FC<AllTransitionsLayoutProps> = ({ jobId }) =>
     }
 
     const toggleTable = () => setShowTable(!showTable);
+    const toggleTable2 = () => setShowTable2(!showTable2);
 
     if (!overviewData || !transitionsData) {
         return <div>Loading...</div>;
@@ -278,6 +282,24 @@ const AllTransitionsLayout: React.FC<AllTransitionsLayoutProps> = ({ jobId }) =>
                 <Grid item xs={8}>
                     <PotentialCteChart jsonData={potentialCteData} cte={processingTimePercentage} />
                 </Grid>
+                <Grid item xs={12}>
+                    <CTEHeatmap jobId={jobId}/>
+                </Grid>
+                <Grid item xs={12} style={{textAlign: 'center'}}>
+                <span onClick={toggleTable2}
+                      style={{cursor: 'pointer', display: 'inline-flex', alignItems: 'center', color: 'blue'}}>
+                    View as a table
+                    {showTable2 ?
+                        <ArrowDropUpIcon style={{verticalAlign: 'middle', fontSize: '1.5rem'}}/> :
+                        <ArrowDropDownIcon style={{verticalAlign: 'middle', fontSize: '1.5rem'}}/>
+                    }
+                </span>
+                </Grid>
+                {showTable2 && (
+                    <Grid item xs={12}>
+                        <CTETable jobId={jobId}/>
+                    </Grid>
+                )}
             </Grid>
         </Box>
     );

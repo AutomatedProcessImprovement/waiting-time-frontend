@@ -8,32 +8,33 @@ import {
 } from '@mui/x-data-grid';
 import RowDialog from '../RowDialog';
 import {Typography} from "@mui/material";
+import {useEffect, useState} from "react";
 
 const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID', hide:true, flex:0.01},
     { field: 'source_activity', headerName: 'Source activity', flex:0.05},
     { field: 'target_activity', headerName: 'Target activity', flex:0.05},
-    {
-        field: 'case_freq',
-        headerName: 'Case frequency',
-        type: 'number',
-        flex:0.02,
-        valueFormatter: params =>
-            ((params?.value * 100).toFixed(2) ) + "%"
-    },
-    {
-        field: 'total_freq',
-        headerName: 'Total frequency',
-        type: 'number',
-        flex:0.02
-    },
+    // {
+    //     field: 'case_freq',
+    //     headerName: 'Case frequency',
+    //     type: 'number',
+    //     flex:0.02,
+    //     valueFormatter: params =>
+    //         ((params?.value).toFixed(2) ) + "%"
+    // },
+    // {
+    //     field: 'total_freq',
+    //     headerName: 'Total frequency',
+    //     type: 'number',
+    //     flex:0.02
+    // },
     {
         field: 'cte_impact_total',
         headerName: 'Total waiting time',
         flex:0.02,
         type: 'number',
         valueFormatter: params =>
-            ((params?.value * 100).toFixed(2)) + "%"
+            ((params?.value).toFixed(2)) + "%"
     },
     {
         field: 'batching_impact',
@@ -43,7 +44,7 @@ const columns: GridColDef[] = [
         valueGetter: params =>
             params.row.cte_impact.batching_impact,
         valueFormatter: params =>
-            ((params?.value * 100).toFixed(2)) + "%"
+            ((params?.value).toFixed(2)) + "%"
     },
     {
         field: 'prioritization_impact',
@@ -53,7 +54,7 @@ const columns: GridColDef[] = [
         valueGetter: params =>
             params.row.cte_impact.prioritization_impact,
         valueFormatter: params =>
-            ((params?.value * 100).toFixed(2)) + "%"
+            ((params?.value).toFixed(2)) + "%"
 
     },
     {
@@ -64,7 +65,7 @@ const columns: GridColDef[] = [
         valueGetter: params =>
             params.row.cte_impact.contention_impact,
         valueFormatter: params =>
-            ((params?.value * 100).toFixed(2)) + "%"
+            ((params?.value).toFixed(2)) + "%"
     },
     {
         field: 'unavailability_impact',
@@ -74,7 +75,7 @@ const columns: GridColDef[] = [
         valueGetter: params =>
             params.row.cte_impact.unavailability_impact,
         valueFormatter: params =>
-            ((params?.value * 100).toFixed(2)) + "%"
+            ((params?.value).toFixed(2)) + "%"
     },
     {
         field: 'extraneous_impact',
@@ -84,7 +85,7 @@ const columns: GridColDef[] = [
         valueGetter: params =>
             params.row.cte_impact.extraneous_impact,
         valueFormatter: params =>
-            ((params?.value * 100).toFixed(2)) + "%"
+            ((params?.value).toFixed(2)) + "%"
     },
 
 ];
@@ -103,25 +104,37 @@ const add_index = (data:any) => {
     return data
 }
 
-export default function CTETable(data:any) {
-    let table_data = add_index(data.data.report)
-
+export default function CTETable({ jobId }: { jobId: string }) {
+    const [data, setData] = useState<any | null>(null);
     let [open, setOpen] = React.useState(false);
     const [selectedValue, setSelectedValue] = React.useState<string[]>([]);
     const [selectedTitle, setSelectedTitle] = React.useState<string>("");
 
+    useEffect(() => {
+        fetch(`http://154.56.63.127:5000/cte_improvement/${jobId}`)
+            .then((response) => response.json())
+            .then((data) => setData(data))
+            .catch((error) => console.error(error));
+    }, [jobId]);
+
+    if (!data) {
+        return <div>Loading...</div>;
+    }
+
+    console.log("DATA: ...", data);
+    let table_data = add_index(data.data)
 
     const handleClose = () => {
         setOpen(false);
     };
 
-    const onEvent: GridEventListener<'rowDoubleClick'> = (
-        params, // GridRowParams
-    ) => {
-        setOpen(true)
-        setSelectedValue(params.row.wt_by_resource as string[])
-        setSelectedTitle(params.row.source_activity + " - " + params.row.target_activity )
-    }
+    // const onEvent: GridEventListener<'rowDoubleClick'> = (
+    //     params, // GridRowParams
+    // ) => {
+    //     setOpen(true)
+    //     setSelectedValue(params.row.wt_by_resource as string[])
+    //     setSelectedTitle(params.row.source_activity + " - " + params.row.target_activity )
+    // }
 
     function CustomToolbar() {
         return (
@@ -145,7 +158,7 @@ export default function CTETable(data:any) {
                 pageSize={10}
                 rowsPerPageOptions={[10]}
                 components={{ Toolbar: CustomToolbar }}
-                onRowDoubleClick={onEvent}
+                // onRowDoubleClick={onEvent}
                 initialState={{
                     sorting: {
                         sortModel: [{ field: 'cte_impact_total', sort: 'desc' }],
@@ -169,7 +182,7 @@ export default function CTETable(data:any) {
             <RowDialog
                 open={open}
                 onClose={handleClose}
-                selectedValue={add_index_and_pt(selectedValue, data.data.total_pt, data.data.total_wt)}
+                selectedValue={add_index_and_pt(selectedValue, data.total_pt, data.total_wt)}
                 selectedTitle={selectedTitle}
                 type={1}/>
             {/*<TableHeatmap*/}

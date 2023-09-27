@@ -289,12 +289,18 @@ interface Props {
 
 function TransitionsBarChart({ data, selectedWTType }: Props) {
     let dataArray = [];
+
+    console.log("DATA from transitions bar chart: ", data);
+    console.log("Type: ", Array.isArray(data));
+
     if (Array.isArray(data.data) && data.data.length > 0) {
         dataArray = data.data;
     } else if (data.data) {
         dataArray = [data.data];
     } else if (data && Array.isArray(data)) {
         dataArray = data;
+    } else if (data && !Array.isArray(data)) {
+        dataArray = [data];
     } else if (data === []) {
         return <div>No data present</div>;
     } else {
@@ -429,11 +435,7 @@ function TransitionsBarChart({ data, selectedWTType }: Props) {
             }
         },
         title: {
-            text: 'Waiting time causes in activity transitions',
-            align: 'left'
-        },
-        subtitle: {
-            text: 'Total waiting time in activity transitions by its cause',
+            text: 'Waiting time causes',
             align: 'left'
         },
         xAxis: {

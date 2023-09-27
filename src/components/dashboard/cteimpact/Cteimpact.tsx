@@ -2,9 +2,9 @@ import {Box, Card, CardContent, Grid} from "@mui/material";
 import Infobox from "../Infobox";
 import * as React from "react";
 import CTEBarChart from "./CTEBarChart";
-import CTETable from "./CTETable";
+import CTETable from "../overview/CTETable";
 import CTELineChart from "./CTELineChart";
-import CTEHeatmap from "./CTEHeatmap";
+import CTEHeatmap from "../overview/CTEHeatmap";
 import CTETable2 from "./CTETable2";
 var moment = require("moment");
 require("moment-duration-format");
@@ -68,20 +68,20 @@ function Cteimpact(data:any) {
                         </Card>
                     </Grid>
                 </Grid>
-                <Grid item xs={12}>
-                    <Card>
-                        <CardContent>
-                            <CTEHeatmap data={data.data}/>
-                        </CardContent>
-                    </Card>
-                </Grid>
+                {/*<Grid item xs={12}>*/}
+                {/*    <Card>*/}
+                {/*        <CardContent>*/}
+                {/*            <CTEHeatmap data={data.data}/>*/}
+                {/*        </CardContent>*/}
+                {/*    </Card>*/}
+                {/*</Grid>*/}
             </Grid>
             <br/>
-            <Card>
-                <CardContent>
-                    <CTETable data={data.data}/>
-                </CardContent>
-            </Card>
+            {/*<Card>*/}
+            {/*    <CardContent>*/}
+            {/*        <CTETable data={data.data}/>*/}
+            {/*    </CardContent>*/}
+            {/*</Card>*/}
             <br/>
             <Card>
                 <CardContent>

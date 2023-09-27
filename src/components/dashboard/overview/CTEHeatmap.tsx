@@ -2,11 +2,25 @@ import * as React from "react";
 import HighchartsReact from "highcharts-react-official";
 import * as Highcharts from "highcharts";
 import HighchartsHeatmap from "highcharts/modules/heatmap";
+import {useEffect, useState} from "react";
 require("moment");
 HighchartsHeatmap(Highcharts);
 require("moment-duration-format");
-export default function CTEHeatmap(data: any) {
-    let report_data = [...data.data.report]
+export default function CTEHeatmap({ jobId }: { jobId: string }) {
+    const [data, setData] = useState<any | null>(null);
+
+    useEffect(() => {
+        fetch(`http://154.56.63.127:5000/cte_improvement/${jobId}`)
+            .then((response) => response.json())
+            .then((data) => setData(data))
+            .catch((error) => console.error(error));
+    }, [jobId]);
+
+    if (!data) {
+        return <div>Loading...</div>;
+    }
+
+    let report_data = [...data.data]
     let sorted_report = report_data.sort(
         (p1: any, p2:any) => (p1.cte_impact_total < p2.cte_impact_total ? 1 : (p1.cte_impact_total > p2.cte_impact_total) ? -1: 0)
     )
@@ -66,17 +80,17 @@ export default function CTEHeatmap(data: any) {
             reversed: true
         },
         colorAxis: {
-            min: data.data.process_cte,
-            max: 1,
+            min: 0,
+            max: 100,
             minColor: '#FFFFFF',
             maxColor: '#008000',
             tickPositioner: function() {
-                return [data.data.process_cte,1];
+                return [0,100];
             },
             labels: {
                 enabled: true,
                 formatter(this: any) {
-                    if (this.isFirst && this.pos === data.data.process_cte) {
+                    if (this.isFirst && this.pos === 0) {
                         return "No Improvement"
                     }
                     if (this.isLast && this.pos === 1) {
@@ -104,7 +118,7 @@ export default function CTEHeatmap(data: any) {
             enabled: false,
             formatter(this: Highcharts.TooltipFormatterContextObject) {
                 // @ts-ignore
-                return "CTE after removing: " + (this.point.value*100).toFixed(2) + "%"
+                return "CTE after removing: " + (this.point.value).toFixed(2) + "%"
             }
         },
 
@@ -118,7 +132,7 @@ export default function CTEHeatmap(data: any) {
                 formatter(this: any) {
 
                     // @ts-ignore
-                    return (this.point.value*100).toFixed(2) + "%"
+                    return (this.point.value).toFixed(2) + "%"
                 }
             }
         }],

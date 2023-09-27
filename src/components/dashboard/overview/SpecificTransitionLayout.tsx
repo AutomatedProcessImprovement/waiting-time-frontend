@@ -8,11 +8,23 @@ import TransitionsBarChart from './TransitionsBarChart';
 import WaitingTimeframe from "./WaitingTimeframe";
 import GaugeChart from "./GaugeChart";
 import overview from "./Overview";
+import PotentialCteChart from "./PotentialCteChart";
 
 interface SpecificTransitionLayoutProps {
     jobId: string;
     selectedActivityPair: string;
 }
+
+const useFetchData = (url: string) => {
+    const [data, setData] = useState<any>(null);
+    useEffect(() => {
+        fetch(url)
+            .then(response => response.json())
+            .then(jsonData => setData(jsonData))
+            .catch(error => console.error(`Error fetching data from ${url}: `, error));
+    }, [url]);
+    return data;
+};
 
 const SpecificTransitionLayout: React.FC<SpecificTransitionLayoutProps> = ({ jobId, selectedActivityPair }) => {
     const [overviewData, setOverviewData] = useState<any>(null);
@@ -44,17 +56,17 @@ const SpecificTransitionLayout: React.FC<SpecificTransitionLayoutProps> = ({ job
             .catch(error => console.error(`Error fetching data from ${url}: `, error));
     }, [jobId, sourceActivity, destinationActivity]);
 
-    if (!overviewData || !barChartData || !barChartDataByResource) {
+    const potentialCteData = useFetchData(`http://154.56.63.127:5000/potential_cte_filtered/${jobId}/${sourceActivity}/${destinationActivity}`);
+
+    if (!overviewData || !barChartData || !barChartDataByResource || !potentialCteData) {
         return <div>Loading...</div>;
     }
-
-    console.log("Hello: ",overviewData);
 
     if (overviewData && overviewData.specific_case_count == 0 && overviewData.specific_wttotal_sum == null) {
         return <strong>This transition has no waiting time</strong>;
     }
 
-    const specificCte = (overviewData.processing_time / (overviewData.specific_wttotal_sum + overviewData.processing_time)) * 100;
+    const specificCte = +parseFloat(((overviewData.processing_time / (overviewData.specific_wttotal_sum + overviewData.processing_time)) * 100).toFixed(1))
     const isMaxPairDefined = overviewData.max_wttotal_pair && overviewData.max_wttotal_pair[2] !== 0;
     const highestSourceText = isMaxPairDefined
         ? `Handover: ${overviewData.max_wttotal_pair[0]} - ${overviewData.max_wttotal_pair[1]}\n${dhmToString(secondsToDhm(overviewData.max_wttotal_pair[2]))}`
@@ -187,6 +199,9 @@ const SpecificTransitionLayout: React.FC<SpecificTransitionLayoutProps> = ({ job
                 </Grid>
                 <Grid item xs={4}>
                     <GaugeChart value={specificCte} />
+                </Grid>
+                <Grid item xs={8}>
+                    <PotentialCteChart jsonData={potentialCteData} cte={specificCte} />
                 </Grid>
             </Grid>
         </Box>
