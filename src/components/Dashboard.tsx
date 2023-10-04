@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, Suspense} from 'react';
 import axios from 'axios';
 import {useLocation} from 'react-router-dom';
 import {
@@ -22,13 +22,13 @@ import {
 import {SelectChangeEvent} from "@mui/material/Select";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import Download from '@mui/icons-material/CloudDownloadOutlined';
-import Overview from './dashboard/overview/Overview';
-import Batching from './dashboard/batching/Batching';
-import Prioritization from "./dashboard/prioritization/Prioritization";
-import Contention from "./dashboard/contention/Contention";
-import Unavailability from "./dashboard/unavailability/Unavailability";
-import Extraneous from "./dashboard/extraneous/Extraneous";
 
+const Overview = React.lazy(() => import('./dashboard/overview/Overview'));
+const Batching = React.lazy(() => import('./dashboard/batching/Batching'));
+const Prioritization = React.lazy(() => import('./dashboard/prioritization/Prioritization'));
+const Contention = React.lazy(() => import('./dashboard/contention/Contention'));
+const Unavailability = React.lazy(() => import('./dashboard/unavailability/Unavailability'));
+const Extraneous = React.lazy(() => import('./dashboard/extraneous/Extraneous'));
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -267,24 +267,38 @@ const BasicTabs = () => {
                 </Grid>
 
             </Box>
-            <TabPanel value={value} index={0}>
-                <Overview jobId={jobId} selectedActivityPair={selectedActivityPair}/>
-            </TabPanel>
-            <TabPanel value={value} index={1}>
-                <Batching jobId={jobId} selectedActivityPair={selectedActivityPair}/>
-            </TabPanel>
-            <TabPanel value={value} index={2}>
-                <Prioritization jobId={jobId} selectedActivityPair={selectedActivityPair}/>
-            </TabPanel>
-            <TabPanel value={value} index={3}>
-                <Contention jobId={jobId} selectedActivityPair={selectedActivityPair}/>
-            </TabPanel>
-            <TabPanel value={value} index={4}>
-                <Unavailability jobId={jobId} selectedActivityPair={selectedActivityPair}/>
-            </TabPanel>
-            <TabPanel value={value} index={5}>
-                <Extraneous jobId={jobId} selectedActivityPair={selectedActivityPair}/>
-            </TabPanel>
+            <Suspense fallback={<div>Loading...</div>}>
+                {value === 0 && (
+                    <TabPanel value={value} index={0}>
+                        <Overview jobId={jobId} selectedActivityPair={selectedActivityPair} />
+                    </TabPanel>
+                )}
+                {value === 1 && (
+                    <TabPanel value={value} index={1}>
+                        <Batching jobId={jobId} selectedActivityPair={selectedActivityPair} />
+                    </TabPanel>
+                )}
+                {value === 2 && (
+                    <TabPanel value={value} index={2}>
+                        <Prioritization jobId={jobId} selectedActivityPair={selectedActivityPair} />
+                    </TabPanel>
+                )}
+                {value === 3 && (
+                    <TabPanel value={value} index={3}>
+                        <Contention jobId={jobId} selectedActivityPair={selectedActivityPair} />
+                    </TabPanel>
+                )}
+                {value === 4 && (
+                    <TabPanel value={value} index={4}>
+                        <Unavailability jobId={jobId} selectedActivityPair={selectedActivityPair} />
+                    </TabPanel>
+                )}
+                {value === 5 && (
+                    <TabPanel value={value} index={5}>
+                        <Extraneous jobId={jobId} selectedActivityPair={selectedActivityPair} />
+                    </TabPanel>
+                )}
+            </Suspense>
         </Box>
     );
 }
