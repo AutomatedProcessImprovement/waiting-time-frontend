@@ -33,11 +33,11 @@ function Row(props: { row: any }) {
                 <TableCell align="right">{dhmToString(secondsToDhm(row.extraneous_wt))}</TableCell>
             </TableRow>
             <TableRow>
-                <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={11}>
+                <TableCell style={{paddingBottom: 0, paddingTop: 0}} colSpan={11}>
                     <Collapse in={open} timeout="auto" unmountOnExit>
-                        <Table aria-label="per_resource" style={{ tableLayout: 'fixed' }}>
+                        <Table aria-label="per_resource" style={{tableLayout: 'fixed'}}>
                             <TableHead>
-                                <TableRow >
+                                <TableRow>
                                     <TableCell/>
                                     <TableCell align="right">Source resource</TableCell>
                                     <TableCell align="right">Target Resource</TableCell>
@@ -59,12 +59,18 @@ function Row(props: { row: any }) {
                                         <TableCell align="right">{historyRow.target_resource}</TableCell>
                                         <TableCell align="right">{historyRow.case_freq}</TableCell>
                                         <TableCell align="right">{historyRow.total_freq}</TableCell>
-                                        <TableCell align="right">{dhmToString(secondsToDhm(historyRow.total_wt))}</TableCell>
-                                        <TableCell align="right">{dhmToString(secondsToDhm(historyRow.batching_wt))}</TableCell>
-                                        <TableCell align="right">{dhmToString(secondsToDhm(historyRow.prioritization_wt))}</TableCell>
-                                        <TableCell align="right">{dhmToString(secondsToDhm(historyRow.contention_wt))}</TableCell>
-                                        <TableCell align="right">{dhmToString(secondsToDhm(historyRow.unavailability_wt))}</TableCell>
-                                        <TableCell align="right">{dhmToString(secondsToDhm(historyRow.extraneous_wt))}</TableCell>
+                                        <TableCell
+                                            align="right">{dhmToString(secondsToDhm(historyRow.total_wt))}</TableCell>
+                                        <TableCell
+                                            align="right">{dhmToString(secondsToDhm(historyRow.batching_wt))}</TableCell>
+                                        <TableCell
+                                            align="right">{dhmToString(secondsToDhm(historyRow.prioritization_wt))}</TableCell>
+                                        <TableCell
+                                            align="right">{dhmToString(secondsToDhm(historyRow.contention_wt))}</TableCell>
+                                        <TableCell
+                                            align="right">{dhmToString(secondsToDhm(historyRow.unavailability_wt))}</TableCell>
+                                        <TableCell
+                                            align="right">{dhmToString(secondsToDhm(historyRow.extraneous_wt))}</TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>
@@ -75,4 +81,5 @@ function Row(props: { row: any }) {
         </React.Fragment>
     )
 }
+
 export default Row

@@ -190,14 +190,14 @@ import React from 'react';
 import AllTransitionsLayout from './AllTransitionsLayout';
 import SpecificTransitionLayout from './SpecificTransitionLayout';
 
-function Overview({ jobId, selectedActivityPair }: { jobId: string; selectedActivityPair: string; }) {
+function Overview({jobId, selectedActivityPair}: { jobId: string; selectedActivityPair: string; }) {
     return (
         <div>
             {selectedActivityPair === 'All transitions' ? (
-                <AllTransitionsLayout jobId={jobId} />
+                <AllTransitionsLayout jobId={jobId}/>
             ) : (
-                <SpecificTransitionLayout jobId={jobId} selectedActivityPair={selectedActivityPair} />
-                )
+                <SpecificTransitionLayout jobId={jobId} selectedActivityPair={selectedActivityPair}/>
+            )
             }
         </div>
     );

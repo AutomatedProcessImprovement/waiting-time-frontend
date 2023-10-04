@@ -12,9 +12,9 @@ import {Typography} from "@mui/material";
 import {useFetchData} from '../../../helpers/useFetchData';
 
 const columns: GridColDef[] = [
-    { field: 'id', headerName: 'ID', hide:true, flex:0.01},
-    { field: 'source_activity', headerName: 'Source activity', flex:0.05},
-    { field: 'target_activity', headerName: 'Target activity', flex:0.05},
+    {field: 'id', headerName: 'ID', hide: true, flex: 0.01},
+    {field: 'source_activity', headerName: 'Source activity', flex: 0.05},
+    {field: 'target_activity', headerName: 'Target activity', flex: 0.05},
     // {
     //     field: 'case_freq',
     //     headerName: 'Case frequency',
@@ -32,7 +32,7 @@ const columns: GridColDef[] = [
     {
         field: 'cte_impact_total',
         headerName: 'Total waiting time',
-        flex:0.02,
+        flex: 0.02,
         type: 'number',
         valueFormatter: params =>
             ((params?.value).toFixed(2)) + "%"
@@ -40,7 +40,7 @@ const columns: GridColDef[] = [
     {
         field: 'batching_impact',
         headerName: 'Batching',
-        flex:0.02,
+        flex: 0.02,
         type: 'number',
         valueGetter: params =>
             params.row.cte_impact.batching_impact,
@@ -50,7 +50,7 @@ const columns: GridColDef[] = [
     {
         field: 'prioritization_impact',
         headerName: 'Prioritization',
-        flex:0.02,
+        flex: 0.02,
         type: 'number',
         valueGetter: params =>
             params.row.cte_impact.prioritization_impact,
@@ -61,7 +61,7 @@ const columns: GridColDef[] = [
     {
         field: 'contention_impact',
         headerName: 'R. contention',
-        flex:0.02,
+        flex: 0.02,
         type: 'number',
         valueGetter: params =>
             params.row.cte_impact.contention_impact,
@@ -71,7 +71,7 @@ const columns: GridColDef[] = [
     {
         field: 'unavailability_impact',
         headerName: 'R. unavailability',
-        flex:0.02,
+        flex: 0.02,
         type: 'number',
         valueGetter: params =>
             params.row.cte_impact.unavailability_impact,
@@ -81,7 +81,7 @@ const columns: GridColDef[] = [
     {
         field: 'extraneous_impact',
         headerName: 'Extraneous',
-        flex:0.02,
+        flex: 0.02,
         type: 'number',
         valueGetter: params =>
             params.row.cte_impact.extraneous_impact,
@@ -90,22 +90,22 @@ const columns: GridColDef[] = [
     },
 
 ];
-const add_index_and_pt = (data:any, global_total_pt:number, global_total_wt:number) => {
+const add_index_and_pt = (data: any, global_total_pt: number, global_total_wt: number) => {
     for (let i = 0; i < data.length; i++) {
-        data[i].id = i+1
+        data[i].id = i + 1
         data[i].new_cte = global_total_pt / (global_total_pt + global_total_wt - data[i].total_wt)
     }
     return data
 }
 
-const add_index = (data:any) => {
+const add_index = (data: any) => {
     for (let i = 0; i < data.length; i++) {
-        data[i].id = i+1
+        data[i].id = i + 1
     }
     return data
 }
 
-export default function CTETable({ jobId }: { jobId: string }) {
+export default function CTETable({jobId}: { jobId: string }) {
     let [open, setOpen] = React.useState(false);
     const [selectedValue, setSelectedValue] = React.useState<string[]>([]);
     const [selectedTitle, setSelectedTitle] = React.useState<string>("");
@@ -134,16 +134,17 @@ export default function CTETable({ jobId }: { jobId: string }) {
     function CustomToolbar() {
         return (
             <GridToolbarContainer>
-                <GridToolbarColumnsButton />
-                <GridToolbarFilterButton />
-                <GridToolbarDensitySelector />
+                <GridToolbarColumnsButton/>
+                <GridToolbarFilterButton/>
+                <GridToolbarDensitySelector/>
                 {/*<GridToolbarHeatmap/>*/}
             </GridToolbarContainer>
         );
     }
+
     return (
         <>
-            <Typography variant="h5" component="div" sx={{ fontSize: 18 }}>
+            <Typography variant="h5" component="div" sx={{fontSize: 18}}>
                 Potential CTE improvement per transition and waiting time cause
             </Typography>
             <DataGrid
@@ -152,11 +153,11 @@ export default function CTETable({ jobId }: { jobId: string }) {
                 columns={columns}
                 pageSize={10}
                 rowsPerPageOptions={[10]}
-                components={{ Toolbar: CustomToolbar }}
+                components={{Toolbar: CustomToolbar}}
                 // onRowDoubleClick={onEvent}
                 initialState={{
                     sorting: {
-                        sortModel: [{ field: 'cte_impact_total', sort: 'desc' }],
+                        sortModel: [{field: 'cte_impact_total', sort: 'desc'}],
                     },
                 }}
                 componentsProps={{

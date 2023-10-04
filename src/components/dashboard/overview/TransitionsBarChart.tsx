@@ -288,7 +288,7 @@ interface Props {
     selectedWTType?: WTType;
 }
 
-function TransitionsBarChart({ data, selectedWTType }: Props) {
+function TransitionsBarChart({data, selectedWTType}: Props) {
     let dataArray = [];
 
     if (Array.isArray(data.data) && data.data.length > 0) {
@@ -316,11 +316,11 @@ function TransitionsBarChart({ data, selectedWTType }: Props) {
                 name: dataArray[dataKey].source_activity.trim().charAt(0).toUpperCase() + dataArray[dataKey].source_activity.trim().slice(1).toLowerCase() +
                     ' - ' + dataArray[dataKey].target_activity.trim().charAt(0).toUpperCase() + dataArray[dataKey].target_activity.trim().slice(1).toLowerCase(),
                 total_wt: dataArray[dataKey].total_wt,
-                batching_wt :dataArray[dataKey].batching_wt,
-                prioritization_wt :dataArray[dataKey].prioritization_wt,
-                contention_wt :dataArray[dataKey].contention_wt,
-                unavailability_wt :dataArray[dataKey].unavailability_wt,
-                extraneous_wt :dataArray[dataKey].extraneous_wt,
+                batching_wt: dataArray[dataKey].batching_wt,
+                prioritization_wt: dataArray[dataKey].prioritization_wt,
+                contention_wt: dataArray[dataKey].contention_wt,
+                unavailability_wt: dataArray[dataKey].unavailability_wt,
+                extraneous_wt: dataArray[dataKey].extraneous_wt,
 
             }
             pre_categories.push(out)
@@ -335,11 +335,11 @@ function TransitionsBarChart({ data, selectedWTType }: Props) {
             let out = {
                 name: formattedSource + ' - ' + formattedTarget,
                 total_wt: dataArray[dataKey].total_wt,
-                batching_wt :dataArray[dataKey].batching_wt,
-                prioritization_wt :dataArray[dataKey].prioritization_wt,
-                contention_wt :dataArray[dataKey].contention_wt,
-                unavailability_wt :dataArray[dataKey].unavailability_wt,
-                extraneous_wt :dataArray[dataKey].extraneous_wt,
+                batching_wt: dataArray[dataKey].batching_wt,
+                prioritization_wt: dataArray[dataKey].prioritization_wt,
+                contention_wt: dataArray[dataKey].contention_wt,
+                unavailability_wt: dataArray[dataKey].unavailability_wt,
+                extraneous_wt: dataArray[dataKey].extraneous_wt,
 
             }
             pre_categories.push(out)
@@ -347,7 +347,7 @@ function TransitionsBarChart({ data, selectedWTType }: Props) {
     }
 
     let sorted_categories = pre_categories.sort(
-        (p1,p2) => (p1.total_wt < p2.total_wt ? 1 : (p1.total_wt > p2.total_wt) ? -1: 0)
+        (p1, p2) => (p1.total_wt < p2.total_wt ? 1 : (p1.total_wt > p2.total_wt) ? -1 : 0)
     )
     for (const x in sorted_categories) {
 
@@ -510,4 +510,5 @@ function TransitionsBarChart({ data, selectedWTType }: Props) {
         </>
     )
 }
+
 export default TransitionsBarChart

@@ -13,7 +13,7 @@ interface ContentionAllTransitionsLayout {
     jobId: string;
 }
 
-const ContentionAllTransitionsLayout: React.FC<ContentionAllTransitionsLayout> = ({ jobId }) => {
+const ContentionAllTransitionsLayout: React.FC<ContentionAllTransitionsLayout> = ({jobId}) => {
     const overviewData = useFetchData(`/wt_overview/${jobId}/contention`);
     const transitionsData = useFetchData(`/activity_transitions/${jobId}`);
 
@@ -45,7 +45,7 @@ const ContentionAllTransitionsLayout: React.FC<ContentionAllTransitionsLayout> =
             text: null
         },
         tooltip: {
-            pointFormatter: function(this: any) {
+            pointFormatter: function (this: any) {
                 return `${this.series.name}: <b>${dhmToString(secondsToDhm(this.y))}</b>`;
             }
         },
@@ -82,30 +82,48 @@ const ContentionAllTransitionsLayout: React.FC<ContentionAllTransitionsLayout> =
                   alignItems={"stretch"}
             >
                 <Grid item xs={4}>
-                    <div style={{ textAlign: 'center', backgroundColor: '#fff', padding: '10px', borderRadius: '8px', border: '1px solid #ccc' }}>
-                        <div style={{ fontWeight: 'bold', fontSize: '1.2em' }}>Affected Cases</div>
+                    <div style={{
+                        textAlign: 'center',
+                        backgroundColor: '#fff',
+                        padding: '10px',
+                        borderRadius: '8px',
+                        border: '1px solid #ccc'
+                    }}>
+                        <div style={{fontWeight: 'bold', fontSize: '1.2em'}}>Affected Cases</div>
                         <div>{overviewData.distinct_cases} / {overviewData.cases}</div>
-                        <div style={{ width: '100%', height: '300px' }}>
-                            <HighchartsReact highcharts={Highcharts} options={caseFrequencyOptions} />
+                        <div style={{width: '100%', height: '300px'}}>
+                            <HighchartsReact highcharts={Highcharts} options={caseFrequencyOptions}/>
                         </div>
                     </div>
                 </Grid>
                 <Grid item xs={4}>
-                    <div style={{ textAlign: 'center', backgroundColor: '#fff', padding: '10px', borderRadius: '8px', border: '1px solid #ccc' }}>
-                        <div style={{ fontWeight: 'bold', fontSize: '1.2em' }}>WT due to Contention</div>
+                    <div style={{
+                        textAlign: 'center',
+                        backgroundColor: '#fff',
+                        padding: '10px',
+                        borderRadius: '8px',
+                        border: '1px solid #ccc'
+                    }}>
+                        <div style={{fontWeight: 'bold', fontSize: '1.2em'}}>WT due to Contention</div>
                         <div>{overviewData.wt_sum === 0 ? "0" : dhmToString(secondsToDhm(overviewData.wt_sum))}</div>
-                        <div style={{ width: '100%', height: '300px' }}>
-                            <HighchartsReact highcharts={Highcharts} options={waitingTimeOptions} />
+                        <div style={{width: '100%', height: '300px'}}>
+                            <HighchartsReact highcharts={Highcharts} options={waitingTimeOptions}/>
                         </div>
                     </div>
                 </Grid>
                 <Grid item xs={4}>
-                    <div style={{ textAlign: 'center', backgroundColor: '#fff', padding: '10px', borderRadius: '8px', border: '1px solid #ccc' }}>
-                        <div style={{ fontWeight: 'bold', fontSize: '1.2em', marginBottom: '20px' }}>Highest Source</div>
-                        <div style={{ textAlign: 'left' }}>Transition: {biggestSourceDestPair}</div>
-                        <div style={{ textAlign: 'left', marginBottom: '20px' }}>{valueText}</div>
-                        <div style={{ textAlign: 'left', whiteSpace: 'pre-line' }}>{highestSourceText}</div>
-                        <div style={{ textAlign: 'left', whiteSpace: 'pre-line' }}>{highestSourceValue}</div>
+                    <div style={{
+                        textAlign: 'center',
+                        backgroundColor: '#fff',
+                        padding: '10px',
+                        borderRadius: '8px',
+                        border: '1px solid #ccc'
+                    }}>
+                        <div style={{fontWeight: 'bold', fontSize: '1.2em', marginBottom: '20px'}}>Highest Source</div>
+                        <div style={{textAlign: 'left'}}>Transition: {biggestSourceDestPair}</div>
+                        <div style={{textAlign: 'left', marginBottom: '20px'}}>{valueText}</div>
+                        <div style={{textAlign: 'left', whiteSpace: 'pre-line'}}>{highestSourceText}</div>
+                        <div style={{textAlign: 'left', whiteSpace: 'pre-line'}}>{highestSourceValue}</div>
                     </div>
                 </Grid>
                 <Grid item xs={12}>

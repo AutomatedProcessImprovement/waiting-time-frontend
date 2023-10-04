@@ -8,9 +8,9 @@ var moment = require("moment");
 require("moment-duration-format");
 
 const columns: GridColDef[] = [
-    { field: 'id', headerName: 'ID', flex: 0.01, hide: true },
-    { field: 'source_activity', headerName: 'Source activity', flex: 0.015 },
-    { field: 'target_activity', headerName: 'Target activity', flex: 0.015 },
+    {field: 'id', headerName: 'ID', flex: 0.01, hide: true},
+    {field: 'source_activity', headerName: 'Source activity', flex: 0.015},
+    {field: 'target_activity', headerName: 'Target activity', flex: 0.015},
     {
         field: 'total_wt',
         headerName: 'Total waiting time',
@@ -68,7 +68,7 @@ const add_index = (data: any) => {
     return data
 }
 
-export default function TransitionsTable({ jobId }: { jobId: string }) {
+export default function TransitionsTable({jobId}: { jobId: string }) {
     const [table_data, setTableData] = useState([]);
     const [open, setOpen] = useState(false);
     const [selectedValue, setSelectedValue] = useState<string[]>([]);
@@ -102,11 +102,11 @@ export default function TransitionsTable({ jobId }: { jobId: string }) {
                 columns={columns}
                 pageSize={10}
                 rowsPerPageOptions={[10]}
-                components={{ Toolbar: GridToolbar }}
+                components={{Toolbar: GridToolbar}}
                 onRowDoubleClick={onEvent}
                 initialState={{
                     sorting: {
-                        sortModel: [{ field: 'total_wt', sort: 'desc' }],
+                        sortModel: [{field: 'total_wt', sort: 'desc'}],
                     },
                 }}
             />
@@ -115,7 +115,7 @@ export default function TransitionsTable({ jobId }: { jobId: string }) {
                 onClose={handleClose}
                 selectedValue={add_index(selectedValue)}
                 selectedTitle={selectedTitle}
-                type={0} />
+                type={0}/>
         </>
     );
 }

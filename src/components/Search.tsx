@@ -30,7 +30,7 @@ const Upload = () => {
         setErrorMessage("")
     };
 
-    const onChangeID = (event:any) => {
+    const onChangeID = (event: any) => {
         setSeletedID(event.target.value)
     }
     const navigate = useNavigate();
@@ -45,7 +45,7 @@ const Upload = () => {
                 };
                 axios(
                     config
-                ).then(((r:any) => {
+                ).then(((r: any) => {
                     let j = r.data
                     let logN = r.id
                     navigate(paths.DASHBOARD_PATH, {
@@ -72,9 +72,10 @@ const Upload = () => {
         <>
             <br/>
             <br/>
-            <Grid container alignItems="center" justifyContent="center" spacing={4} style={{ paddingTop: '10px' }} className="centeredContent">
+            <Grid container alignItems="center" justifyContent="center" spacing={4} style={{paddingTop: '10px'}}
+                  className="centeredContent">
                 <Grid item xs={6}>
-                    <Paper elevation={5} sx={{ p: 3, minHeight: '10vw' }}>
+                    <Paper elevation={5} sx={{p: 3, minHeight: '10vw'}}>
                         <Grid container spacing={2}>
                             <Grid item xs={12}>
                                 <Typography variant="h4" align="center">

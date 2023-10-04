@@ -15,13 +15,13 @@ interface MenuOptions {
 
 const menuOptions: Array<MenuOptions> =
     [
-        { title: "Find a result", to: "/search" },
-        { title: "Upload event log", to: "/upload" }
+        {title: "Find a result", to: "/search"},
+        {title: "Upload event log", to: "/upload"}
     ]
 
 function NavBar() {
     return (
-        <Box sx={{ flexGrow: 1 }}>
+        <Box sx={{flexGrow: 1}}>
             <AppBar position="static">
                 <Toolbar>
                     <IconButton
@@ -29,25 +29,25 @@ function NavBar() {
                         edge="start"
                         color="inherit"
                         aria-label="menu"
-                        sx={{ mr: 2 }}
+                        sx={{mr: 2}}
                         component={Link}
                         to={'/upload'}
                     >
                         <img
                             src={logo}
                             alt="Logo"
-                            style={{ height: '40px', marginLeft: '10px' }}
+                            style={{height: '40px', marginLeft: '10px'}}
                         />
                     </IconButton>
-                    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                    <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
                         Waiting Time Analyser
                     </Typography>
-                    {menuOptions.map(({ title, to }, index) => (
+                    {menuOptions.map(({title, to}, index) => (
                         <Button
                             key={`menu_item_btn_${index}`}
                             component={Link}
                             to={to}
-                            sx={{ my: 2, color: 'white', display: 'block' }}
+                            sx={{my: 2, color: 'white', display: 'block'}}
                         >
                             {title} |
                         </Button>

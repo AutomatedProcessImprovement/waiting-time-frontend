@@ -18,7 +18,7 @@ const colorDict: { [key: string]: string } = {
     Extraneous: "#B3B3B3",
 };
 
-export default function PotentialCteChart({ jsonData, cte }: BarChartBoxProps) {
+export default function PotentialCteChart({jsonData, cte}: BarChartBoxProps) {
     const categories = Object.keys(jsonData);
     const series = categories.map(category => ({
         name: category,
@@ -64,7 +64,7 @@ export default function PotentialCteChart({ jsonData, cte }: BarChartBoxProps) {
     };
 
     return (
-        <Card sx={{ minWidth: 500, minHeight: 450, zIndex: 100 }}>
+        <Card sx={{minWidth: 500, minHeight: 450, zIndex: 100}}>
             <HighchartsReact
                 highcharts={Highcharts}
                 options={options}

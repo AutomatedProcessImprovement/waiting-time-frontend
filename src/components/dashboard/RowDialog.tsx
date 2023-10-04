@@ -4,6 +4,7 @@ import {DataGrid, GridColDef} from "@mui/x-data-grid";
 
 var moment = require("moment");
 require("moment-duration-format");
+
 export interface SimpleDialogProps {
     open: boolean;
     selectedValue: string[];
@@ -13,27 +14,27 @@ export interface SimpleDialogProps {
 }
 
 const transitions_columns: GridColDef[] = [
-    { field: 'id', headerName: 'ID',flex: 0.01, hide:true},
-    { field: 'source_resource', headerName: 'Source resource', flex:0.015},
-    { field: 'target_resource', headerName: 'Target resource', flex:0.015},
+    {field: 'id', headerName: 'ID', flex: 0.01, hide: true},
+    {field: 'source_resource', headerName: 'Source resource', flex: 0.015},
+    {field: 'target_resource', headerName: 'Target resource', flex: 0.015},
     {
         field: 'case_freq',
         headerName: 'Case frequency',
         type: 'number',
-        flex:0.007,
+        flex: 0.007,
         valueFormatter: params =>
-            ((params?.value * 100).toFixed(2) ) + "%"
+            ((params?.value * 100).toFixed(2)) + "%"
     },
     {
         field: 'total_freq',
         headerName: 'Total frequency',
         type: 'number',
-        flex:0.007,
+        flex: 0.007,
     },
     {
         field: 'total_wt',
         headerName: 'Total waiting time',
-        flex:0.01,
+        flex: 0.01,
         type: 'number',
         valueFormatter: params =>
             moment.duration(params?.value, 'seconds').format('d[D] HH[H] mm[M]')
@@ -41,7 +42,7 @@ const transitions_columns: GridColDef[] = [
     {
         field: 'batching_wt',
         headerName: 'Batching',
-        flex:0.01,
+        flex: 0.01,
         type: 'number',
         valueFormatter: params =>
             moment.duration(params?.value, 'seconds').format('d[D] HH[H] mm[M]')
@@ -49,7 +50,7 @@ const transitions_columns: GridColDef[] = [
     {
         field: 'prioritization_wt',
         headerName: 'Prioritization',
-        flex:0.01,
+        flex: 0.01,
         type: 'number',
         valueFormatter: params =>
             moment.duration(params?.value, 'seconds').format('d[D] HH[H] mm[M]')
@@ -57,7 +58,7 @@ const transitions_columns: GridColDef[] = [
     {
         field: 'contention_wt',
         headerName: 'R. contention',
-        flex:0.01,
+        flex: 0.01,
         type: 'number',
         valueFormatter: params =>
             moment.duration(params?.value, 'seconds').format('d[D] HH[H] mm[M]')
@@ -65,7 +66,7 @@ const transitions_columns: GridColDef[] = [
     {
         field: 'unavailability_wt',
         headerName: 'R. unavailability',
-        flex:0.01,
+        flex: 0.01,
         type: 'number',
         valueFormatter: params =>
             moment.duration(params?.value, 'seconds').format('d[D] HH[H] mm[M]')
@@ -73,7 +74,7 @@ const transitions_columns: GridColDef[] = [
     {
         field: 'extraneous_wt',
         headerName: 'Extraneous',
-        flex:0.01,
+        flex: 0.01,
         type: 'number',
         valueFormatter: params =>
             moment.duration(params?.value, 'seconds').format('d[D] HH[H] mm[M]')
@@ -81,27 +82,27 @@ const transitions_columns: GridColDef[] = [
 
 ];
 const cte_columns: GridColDef[] = [
-    { field: 'id', headerName: 'ID', hide:true},
-    { field: 'source_resource', headerName: 'Source resource', flex: 0.045},
-    { field: 'target_resource', headerName: 'Target resource', flex: 0.045},
+    {field: 'id', headerName: 'ID', hide: true},
+    {field: 'source_resource', headerName: 'Source resource', flex: 0.045},
+    {field: 'target_resource', headerName: 'Target resource', flex: 0.045},
     {
         field: 'case_freq',
         headerName: 'Case frequency',
         type: 'number',
-        flex:0.02,
+        flex: 0.02,
         valueFormatter: params =>
-            ((params?.value * 100).toFixed(2) ) + "%"
+            ((params?.value * 100).toFixed(2)) + "%"
     },
     {
         field: 'total_freq',
         headerName: 'Total frequency',
         type: 'number',
-        flex:0.02,
+        flex: 0.02,
     },
     {
         field: 'new_cte',
         headerName: 'Total waiting time',
-        flex:0.02,
+        flex: 0.02,
         type: 'number',
         valueFormatter: params =>
             ((params?.value * 100).toFixed(2)) + "%"
@@ -109,7 +110,7 @@ const cte_columns: GridColDef[] = [
     {
         field: 'batching_impact',
         headerName: 'Batching',
-        flex:0.02,
+        flex: 0.02,
         type: 'number',
         valueGetter: params =>
             params.row.cte_impact.batching_impact,
@@ -119,7 +120,7 @@ const cte_columns: GridColDef[] = [
     {
         field: 'prioritization_impact',
         headerName: 'Prioritization',
-        flex:0.02,
+        flex: 0.02,
         type: 'number',
         valueGetter: params =>
             params.row.cte_impact.prioritization_impact,
@@ -130,7 +131,7 @@ const cte_columns: GridColDef[] = [
     {
         field: 'contention_impact',
         headerName: 'R. contention',
-        flex:0.02,
+        flex: 0.02,
         type: 'number',
         valueGetter: params =>
             params.row.cte_impact.contention_impact,
@@ -140,7 +141,7 @@ const cte_columns: GridColDef[] = [
     {
         field: 'unavailability_impact',
         headerName: 'R. unavailability',
-        flex:0.02,
+        flex: 0.02,
         type: 'number',
         valueGetter: params =>
             params.row.cte_impact.unavailability_impact,
@@ -150,7 +151,7 @@ const cte_columns: GridColDef[] = [
     {
         field: 'extraneous_impact',
         headerName: 'Extraneous',
-        flex:0.02,
+        flex: 0.02,
         type: 'number',
         valueGetter: params =>
             params.row.cte_impact.extraneous_impact,
@@ -162,7 +163,7 @@ const cte_columns: GridColDef[] = [
 ];
 
 export default function RowDialog(props: SimpleDialogProps) {
-    const { onClose, selectedValue, open, type, selectedTitle } = props;
+    const {onClose, selectedValue, open, type, selectedTitle} = props;
     const handleClose = () => {
         onClose(selectedValue);
     };
@@ -198,15 +199,15 @@ export default function RowDialog(props: SimpleDialogProps) {
                             rows={selectedValue}
                             initialState={{
                                 sorting: {
-                                    sortModel: [{ field: 'total_wt', sort: 'desc' }],
+                                    sortModel: [{field: 'total_wt', sort: 'desc'}],
                                 },
-                        }}/>
+                            }}/>
                     </>
                     <Button onClick={() => handleClose()}>Close</Button>
                 </Box>
             </Modal>
         );
-    //    Can be expanded to be used in multiple different types
+        //    Can be expanded to be used in multiple different types
     } else {
         console.log(selectedValue)
         return (
@@ -216,7 +217,8 @@ export default function RowDialog(props: SimpleDialogProps) {
                         {selectedTitle}
                     </Typography>
                     <Typography id="modal-modal-description" sx={{mt: 2}}>
-                        Potential CTE if waiting times of a particular cause are eliminated per resource pair in the selected transition
+                        Potential CTE if waiting times of a particular cause are eliminated per resource pair in the
+                        selected transition
                     </Typography>
                     <>
                         <DataGrid autoHeight={true}
@@ -224,10 +226,11 @@ export default function RowDialog(props: SimpleDialogProps) {
                                   rowsPerPageOptions={[10]}
                                   columns={cte_columns} rows={selectedValue}
                                   initialState={{
-                                    sorting: {
-                                        sortModel: [{ field: 'total_wt', sort: 'desc' }],
-                                    }}}
-                            />
+                                      sorting: {
+                                          sortModel: [{field: 'total_wt', sort: 'desc'}],
+                                      }
+                                  }}
+                        />
                     </>
                     <Button onClick={() => handleClose()}>Close</Button>
                 </Box>

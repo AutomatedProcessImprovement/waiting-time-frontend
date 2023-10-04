@@ -21,7 +21,7 @@ interface AllTransitionsLayoutProps {
     jobId: string;
 }
 
-const AllTransitionsLayout: React.FC<AllTransitionsLayoutProps> = ({ jobId }) => {
+const AllTransitionsLayout: React.FC<AllTransitionsLayoutProps> = ({jobId}) => {
     const overviewData = useFetchData(`/overview/${jobId}`);
     const transitionsData = useFetchData(`/activity_transitions/${jobId}`);
     const potentialCteData = useFetchData(`/potential_cte/${jobId}`);
@@ -112,7 +112,7 @@ const AllTransitionsLayout: React.FC<AllTransitionsLayoutProps> = ({ jobId }) =>
             text: ''
         },
         tooltip: {
-            pointFormatter: function(this: any) {
+            pointFormatter: function (this: any) {
                 return `${this.series.name}: <b>${dhmToString(secondsToDhm(this.y))}</b>`;
             }
         },
@@ -185,16 +185,29 @@ const AllTransitionsLayout: React.FC<AllTransitionsLayoutProps> = ({ jobId }) =>
                     </Grid>
                 </Grid>
                 <Grid item xs={4}>
-                    <div style={{ textAlign: 'center', backgroundColor: '#fff', padding: '10px', borderRadius: '8px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                    <div style={{
+                        textAlign: 'center',
+                        backgroundColor: '#fff',
+                        padding: '10px',
+                        borderRadius: '8px',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'space-between'
+                    }}>
 
-                        <div style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                        <div style={{
+                            position: 'relative',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                        }}>
 
-                            <div style={{ fontSize: 'large', marginBottom: '5px' }}>
+                            <div style={{fontSize: 'large', marginBottom: '5px'}}>
                                 Cycle Time
                             </div>
 
-                            <div style={{ position: 'absolute', right: 0, top: '50%', transform: 'translateY(-50%)' }}>
-                                <FormControl variant="outlined" size="small" style={{ marginBottom: '10px' }}>
+                            <div style={{position: 'absolute', right: 0, top: '50%', transform: 'translateY(-50%)'}}>
+                                <FormControl variant="outlined" size="small" style={{marginBottom: '10px'}}>
                                     <InputLabel>Data Mode</InputLabel>
                                     <Select
                                         value={displayMode}
@@ -208,26 +221,39 @@ const AllTransitionsLayout: React.FC<AllTransitionsLayoutProps> = ({ jobId }) =>
                             </div>
                         </div>
 
-                        <div style={{ fontSize: 'small', marginBottom: '10px' }}>
+                        <div style={{fontSize: 'small', marginBottom: '10px'}}>
                             {displayMode === "total"
                                 ? `Total Cycle Time: ${dhmToString(secondsToDhm(totalCycleTime))}`
                                 : `Average Cycle Time: ${dhmToString(secondsToDhm(avgCycleTime))}`}
                         </div>
 
-                        <HighchartsReact key={displayMode} highcharts={Highcharts} options={cycleTimeOptions} />
+                        <HighchartsReact key={displayMode} highcharts={Highcharts} options={cycleTimeOptions}/>
                     </div>
                 </Grid>
                 <Grid item xs={6}>
-                    <div style={{ textAlign: 'center', backgroundColor: '#fff', padding: '10px', borderRadius: '8px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                    <div style={{
+                        textAlign: 'center',
+                        backgroundColor: '#fff',
+                        padding: '10px',
+                        borderRadius: '8px',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'space-between'
+                    }}>
 
-                        <div style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                        <div style={{
+                            position: 'relative',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                        }}>
 
-                            <div style={{ fontSize: 'large' }}>
+                            <div style={{fontSize: 'large'}}>
                                 Waiting Times Distribution
                             </div>
 
-                            <div style={{ position: 'absolute', right: 0, top: '50%', transform: 'translateY(-50%)' }}>
-                                <FormControl variant="outlined" size="small" style={{ marginBottom: '10px' }}>
+                            <div style={{position: 'absolute', right: 0, top: '50%', transform: 'translateY(-50%)'}}>
+                                <FormControl variant="outlined" size="small" style={{marginBottom: '10px'}}>
                                     <InputLabel>Data Mode</InputLabel>
                                     <Select
                                         value={pieChartDisplayMode}
@@ -267,10 +293,10 @@ const AllTransitionsLayout: React.FC<AllTransitionsLayoutProps> = ({ jobId }) =>
                     </Grid>
                 )}
                 <Grid item xs={4}>
-                    <GaugeChart value={processingTimePercentage} />
+                    <GaugeChart value={processingTimePercentage}/>
                 </Grid>
                 <Grid item xs={8}>
-                    <PotentialCteChart jsonData={potentialCteData} cte={processingTimePercentage} />
+                    <PotentialCteChart jsonData={potentialCteData} cte={processingTimePercentage}/>
                 </Grid>
                 <Grid item xs={12}>
                     <CTEHeatmap jobId={jobId}/>

@@ -20,7 +20,7 @@ const Upload = () => {
     const [snackColor, setSnackColor] = useState<AlertColor | undefined>(undefined)
 
 
-    const handleClose = (cancel:boolean, values: object) => {
+    const handleClose = (cancel: boolean, values: object) => {
         if (cancel) {
             setLoading(false);
         } else {
@@ -88,7 +88,7 @@ const Upload = () => {
             axios(
                 config
             )
-                .then(((res:any) => {
+                .then(((res: any) => {
                     let job = res.data
                     console.log(job.id)
                     setInfoMessage("'Analysis in progress...\n Job ID: " + job.id);
@@ -96,7 +96,7 @@ const Upload = () => {
                     let f = setInterval(() => {
                         axios.get(
                             'http://154.56.63.127:8080/jobs/' + job.id,
-                        ).then((r:any)  => {
+                        ).then((r: any) => {
                             let j = r.data
                             console.log(j.status)
                             if (j.status === 'completed') {
@@ -159,9 +159,10 @@ const Upload = () => {
         <>
             <br/>
             <br/>
-            <Grid container alignItems="center" justifyContent="center" spacing={4} style={{ paddingTop: '10px' }} className="centeredContent">
+            <Grid container alignItems="center" justifyContent="center" spacing={4} style={{paddingTop: '10px'}}
+                  className="centeredContent">
                 <Grid item xs={6}>
-                    <Paper elevation={5} sx={{ p: 3, minHeight: '20vw' }}>
+                    <Paper elevation={5} sx={{p: 3, minHeight: '20vw'}}>
                         <Grid container spacing={2}>
                             <Grid item xs={12}>
                                 <Typography variant="h4" align="center">

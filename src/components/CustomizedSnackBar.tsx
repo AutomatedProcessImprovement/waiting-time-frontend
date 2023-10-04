@@ -17,7 +17,7 @@ interface CustomizedSnackbarProps {
 }
 
 const CustomizedSnackbar = (props: CustomizedSnackbarProps) => {
-    const { message, onSnackbarClose, severityLevel } = props
+    const {message, onSnackbarClose, severityLevel} = props
     const [open, setOpen] = useState(message !== "")
     const [alertMessage, setAlertMessage] = useState(message)
     const [severity, setSeverity] = useState(severityLevel || "error")
@@ -46,7 +46,7 @@ const CustomizedSnackbar = (props: CustomizedSnackbarProps) => {
 
     return (
         <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
-            <Alert onClose={handleClose} severity={severity} sx={{ width: '100%' }}>
+            <Alert onClose={handleClose} severity={severity} sx={{width: '100%'}}>
                 {alertMessage}
             </Alert>
         </Snackbar>

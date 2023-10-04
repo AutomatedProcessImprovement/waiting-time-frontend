@@ -9,12 +9,12 @@ const useStyles = makeStyles({
 
 interface CustomDropzoneAreaProps {
     acceptedFiles: string[];
-    setSelectedLogFile: (file:any) => void;
+    setSelectedLogFile: (file: any) => void;
 }
 
 const CustomDropzoneArea = (props: CustomDropzoneAreaProps) => {
     const classes = useStyles();
-    const { acceptedFiles, setSelectedLogFile} = props
+    const {acceptedFiles, setSelectedLogFile} = props
     const onAlert = () => {
     };
 

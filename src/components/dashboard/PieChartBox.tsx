@@ -13,11 +13,11 @@ const _colorDict = {
 }
 const COLORS = [_colorDict.extraneous, _colorDict.batching, _colorDict.unavailability, _colorDict.contention, _colorDict.prioritization]
 
-export default function PieChartBox(data:any) {
+export default function PieChartBox(data: any) {
     const processed_data = []
     for (const dataKey in data.data) {
         let out = {
-            name:data.data[dataKey].name.charAt(0).toUpperCase() + data.data[dataKey].name.slice(1).toLowerCase(),
+            name: data.data[dataKey].name.charAt(0).toUpperCase() + data.data[dataKey].name.slice(1).toLowerCase(),
             y: data.data[dataKey].value,
             custom: {label_info: data.data[dataKey].label}
 
@@ -77,8 +77,8 @@ export default function PieChartBox(data:any) {
         }]
     }
 
-    return(
-        <Card sx={{ minWidth: 500, minHeight: 450, zIndex: 100 }} >
+    return (
+        <Card sx={{minWidth: 500, minHeight: 450, zIndex: 100}}>
             <HighchartsReact
                 highcharts={Highcharts}
                 options={options}

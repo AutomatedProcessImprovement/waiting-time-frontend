@@ -15,7 +15,7 @@ interface SpecificTransitionLayoutProps {
     selectedActivityPair: string;
 }
 
-const SpecificTransitionLayout: React.FC<SpecificTransitionLayoutProps> = ({ jobId, selectedActivityPair }) => {
+const SpecificTransitionLayout: React.FC<SpecificTransitionLayoutProps> = ({jobId, selectedActivityPair}) => {
     const [sourceActivity, destinationActivity] = selectedActivityPair.split(' - ');
 
     const overviewData = useFetchData(`/case_overview/${jobId}/${sourceActivity}/${destinationActivity}`);
@@ -61,7 +61,7 @@ const SpecificTransitionLayout: React.FC<SpecificTransitionLayoutProps> = ({ job
             text: null
         },
         tooltip: {
-            pointFormatter: function(this: any) {
+            pointFormatter: function (this: any) {
                 return `${this.series.name}: <b>${dhmToString(secondsToDhm(this.y))}</b>`;
             }
         },
@@ -74,9 +74,12 @@ const SpecificTransitionLayout: React.FC<SpecificTransitionLayoutProps> = ({ job
         }]
     };
 
-    const highestSource = Object.entries(overviewData.specific_sums).reduce<{ key: string, value: number }>((acc, [key, value]) => {
-        return (value as number) > acc.value ? { key, value: value as number } : acc;
-    }, { key: '', value: 0 });
+    const highestSource = Object.entries(overviewData.specific_sums).reduce<{
+        key: string,
+        value: number
+    }>((acc, [key, value]) => {
+        return (value as number) > acc.value ? {key, value: value as number} : acc;
+    }, {key: '', value: 0});
 
     let causeText = "No highest cause";
     let valueText = "0";
@@ -124,29 +127,47 @@ const SpecificTransitionLayout: React.FC<SpecificTransitionLayoutProps> = ({ job
                   alignItems={"stretch"}
             >
                 <Grid item xs={4}>
-                    <div style={{ textAlign: 'center', backgroundColor: '#fff', padding: '10px', borderRadius: '8px', border: '1px solid #ccc' }}>
-                        <div style={{ fontWeight: 'bold', fontSize: '1.2em' }}>Case Frequency</div>
+                    <div style={{
+                        textAlign: 'center',
+                        backgroundColor: '#fff',
+                        padding: '10px',
+                        borderRadius: '8px',
+                        border: '1px solid #ccc'
+                    }}>
+                        <div style={{fontWeight: 'bold', fontSize: '1.2em'}}>Case Frequency</div>
                         <div>{overviewData.specific_case_count} / {overviewData.total_case_count}</div>
-                        <div style={{ width: '100%', height: '300px' }}>
-                            <HighchartsReact highcharts={Highcharts} options={caseFrequencyOptions} />
+                        <div style={{width: '100%', height: '300px'}}>
+                            <HighchartsReact highcharts={Highcharts} options={caseFrequencyOptions}/>
                         </div>
                     </div>
                 </Grid>
                 <Grid item xs={4}>
-                    <div style={{ textAlign: 'center', backgroundColor: '#fff', padding: '10px', borderRadius: '8px', border: '1px solid #ccc' }}>
-                        <div style={{ fontWeight: 'bold', fontSize: '1.2em' }}>Waiting Time in Transition</div>
+                    <div style={{
+                        textAlign: 'center',
+                        backgroundColor: '#fff',
+                        padding: '10px',
+                        borderRadius: '8px',
+                        border: '1px solid #ccc'
+                    }}>
+                        <div style={{fontWeight: 'bold', fontSize: '1.2em'}}>Waiting Time in Transition</div>
                         <div>{overviewData.specific_wttotal_sum === 0 ? "0" : dhmToString(secondsToDhm(overviewData.specific_wttotal_sum))}</div>
-                        <div style={{ width: '100%', height: '300px' }}>
-                            <HighchartsReact highcharts={Highcharts} options={waitingTimeOptions} />
+                        <div style={{width: '100%', height: '300px'}}>
+                            <HighchartsReact highcharts={Highcharts} options={waitingTimeOptions}/>
                         </div>
                     </div>
                 </Grid>
                 <Grid item xs={4}>
-                    <div style={{ textAlign: 'center', backgroundColor: '#fff', padding: '10px', borderRadius: '8px', border: '1px solid #ccc' }}>
-                        <div style={{ fontWeight: 'bold', fontSize: '1.2em', marginBottom: '20px' }}>Highest Source</div>
-                        <div style={{ textAlign: 'left' }}>Cause: {causeText}</div>
-                        <div style={{ textAlign: 'left' }}>{valueText}</div>
-                        <div style={{ textAlign: 'left', whiteSpace: 'pre-line' }}>{highestSourceText}</div>
+                    <div style={{
+                        textAlign: 'center',
+                        backgroundColor: '#fff',
+                        padding: '10px',
+                        borderRadius: '8px',
+                        border: '1px solid #ccc'
+                    }}>
+                        <div style={{fontWeight: 'bold', fontSize: '1.2em', marginBottom: '20px'}}>Highest Source</div>
+                        <div style={{textAlign: 'left'}}>Cause: {causeText}</div>
+                        <div style={{textAlign: 'left'}}>{valueText}</div>
+                        <div style={{textAlign: 'left', whiteSpace: 'pre-line'}}>{highestSourceText}</div>
                     </div>
                 </Grid>
                 <Grid item xs={12}>
@@ -163,10 +184,10 @@ const SpecificTransitionLayout: React.FC<SpecificTransitionLayoutProps> = ({ job
                     <TransitionsBarChart data={barChartDataByResource}/>
                 </Grid>
                 <Grid item xs={4}>
-                    <GaugeChart value={specificCte} />
+                    <GaugeChart value={specificCte}/>
                 </Grid>
                 <Grid item xs={8}>
-                    <PotentialCteChart jsonData={potentialCteData} cte={specificCte} />
+                    <PotentialCteChart jsonData={potentialCteData} cte={specificCte}/>
                 </Grid>
             </Grid>
         </Box>

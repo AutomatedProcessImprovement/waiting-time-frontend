@@ -19,7 +19,7 @@ export interface SimpleDialogProps {
 }
 
 export default function MappingDialog(props: SimpleDialogProps) {
-    const { onClose, selectedValue, open } = props;
+    const {onClose, selectedValue, open} = props;
     const [snackMessage, setSnackMessage] = useState("");
     const [snackColor, setSnackColor] = useState<AlertColor | undefined>(undefined);
     const [currentMapping, setCurrentMapping] = useState<string[]>(Array(selectedValue.length).fill(""));
@@ -85,8 +85,8 @@ export default function MappingDialog(props: SimpleDialogProps) {
                 <List>
                     {selectedValue.map((columnName, index) => (
                         <ListItem key={columnName}>
-                            <ListItemText primary={columnName} />
-                            <FormControl sx={{ m: 1, minWidth: 250 }}>
+                            <ListItemText primary={columnName}/>
+                            <FormControl sx={{m: 1, minWidth: 250}}>
                                 <InputLabel id="demo-simple-select-helper-label">Type</InputLabel>
                                 <Select
                                     id={columnName}

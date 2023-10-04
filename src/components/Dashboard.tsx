@@ -52,7 +52,7 @@ const useFetchActivityPairs = (jobId: string) => {
 };
 
 function TabPanel(props: TabPanelProps) {
-    const { children, value, index, ...other } = props;
+    const {children, value, index, ...other} = props;
 
     return (
         <div
@@ -63,7 +63,7 @@ function TabPanel(props: TabPanelProps) {
             {...other}
         >
             {value === index && (
-                <Box sx={{ p: 3 }}>
+                <Box sx={{p: 3}}>
                     {children}
                 </Box>
             )}
@@ -78,7 +78,7 @@ function a11yProps(index: number) {
     };
 }
 
-const ActivityPairSelector = ({ selectedActivityPair, handleActivityPairChange, activityPairs }: any) => (
+const ActivityPairSelector = ({selectedActivityPair, handleActivityPairChange, activityPairs}: any) => (
     <FormControl variant="outlined" size="small">
         <InputLabel htmlFor="activity-pair-selector">Activity Pair</InputLabel>
         <Select
@@ -123,8 +123,8 @@ const BasicTabs = () => {
     const anchorRef = React.useRef<HTMLDivElement>(null);
     const [selectedIndex, setSelectedIndex] = useState(0);
     const [selectedActivityPair, setSelectedActivityPair] = useState<string>('All transitions');
-    const { state } = useLocation();
-    const { jobId } = state as { jobId: string };
+    const {state} = useLocation();
+    const {jobId} = state as { jobId: string };
     const activityPairs = useFetchActivityPairs(jobId);
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -170,7 +170,7 @@ const BasicTabs = () => {
     };
 
     return (
-        <Box sx={{ width: '100%', mt: 1, zIndex: 100000 }}>
+        <Box sx={{width: '100%', mt: 1, zIndex: 100000}}>
             <Box>
                 <Grid
                     container
@@ -199,7 +199,8 @@ const BasicTabs = () => {
                         </Tabs>
                     </Grid>
                     <Grid item>
-                        <ButtonGroup variant="contained" ref={anchorRef} aria-label="split button" sx={{zIndex: 100000}}>
+                        <ButtonGroup variant="contained" ref={anchorRef} aria-label="split button"
+                                     sx={{zIndex: 100000}}>
                             <Tooltip title={'Download as CSV'}>
                                 <Button size="small"
                                         aria-controls={open ? 'split-button-menu' : undefined}
@@ -208,7 +209,7 @@ const BasicTabs = () => {
                                         aria-haspopup="menu"
                                         onClick={handleClick}>
 
-                                    <Download />
+                                    <Download/>
                                 </Button>
                             </Tooltip>
                             <Button
@@ -219,7 +220,7 @@ const BasicTabs = () => {
                                 aria-haspopup="menu"
                                 onClick={handleToggle}
                             >
-                                <ArrowDropDownIcon />
+                                <ArrowDropDownIcon/>
                             </Button>
                         </ButtonGroup>
                         <Popper
@@ -231,7 +232,7 @@ const BasicTabs = () => {
                             sx={{zIndex: 100000}}
                             style={{zIndex: 100000}}
                         >
-                            {({ TransitionProps, placement }) => (
+                            {({TransitionProps, placement}) => (
                                 <Grow
                                     {...TransitionProps}
                                     style={{
@@ -266,22 +267,22 @@ const BasicTabs = () => {
 
             </Box>
             <TabPanel value={value} index={0}>
-                <Overview jobId={jobId} selectedActivityPair={selectedActivityPair} />
+                <Overview jobId={jobId} selectedActivityPair={selectedActivityPair}/>
             </TabPanel>
             <TabPanel value={value} index={1}>
-                <Batching jobId={jobId} selectedActivityPair={selectedActivityPair} />
+                <Batching jobId={jobId} selectedActivityPair={selectedActivityPair}/>
             </TabPanel>
             <TabPanel value={value} index={2}>
-                <Prioritization jobId={jobId} selectedActivityPair={selectedActivityPair} />
+                <Prioritization jobId={jobId} selectedActivityPair={selectedActivityPair}/>
             </TabPanel>
             <TabPanel value={value} index={3}>
-                <Contention jobId={jobId} selectedActivityPair={selectedActivityPair} />
+                <Contention jobId={jobId} selectedActivityPair={selectedActivityPair}/>
             </TabPanel>
             <TabPanel value={value} index={4}>
-                <Unavailability jobId={jobId} selectedActivityPair={selectedActivityPair} />
+                <Unavailability jobId={jobId} selectedActivityPair={selectedActivityPair}/>
             </TabPanel>
             <TabPanel value={value} index={5}>
-                <Extraneous jobId={jobId} selectedActivityPair={selectedActivityPair} />
+                <Extraneous jobId={jobId} selectedActivityPair={selectedActivityPair}/>
             </TabPanel>
         </Box>
     );

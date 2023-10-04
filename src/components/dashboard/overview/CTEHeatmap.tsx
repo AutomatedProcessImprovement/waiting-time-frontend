@@ -7,7 +7,7 @@ import {useFetchData} from '../../../helpers/useFetchData';
 require("moment");
 HighchartsHeatmap(Highcharts);
 require("moment-duration-format");
-export default function CTEHeatmap({ jobId }: { jobId: string }) {
+export default function CTEHeatmap({jobId}: { jobId: string }) {
     const data = useFetchData(`/cte_improvement/${jobId}`);
 
     if (!data) {
@@ -16,19 +16,19 @@ export default function CTEHeatmap({ jobId }: { jobId: string }) {
 
     let report_data = [...data.data]
     let sorted_report = report_data.sort(
-        (p1: any, p2:any) => (p1.cte_impact_total < p2.cte_impact_total ? 1 : (p1.cte_impact_total > p2.cte_impact_total) ? -1: 0)
+        (p1: any, p2: any) => (p1.cte_impact_total < p2.cte_impact_total ? 1 : (p1.cte_impact_total > p2.cte_impact_total) ? -1 : 0)
     )
 
-    let heatmap_data = sorted_report.slice(0,10)
+    let heatmap_data = sorted_report.slice(0, 10)
 
     let categories = [] as string[]
     // Data format for heatmap = [[x,y, val], [x2,y2, val], ...]
     let key_number_correspondents = {
-        batching_impact : 0,
-        prioritization_impact : 1,
-        contention_impact : 2,
-        unavailability_impact : 3,
-        extraneous_impact : 4
+        batching_impact: 0,
+        prioritization_impact: 1,
+        contention_impact: 2,
+        unavailability_impact: 3,
+        extraneous_impact: 4
     }
     let processed_data = []
     for (const dataKey in heatmap_data) {
@@ -78,8 +78,8 @@ export default function CTEHeatmap({ jobId }: { jobId: string }) {
             max: 100,
             minColor: '#FFFFFF',
             maxColor: '#008000',
-            tickPositioner: function() {
-                return [0,100];
+            tickPositioner: function () {
+                return [0, 100];
             },
             labels: {
                 enabled: true,

@@ -204,7 +204,12 @@ const _colorDict = {
 
 type WTType = keyof typeof _colorDict;
 
-const WaitingTimeframe = ({ jobId, sourceActivity, destinationActivity, wtType }: { jobId: string; sourceActivity?: string; destinationActivity?: string; wtType?: WTType }) => {
+const WaitingTimeframe = ({jobId, sourceActivity, destinationActivity, wtType}: {
+    jobId: string;
+    sourceActivity?: string;
+    destinationActivity?: string;
+    wtType?: WTType
+}) => {
     const [chartData, setChartData] = React.useState<any[]>([]);
     const [timeUnit, setTimeUnit] = React.useState<moment.unitOfTime.StartOf>('day');
 
@@ -213,7 +218,7 @@ const WaitingTimeframe = ({ jobId, sourceActivity, destinationActivity, wtType }
         data.forEach((dayData: any) => {
             const key = moment(dayData.day).startOf(timeUnit).format('YYYY-MM-DD');
             if (!aggregatedData[key]) {
-                aggregatedData[key] = { ...dayData };
+                aggregatedData[key] = {...dayData};
             } else {
                 Object.keys(dayData).forEach((field) => {
                     if (field !== 'day') {
@@ -233,7 +238,7 @@ const WaitingTimeframe = ({ jobId, sourceActivity, destinationActivity, wtType }
                     name: wtType,
                     data: data.map(d => d[`total_${wtType}_wt`]),
                     color: _colorDict[wtType],
-                    tooltip: { pointFormatter: generateTooltipFormatter(wtType) }
+                    tooltip: {pointFormatter: generateTooltipFormatter(wtType)}
                 },
                 {
                     name: 'Other Types',
@@ -254,7 +259,7 @@ const WaitingTimeframe = ({ jobId, sourceActivity, destinationActivity, wtType }
                     name: key,
                     data: data.map(d => d[`total_${key}_wt`]),
                     color: _colorDict[key],
-                    tooltip: { pointFormatter: generateTooltipFormatter(key) }
+                    tooltip: {pointFormatter: generateTooltipFormatter(key)}
                 };
             });
         }
@@ -337,7 +342,7 @@ const WaitingTimeframe = ({ jobId, sourceActivity, destinationActivity, wtType }
                     <option value="year">Year</option>
                 </select>
             </div>
-            <HighchartsReact highcharts={Highcharts} options={options} />
+            <HighchartsReact highcharts={Highcharts} options={options}/>
         </Card>
     );
 };
