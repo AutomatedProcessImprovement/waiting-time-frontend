@@ -1,17 +1,24 @@
-import {useEffect, useState} from 'react';
+import { useQuery } from 'react-query';
 
 const BASE_URL = "http://154.56.63.127:5000";
 
 export function useFetchData(endpoint: string) {
-    const [data, setData] = useState<any>(null);
     const fullUrl = `${BASE_URL}${endpoint}`;
 
-    useEffect(() => {
-        fetch(fullUrl)
-            .then(response => response.json())
-            .then(jsonData => setData(jsonData))
-            .catch(error => console.error(`Error fetching data from ${fullUrl}: `, error));
-    }, [fullUrl]);
+    const { data, isLoading, isError, error } = useQuery(endpoint, async () => {
+        const response = await fetch(fullUrl);
+        if (!response.ok) throw new Error('Network error');
+        return response.json();
+    }, {
+        refetchOnWindowFocus: false,
+        refetchOnReconnect: false
+    });
+
+    if (isLoading) return null;
+    if (isError) {
+        console.error(error);
+        return null;
+    }
 
     return data;
 }

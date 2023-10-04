@@ -52,24 +52,25 @@ const useFetchActivityPairs = (jobId: string) => {
 };
 
 function TabPanel(props: TabPanelProps) {
-    const {children, value, index, ...other} = props;
+    const { children, value, index, ...other } = props;
+
+    const isHidden = value !== index;
 
     return (
         <div
             role="tabpanel"
-            hidden={value !== index}
+            hidden={isHidden}
             id={`simple-tabpanel-${index}`}
             aria-labelledby={`simple-tab-${index}`}
             {...other}
         >
-            {value === index && (
-                <Box sx={{p: 3}}>
-                    {children}
-                </Box>
-            )}
+            <Box sx={{ p: 3, display: isHidden ? 'none' : 'block' }}>
+                {children}
+            </Box>
         </div>
     );
 }
+
 
 function a11yProps(index: number) {
     return {
