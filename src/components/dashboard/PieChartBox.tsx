@@ -2,6 +2,7 @@ import {Card} from "@mui/material";
 import * as React from "react";
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
+
 require("moment-duration-format");
 const _colorDict = {
     batching: "#6C8EBF",

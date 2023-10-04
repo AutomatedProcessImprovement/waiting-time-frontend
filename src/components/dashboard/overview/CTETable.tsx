@@ -2,13 +2,14 @@ import * as React from 'react';
 import {
     DataGrid,
     GridColDef,
-    GridEventListener,
     GridToolbarColumnsButton,
-    GridToolbarContainer, GridToolbarDensitySelector, GridToolbarFilterButton
+    GridToolbarContainer,
+    GridToolbarDensitySelector,
+    GridToolbarFilterButton
 } from '@mui/x-data-grid';
 import RowDialog from '../RowDialog';
 import {Typography} from "@mui/material";
-import {useEffect, useState} from "react";
+import {useFetchData} from '../../../helpers/useFetchData';
 
 const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID', hide:true, flex:0.01},
@@ -105,17 +106,11 @@ const add_index = (data:any) => {
 }
 
 export default function CTETable({ jobId }: { jobId: string }) {
-    const [data, setData] = useState<any | null>(null);
     let [open, setOpen] = React.useState(false);
     const [selectedValue, setSelectedValue] = React.useState<string[]>([]);
     const [selectedTitle, setSelectedTitle] = React.useState<string>("");
 
-    useEffect(() => {
-        fetch(`http://154.56.63.127:5000/cte_improvement/${jobId}`)
-            .then((response) => response.json())
-            .then((data) => setData(data))
-            .catch((error) => console.error(error));
-    }, [jobId]);
+    const data = useFetchData(`/cte_improvement/${jobId}`);
 
     if (!data) {
         return <div>Loading...</div>;

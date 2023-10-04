@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { Box, Grid, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
+import {Box, FormControl, Grid, InputLabel, MenuItem, Select} from '@mui/material';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import Highcharts from 'highcharts';
@@ -9,9 +9,9 @@ import PieChartBox from "../PieChartBox";
 import WaitingTimeframe from "./WaitingTimeframe";
 import TransitionsBarChart from "./TransitionsBarChart";
 import TransitionsTable from "./TransitionsTable";
-import { secondsToDhm } from '../../../helpers/SecondsToDhm';
-import { dhmToString } from '../../../helpers/dhmToString';
-import { useFetchData } from '../../../helpers/useFetchData'
+import {secondsToDhm} from '../../../helpers/SecondsToDhm';
+import {dhmToString} from '../../../helpers/dhmToString';
+import {useFetchData} from '../../../helpers/useFetchData'
 import GaugeChart from './GaugeChart';
 import PotentialCteChart from './PotentialCteChart';
 import CTEHeatmap from "./CTEHeatmap";
@@ -22,9 +22,9 @@ interface AllTransitionsLayoutProps {
 }
 
 const AllTransitionsLayout: React.FC<AllTransitionsLayoutProps> = ({ jobId }) => {
-    const overviewData = useFetchData(`http://154.56.63.127:5000/overview/${jobId}`);
-    const transitionsData = useFetchData(`http://154.56.63.127:5000/activity_transitions/${jobId}`);
-    const potentialCteData = useFetchData(`http://154.56.63.127:5000/potential_cte/${jobId}`);
+    const overviewData = useFetchData(`/overview/${jobId}`);
+    const transitionsData = useFetchData(`/activity_transitions/${jobId}`);
+    const potentialCteData = useFetchData(`/potential_cte/${jobId}`);
     const [showTable, setShowTable] = useState(false);
     const [showTable2, setShowTable2] = useState(false);
     const [displayMode, setDisplayMode] = useState("total");

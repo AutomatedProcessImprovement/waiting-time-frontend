@@ -5,8 +5,9 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import logo from './kronos-logo.png';
+
 interface MenuOptions {
     title: string,
     to: string

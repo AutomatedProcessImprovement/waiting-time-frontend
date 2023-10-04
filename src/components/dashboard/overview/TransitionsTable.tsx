@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { useEffect, useState } from 'react';
-import { DataGrid, GridColDef, GridEventListener, GridToolbar } from '@mui/x-data-grid';
+import {useEffect, useState} from 'react';
+import {DataGrid, GridColDef, GridEventListener, GridToolbar} from '@mui/x-data-grid';
 import RowDialog from "../RowDialog";
-import axios from 'axios';
+import {useFetchData} from "../../../helpers/useFetchData"
+
 var moment = require("moment");
 require("moment-duration-format");
 
@@ -73,16 +74,13 @@ export default function TransitionsTable({ jobId }: { jobId: string }) {
     const [selectedValue, setSelectedValue] = useState<string[]>([]);
     const [selectedTitle, setSelectedTitle] = useState<string>("");
 
+    const fetchedData = useFetchData(`/activity_transitions/${jobId}`);
+
     useEffect(() => {
-        fetch(`http://154.56.63.127:5000/activity_transitions/${jobId}`)
-            .then(response => response.json())
-            .then(data => {
-                setTableData(add_index(data));
-            })
-            .catch(error => {
-                console.error('There was an error fetching data:', error);
-            });
-    }, []);
+        if (fetchedData) {
+            setTableData(add_index(fetchedData));
+        }
+    }, [fetchedData]);
 
     const handleClose = () => {
         setOpen(false);

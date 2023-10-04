@@ -188,10 +188,11 @@
 import * as React from 'react';
 import * as Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
-import { Card } from '@mui/material';
+import {Card} from '@mui/material';
 import moment from 'moment';
-import { secondsToDhm } from '../../../helpers/SecondsToDhm';
-import { dhmToString } from '../../../helpers/dhmToString';
+import {secondsToDhm} from '../../../helpers/SecondsToDhm';
+import {dhmToString} from '../../../helpers/dhmToString';
+import {useFetchData} from "../../../helpers/useFetchData";
 
 const _colorDict = {
     batching: "#6C8EBF",
@@ -273,22 +274,17 @@ const WaitingTimeframe = ({ jobId, sourceActivity, destinationActivity, wtType }
         setChartData(aggregatedData);
     };
 
-    React.useEffect(() => {
-        let url = `http://154.56.63.127:5000/daily_summary/${jobId}`;
-        if (sourceActivity && destinationActivity) {
-            url = `http://154.56.63.127:5000/daily_summary/${jobId}/${sourceActivity}/${destinationActivity}`;
-        }
+    const endpoint = sourceActivity && destinationActivity
+        ? `/daily_summary/${jobId}/${sourceActivity}/${destinationActivity}`
+        : `/daily_summary/${jobId}`;
+    const data = useFetchData(endpoint);
 
-        fetch(url)
-            .then((response) => response.json())
-            .then((data) => {
-                const aggregatedData = aggregateData(data, timeUnit);
-                setChartData(aggregatedData);
-            })
-            .catch((error) => {
-                console.error("Error fetching data: ", error);
-            });
-    }, [jobId, sourceActivity, destinationActivity, timeUnit]);
+    React.useEffect(() => {
+        if (data) {
+            const aggregatedData = aggregateData(data, timeUnit);
+            setChartData(aggregatedData);
+        }
+    }, [data, timeUnit]);
 
     const options = {
         chart: {

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {Box, Grid} from "@mui/material";
 import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts";
@@ -14,8 +14,8 @@ interface PrioritizationAllTransitionsLayout {
 }
 
 const PrioritizationAllTransitionsLayout: React.FC<PrioritizationAllTransitionsLayout> = ({ jobId }) => {
-    const overviewData = useFetchData(`http://154.56.63.127:5000/wt_overview/${jobId}/prioritization`);
-    const transitionsData = useFetchData(`http://154.56.63.127:5000/activity_transitions/${jobId}`);
+    const overviewData = useFetchData(`/wt_overview/${jobId}/prioritization`);
+    const transitionsData = useFetchData(`/activity_transitions/${jobId}`);
 
     if (!overviewData || !transitionsData) {
         return <div>Loading...</div>;

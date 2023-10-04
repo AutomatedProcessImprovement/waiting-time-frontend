@@ -267,6 +267,7 @@ import * as Highcharts from "highcharts";
 import stockInit from "highcharts/modules/stock"
 import {secondsToDhm} from "../../../helpers/SecondsToDhm";
 import {dhmToString} from "../../../helpers/dhmToString";
+
 require("moment-duration-format");
 
 stockInit(Highcharts)

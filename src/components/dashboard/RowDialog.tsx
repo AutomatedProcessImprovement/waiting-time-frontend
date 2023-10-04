@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {Box, Button, Modal, Typography} from "@mui/material";
 import {DataGrid, GridColDef} from "@mui/x-data-grid";
+
 var moment = require("moment");
 require("moment-duration-format");
 export interface SimpleDialogProps {

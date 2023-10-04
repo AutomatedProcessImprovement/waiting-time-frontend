@@ -1,9 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {Box, Grid} from "@mui/material";
 import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts";
 import {dhmToString} from "../../../helpers/dhmToString";
 import {secondsToDhm} from "../../../helpers/SecondsToDhm";
+import {useFetchData} from "../../../helpers/useFetchData";
 import WaitingTimeframe from "../overview/WaitingTimeframe";
 import TransitionsBarChart from "../overview/TransitionsBarChart";
 
@@ -12,20 +13,9 @@ interface ContentionAllTransitionsLayout {
     jobId: string;
 }
 
-const useFetchData = (url: string) => {
-    const [data, setData] = useState<any>(null);
-    useEffect(() => {
-        fetch(url)
-            .then(response => response.json())
-            .then(jsonData => setData(jsonData))
-            .catch(error => console.error(`Error fetching data from ${url}: `, error));
-    }, [url]);
-    return data;
-};
-
 const ContentionAllTransitionsLayout: React.FC<ContentionAllTransitionsLayout> = ({ jobId }) => {
-    const overviewData = useFetchData(`http://154.56.63.127:5000/wt_overview/${jobId}/contention`);
-    const transitionsData = useFetchData(`http://154.56.63.127:5000/activity_transitions/${jobId}`);
+    const overviewData = useFetchData(`/wt_overview/${jobId}/contention`);
+    const transitionsData = useFetchData(`/activity_transitions/${jobId}`);
 
     if (!overviewData || !transitionsData) {
         return <div>Loading...</div>;

@@ -1,14 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { Box, Grid } from '@mui/material';
+import React from 'react';
+import {Box, Grid} from '@mui/material';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
-import { secondsToDhm } from '../../../helpers/SecondsToDhm';
-import { dhmToString } from '../../../helpers/dhmToString';
-import { useFetchData } from '../../../helpers/useFetchData';
+import {secondsToDhm} from '../../../helpers/SecondsToDhm';
+import {dhmToString} from '../../../helpers/dhmToString';
+import {useFetchData} from '../../../helpers/useFetchData';
 import TransitionsBarChart from './TransitionsBarChart';
 import WaitingTimeframe from "./WaitingTimeframe";
 import GaugeChart from "./GaugeChart";
-import overview from "./Overview";
 import PotentialCteChart from "./PotentialCteChart";
 
 interface SpecificTransitionLayoutProps {
@@ -17,36 +16,12 @@ interface SpecificTransitionLayoutProps {
 }
 
 const SpecificTransitionLayout: React.FC<SpecificTransitionLayoutProps> = ({ jobId, selectedActivityPair }) => {
-    const [overviewData, setOverviewData] = useState<any>(null);
-    const [barChartData, setBarChartData] = useState<any>(null);
-    const [barChartDataByResource, setBarChartDataByResource] = useState<any>(null);
     const [sourceActivity, destinationActivity] = selectedActivityPair.split(' - ');
 
-    useEffect(() => {
-        const url = `http://154.56.63.127:5000/case_overview/${jobId}/${sourceActivity}/${destinationActivity}`;
-        fetch(url)
-            .then(response => response.json())
-            .then(jsonData => setOverviewData(jsonData))
-            .catch(error => console.error(`Error fetching data from ${url}: `, error));
-    }, [jobId, sourceActivity, destinationActivity]);
-
-    useEffect(() => {
-        const url = `http://154.56.63.127:5000/activity_transitions/${jobId}/${sourceActivity}/${destinationActivity}`;
-        fetch(url)
-            .then(response => response.json())
-            .then(jsonData => setBarChartData(jsonData))
-            .catch(error => console.error(`Error fetching data from ${url}: `, error));
-    }, [jobId, sourceActivity, destinationActivity]);
-
-    useEffect(() => {
-        const url = `http://154.56.63.127:5000/activity_transitions_by_resource/${jobId}/${sourceActivity}/${destinationActivity}`;
-        fetch(url)
-            .then(response => response.json())
-            .then(jsonData => setBarChartDataByResource(jsonData))
-            .catch(error => console.error(`Error fetching data from ${url}: `, error));
-    }, [jobId, sourceActivity, destinationActivity]);
-
-    const potentialCteData = useFetchData(`http://154.56.63.127:5000/potential_cte_filtered/${jobId}/${sourceActivity}/${destinationActivity}`);
+    const overviewData = useFetchData(`/case_overview/${jobId}/${sourceActivity}/${destinationActivity}`);
+    const barChartData = useFetchData(`/activity_transitions/${jobId}/${sourceActivity}/${destinationActivity}`);
+    const barChartDataByResource = useFetchData(`/activity_transitions_by_resource/${jobId}/${sourceActivity}/${destinationActivity}`);
+    const potentialCteData = useFetchData(`/potential_cte_filtered/${jobId}/${sourceActivity}/${destinationActivity}`);
 
     if (!overviewData || !barChartData || !barChartDataByResource || !potentialCteData) {
         return <div>Loading...</div>;

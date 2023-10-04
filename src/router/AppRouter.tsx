@@ -1,4 +1,4 @@
-import {Routes, Route} from "react-router-dom";
+import {Route, Routes} from "react-router-dom";
 import Upload from "../components/Upload";
 import paths from "./paths";
 import Dashboard from "../components/Dashboard";

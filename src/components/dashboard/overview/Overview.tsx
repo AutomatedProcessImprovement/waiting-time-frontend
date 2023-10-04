@@ -186,7 +186,7 @@
 //     export default Dashboard;
 
 
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import AllTransitionsLayout from './AllTransitionsLayout';
 import SpecificTransitionLayout from './SpecificTransitionLayout';
 

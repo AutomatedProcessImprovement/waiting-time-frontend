@@ -1,9 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {Box, Grid} from "@mui/material";
 import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts";
 import {dhmToString} from "../../../helpers/dhmToString";
 import {secondsToDhm} from "../../../helpers/SecondsToDhm";
+import {useFetchData} from "../../../helpers/useFetchData";
 import WaitingTimeframe from "../overview/WaitingTimeframe";
 
 interface BatchingSpecificTransitionsLayoutProps {
@@ -11,20 +12,9 @@ interface BatchingSpecificTransitionsLayoutProps {
     selectedActivityPair: any;
 }
 
-const useFetchData = (url: string) => {
-    const [data, setData] = useState<any>(null);
-    useEffect(() => {
-        fetch(url)
-            .then(response => response.json())
-            .then(jsonData => setData(jsonData))
-            .catch(error => console.error(`Error fetching data from ${url}: `, error));
-    }, [url]);
-    return data;
-};
-
 const BatchingSpecificTransitionsLayout: React.FC<BatchingSpecificTransitionsLayoutProps> = ({ jobId, selectedActivityPair }) => {
     const [sourceActivity, destinationActivity] = selectedActivityPair.split(' - ');
-    const overviewData = useFetchData(`http://154.56.63.127:5000/wt_overview/${jobId}/batching/${sourceActivity}/${destinationActivity}`);
+    const overviewData = useFetchData(`/wt_overview/${jobId}/batching/${sourceActivity}/${destinationActivity}`);
 
     if (!overviewData) {
         return <div>Loading...</div>;

@@ -2,19 +2,13 @@ import * as React from "react";
 import HighchartsReact from "highcharts-react-official";
 import * as Highcharts from "highcharts";
 import HighchartsHeatmap from "highcharts/modules/heatmap";
-import {useEffect, useState} from "react";
+import {useFetchData} from '../../../helpers/useFetchData';
+
 require("moment");
 HighchartsHeatmap(Highcharts);
 require("moment-duration-format");
 export default function CTEHeatmap({ jobId }: { jobId: string }) {
-    const [data, setData] = useState<any | null>(null);
-
-    useEffect(() => {
-        fetch(`http://154.56.63.127:5000/cte_improvement/${jobId}`)
-            .then((response) => response.json())
-            .then((data) => setData(data))
-            .catch((error) => console.error(error));
-    }, [jobId]);
+    const data = useFetchData(`/cte_improvement/${jobId}`);
 
     if (!data) {
         return <div>Loading...</div>;
