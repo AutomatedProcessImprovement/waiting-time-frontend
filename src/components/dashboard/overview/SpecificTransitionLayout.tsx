@@ -4,6 +4,7 @@ import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import { secondsToDhm } from '../../../helpers/SecondsToDhm';
 import { dhmToString } from '../../../helpers/dhmToString';
+import { useFetchData } from '../../../helpers/useFetchData';
 import TransitionsBarChart from './TransitionsBarChart';
 import WaitingTimeframe from "./WaitingTimeframe";
 import GaugeChart from "./GaugeChart";
@@ -14,17 +15,6 @@ interface SpecificTransitionLayoutProps {
     jobId: string;
     selectedActivityPair: string;
 }
-
-const useFetchData = (url: string) => {
-    const [data, setData] = useState<any>(null);
-    useEffect(() => {
-        fetch(url)
-            .then(response => response.json())
-            .then(jsonData => setData(jsonData))
-            .catch(error => console.error(`Error fetching data from ${url}: `, error));
-    }, [url]);
-    return data;
-};
 
 const SpecificTransitionLayout: React.FC<SpecificTransitionLayoutProps> = ({ jobId, selectedActivityPair }) => {
     const [overviewData, setOverviewData] = useState<any>(null);

@@ -290,9 +290,6 @@ interface Props {
 function TransitionsBarChart({ data, selectedWTType }: Props) {
     let dataArray = [];
 
-    console.log("DATA from transitions bar chart: ", data);
-    console.log("Type: ", Array.isArray(data));
-
     if (Array.isArray(data.data) && data.data.length > 0) {
         dataArray = data.data;
     } else if (data.data) {

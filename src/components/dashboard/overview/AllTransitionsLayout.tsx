@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import { Box, Grid, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
@@ -11,6 +11,7 @@ import TransitionsBarChart from "./TransitionsBarChart";
 import TransitionsTable from "./TransitionsTable";
 import { secondsToDhm } from '../../../helpers/SecondsToDhm';
 import { dhmToString } from '../../../helpers/dhmToString';
+import { useFetchData } from '../../../helpers/useFetchData'
 import GaugeChart from './GaugeChart';
 import PotentialCteChart from './PotentialCteChart';
 import CTEHeatmap from "./CTEHeatmap";
@@ -19,17 +20,6 @@ import CTETable from "./CTETable";
 interface AllTransitionsLayoutProps {
     jobId: string;
 }
-
-const useFetchData = (url: string) => {
-    const [data, setData] = useState<any>(null);
-    useEffect(() => {
-        fetch(url)
-            .then(response => response.json())
-            .then(jsonData => setData(jsonData))
-            .catch(error => console.error(`Error fetching data from ${url}: `, error));
-    }, [url]);
-    return data;
-};
 
 const AllTransitionsLayout: React.FC<AllTransitionsLayoutProps> = ({ jobId }) => {
     const overviewData = useFetchData(`http://154.56.63.127:5000/overview/${jobId}`);
