@@ -204,8 +204,8 @@ const _colorDict = {
 
 type WTType = keyof typeof _colorDict;
 
-const WaitingTimeframe = ({jobId, sourceActivity, destinationActivity, wtType}: {
-    jobId: string;
+const WaitingTimeframe = ({data, sourceActivity, destinationActivity, wtType}: {
+    data: any;
     sourceActivity?: string;
     destinationActivity?: string;
     wtType?: WTType
@@ -279,10 +279,10 @@ const WaitingTimeframe = ({jobId, sourceActivity, destinationActivity, wtType}: 
         setChartData(aggregatedData);
     };
 
-    const endpoint = sourceActivity && destinationActivity
-        ? `/daily_summary/${jobId}/${sourceActivity}/${destinationActivity}`
-        : `/daily_summary/${jobId}`;
-    const data = useFetchData(endpoint);
+    // const endpoint = sourceActivity && destinationActivity
+    //     ? `/daily_summary/${jobId}/${sourceActivity}/${destinationActivity}`
+    //     : `/daily_summary/${jobId}`;
+    // const data = useFetchData(endpoint);
 
     React.useEffect(() => {
         if (data) {

@@ -18,6 +18,7 @@ const BatchingSpecificTransitionsLayout: React.FC<BatchingSpecificTransitionsLay
                                                                                              }) => {
     const [sourceActivity, destinationActivity] = selectedActivityPair.split(' - ');
     const overviewData = useFetchData(`/wt_overview/${jobId}/batching/${sourceActivity}/${destinationActivity}`);
+    const timeFrameData = useFetchData(`/daily_summary/${jobId}/${sourceActivity}/${destinationActivity}`);
 
     if (!overviewData) {
         return <div>Loading...</div>;
@@ -134,7 +135,7 @@ const BatchingSpecificTransitionsLayout: React.FC<BatchingSpecificTransitionsLay
                 </Grid>
                 <Grid item xs={12}>
                     <WaitingTimeframe
-                        jobId={jobId}
+                        data={timeFrameData}
                         sourceActivity={sourceActivity}
                         destinationActivity={destinationActivity}
                         wtType={"batching"}

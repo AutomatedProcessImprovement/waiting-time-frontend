@@ -18,8 +18,9 @@ const ExtraneousSpecificTransitionsLayout: React.FC<ExtraneousSpecificTransition
                                                                                                  }) => {
     const [sourceActivity, destinationActivity] = selectedActivityPair.split(' - ');
     const overviewData = useFetchData(`/wt_overview/${jobId}/extraneous/${sourceActivity}/${destinationActivity}`);
+    const timeFrameData = useFetchData(`/daily_summary/${jobId}/${sourceActivity}/${destinationActivity}`);
 
-    if (!overviewData) {
+    if (!overviewData || !timeFrameData) {
         return <div>Loading...</div>;
     }
 
@@ -134,7 +135,7 @@ const ExtraneousSpecificTransitionsLayout: React.FC<ExtraneousSpecificTransition
                 </Grid>
                 <Grid item xs={12}>
                     <WaitingTimeframe
-                        jobId={jobId}
+                        data={timeFrameData}
                         sourceActivity={sourceActivity}
                         destinationActivity={destinationActivity}
                         wtType={"extraneous"}

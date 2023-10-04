@@ -18,8 +18,9 @@ const PrioritizationSpecificTransitionsLayout: React.FC<PrioritizationSpecificTr
                                                                                                          }) => {
     const [sourceActivity, destinationActivity] = selectedActivityPair.split(' - ');
     const overviewData = useFetchData(`/wt_overview/${jobId}/prioritization/${sourceActivity}/${destinationActivity}`);
+    const timeFrameData = useFetchData(`/daily_summary/${jobId}//${sourceActivity}/${destinationActivity}`);
 
-    if (!overviewData) {
+    if (!overviewData || !timeFrameData) {
         return <div>Loading...</div>;
     }
 
@@ -137,7 +138,7 @@ const PrioritizationSpecificTransitionsLayout: React.FC<PrioritizationSpecificTr
                 </Grid>
                 <Grid item xs={12}>
                     <WaitingTimeframe
-                        jobId={jobId}
+                        data={timeFrameData}
                         sourceActivity={sourceActivity}
                         destinationActivity={destinationActivity}
                         wtType={"prioritization"}

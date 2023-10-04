@@ -16,8 +16,9 @@ interface ExtraneousAllTransitionsLayout {
 const ExtraneousAllTransitionsLayout: React.FC<ExtraneousAllTransitionsLayout> = ({jobId}) => {
     const overviewData = useFetchData(`/wt_overview/${jobId}/extraneous`);
     const transitionsData = useFetchData(`/activity_transitions/${jobId}`);
+    const timeFrameData = useFetchData(`daily_summary/${jobId}`);
 
-    if (!overviewData || !transitionsData) {
+    if (!overviewData || !transitionsData || !timeFrameData) {
         return <div>Loading...</div>;
     }
 
@@ -128,7 +129,7 @@ const ExtraneousAllTransitionsLayout: React.FC<ExtraneousAllTransitionsLayout> =
                 </Grid>
                 <Grid item xs={12}>
                     <WaitingTimeframe
-                        jobId={jobId}
+                        data={timeFrameData}
                         wtType={"extraneous"}
                     />
                 </Grid>

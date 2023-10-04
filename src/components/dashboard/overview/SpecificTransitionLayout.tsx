@@ -22,8 +22,9 @@ const SpecificTransitionLayout: React.FC<SpecificTransitionLayoutProps> = ({jobI
     const barChartData = useFetchData(`/activity_transitions/${jobId}/${sourceActivity}/${destinationActivity}`);
     const barChartDataByResource = useFetchData(`/activity_transitions_by_resource/${jobId}/${sourceActivity}/${destinationActivity}`);
     const potentialCteData = useFetchData(`/potential_cte_filtered/${jobId}/${sourceActivity}/${destinationActivity}`);
+    const timeFrameData = useFetchData(`/daily_summary/${jobId}/${sourceActivity}/${destinationActivity}`);
 
-    if (!overviewData || !barChartData || !barChartDataByResource || !potentialCteData) {
+    if (!overviewData || !barChartData || !barChartDataByResource || !potentialCteData || !timeFrameData) {
         return <div>Loading...</div>;
     }
 
@@ -175,7 +176,7 @@ const SpecificTransitionLayout: React.FC<SpecificTransitionLayoutProps> = ({jobI
                 </Grid>
                 <Grid item xs={12}>
                     <WaitingTimeframe
-                        jobId={jobId}
+                        data={timeFrameData}
                         sourceActivity={sourceActivity}
                         destinationActivity={destinationActivity}
                     />

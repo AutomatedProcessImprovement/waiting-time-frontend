@@ -105,18 +105,11 @@ const add_index = (data: any) => {
     return data
 }
 
-export default function CTETable({jobId}: { jobId: string }) {
+export default function CTETable({data}: { data: any }) {
     let [open, setOpen] = React.useState(false);
     const [selectedValue, setSelectedValue] = React.useState<string[]>([]);
     const [selectedTitle, setSelectedTitle] = React.useState<string>("");
 
-    const data = useFetchData(`/cte_improvement/${jobId}`);
-
-    if (!data) {
-        return <div>Loading...</div>;
-    }
-
-    console.log("DATA: ...", data);
     let table_data = add_index(data.data)
 
     const handleClose = () => {

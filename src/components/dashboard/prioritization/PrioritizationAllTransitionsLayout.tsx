@@ -16,6 +16,7 @@ interface PrioritizationAllTransitionsLayout {
 const PrioritizationAllTransitionsLayout: React.FC<PrioritizationAllTransitionsLayout> = ({jobId}) => {
     const overviewData = useFetchData(`/wt_overview/${jobId}/prioritization`);
     const transitionsData = useFetchData(`/activity_transitions/${jobId}`);
+    const timeFrameData = useFetchData(`/daily_summary/${jobId}`);
 
     if (!overviewData || !transitionsData) {
         return <div>Loading...</div>;
@@ -128,7 +129,7 @@ const PrioritizationAllTransitionsLayout: React.FC<PrioritizationAllTransitionsL
                 </Grid>
                 <Grid item xs={12}>
                     <WaitingTimeframe
-                        jobId={jobId}
+                        data={timeFrameData}
                         wtType={"prioritization"}
                     />
                 </Grid>

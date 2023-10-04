@@ -16,8 +16,9 @@ interface UnavailabilityAllTransitionsLayout {
 const UnavailabilityAllTransitionsLayout: React.FC<UnavailabilityAllTransitionsLayout> = ({jobId}) => {
     const overviewData = useFetchData(`/wt_overview/${jobId}/unavailability`);
     const transitionsData = useFetchData(`/activity_transitions/${jobId}`);
+    const timeFrameData = useFetchData(`/daily_summary/${jobId}`);
 
-    if (!overviewData || !transitionsData) {
+    if (!overviewData || !transitionsData || !timeFrameData) {
         return <div>Loading...</div>;
     }
 
@@ -128,7 +129,7 @@ const UnavailabilityAllTransitionsLayout: React.FC<UnavailabilityAllTransitionsL
                 </Grid>
                 <Grid item xs={12}>
                     <WaitingTimeframe
-                        jobId={jobId}
+                        data={timeFrameData}
                         wtType={"unavailability"}
                     />
                 </Grid>

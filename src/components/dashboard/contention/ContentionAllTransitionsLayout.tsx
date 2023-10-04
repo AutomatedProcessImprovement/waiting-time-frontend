@@ -16,8 +16,9 @@ interface ContentionAllTransitionsLayout {
 const ContentionAllTransitionsLayout: React.FC<ContentionAllTransitionsLayout> = ({jobId}) => {
     const overviewData = useFetchData(`/wt_overview/${jobId}/contention`);
     const transitionsData = useFetchData(`/activity_transitions/${jobId}`);
+    const timeFrameData = useFetchData(`/daily_summary/${jobId}`);
 
-    if (!overviewData || !transitionsData) {
+    if (!overviewData || !transitionsData || !timeFrameData) {
         return <div>Loading...</div>;
     }
 
@@ -128,7 +129,7 @@ const ContentionAllTransitionsLayout: React.FC<ContentionAllTransitionsLayout> =
                 </Grid>
                 <Grid item xs={12}>
                     <WaitingTimeframe
-                        jobId={jobId}
+                        data={timeFrameData}
                         wtType={"contention"}
                     />
                 </Grid>

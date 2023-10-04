@@ -7,13 +7,7 @@ import {useFetchData} from '../../../helpers/useFetchData';
 require("moment");
 HighchartsHeatmap(Highcharts);
 require("moment-duration-format");
-export default function CTEHeatmap({jobId}: { jobId: string }) {
-    const data = useFetchData(`/cte_improvement/${jobId}`);
-
-    if (!data) {
-        return <div>Loading...</div>;
-    }
-
+export default function CTEHeatmap({data}: { data: any }) {
     let report_data = [...data.data]
     let sorted_report = report_data.sort(
         (p1: any, p2: any) => (p1.cte_impact_total < p2.cte_impact_total ? 1 : (p1.cte_impact_total > p2.cte_impact_total) ? -1 : 0)

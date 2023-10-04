@@ -16,8 +16,9 @@ interface BatchingAllTransitionsLayoutProps {
 const BatchingAllTransitionsLayout: React.FC<BatchingAllTransitionsLayoutProps> = ({jobId}) => {
     const overviewData = useFetchData(`/wt_overview/${jobId}/batching`);
     const transitionsData = useFetchData(`/activity_transitions/${jobId}`);
+    const timeFrameData = useFetchData(`/daily_summary/${jobId}`);
 
-    if (!overviewData || !transitionsData) {
+    if (!overviewData || !transitionsData || !timeFrameData) {
         return <div>Loading...</div>;
     }
 
@@ -128,7 +129,7 @@ const BatchingAllTransitionsLayout: React.FC<BatchingAllTransitionsLayoutProps> 
                 </Grid>
                 <Grid item xs={12}>
                     <WaitingTimeframe
-                        jobId={jobId}
+                        data={timeFrameData}
                         wtType={"batching"}
                     />
                 </Grid>

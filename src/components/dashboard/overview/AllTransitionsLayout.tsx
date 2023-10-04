@@ -25,12 +25,14 @@ const AllTransitionsLayout: React.FC<AllTransitionsLayoutProps> = ({jobId}) => {
     const overviewData = useFetchData(`/overview/${jobId}`);
     const transitionsData = useFetchData(`/activity_transitions/${jobId}`);
     const potentialCteData = useFetchData(`/potential_cte/${jobId}`);
+    const cteTableData = useFetchData(`/cte_improvement/${jobId}`);
+    const timeframeData = useFetchData(`/daily_summary/${jobId}`);
     const [showTable, setShowTable] = useState(false);
     const [showTable2, setShowTable2] = useState(false);
     const [displayMode, setDisplayMode] = useState("total");
     const [pieChartDisplayMode, setPieChartDisplayMode] = useState("total");
 
-    if (!overviewData || !transitionsData) {
+    if (!overviewData || !transitionsData || !cteTableData || !potentialCteData || !timeframeData) {
         return <div>Loading...</div>;
     }
 
@@ -272,7 +274,7 @@ const AllTransitionsLayout: React.FC<AllTransitionsLayoutProps> = ({jobId}) => {
                 </Grid>
 
                 <Grid item xs={12}>
-                    <WaitingTimeframe jobId={jobId}/>
+                    <WaitingTimeframe data={timeframeData}/>
                 </Grid>
                 <Grid item xs={12}>
                     <TransitionsBarChart data={transitionsData}/>
@@ -289,7 +291,7 @@ const AllTransitionsLayout: React.FC<AllTransitionsLayoutProps> = ({jobId}) => {
                 </Grid>
                 {showTable && (
                     <Grid item xs={12}>
-                        <TransitionsTable jobId={jobId}/>
+                        <TransitionsTable data={transitionsData}/>
                     </Grid>
                 )}
                 <Grid item xs={4}>
@@ -299,7 +301,7 @@ const AllTransitionsLayout: React.FC<AllTransitionsLayoutProps> = ({jobId}) => {
                     <PotentialCteChart jsonData={potentialCteData} cte={processingTimePercentage}/>
                 </Grid>
                 <Grid item xs={12}>
-                    <CTEHeatmap jobId={jobId}/>
+                    <CTEHeatmap data={cteTableData}/>
                 </Grid>
                 <Grid item xs={12} style={{textAlign: 'center'}}>
                 <span onClick={toggleTable2}
@@ -313,7 +315,7 @@ const AllTransitionsLayout: React.FC<AllTransitionsLayoutProps> = ({jobId}) => {
                 </Grid>
                 {showTable2 && (
                     <Grid item xs={12}>
-                        <CTETable jobId={jobId}/>
+                        <CTETable data={cteTableData}/>
                     </Grid>
                 )}
             </Grid>

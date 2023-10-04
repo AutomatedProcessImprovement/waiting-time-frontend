@@ -68,19 +68,17 @@ const add_index = (data: any) => {
     return data
 }
 
-export default function TransitionsTable({jobId}: { jobId: string }) {
+export default function TransitionsTable({data}: { data: any }) {
     const [table_data, setTableData] = useState([]);
     const [open, setOpen] = useState(false);
     const [selectedValue, setSelectedValue] = useState<string[]>([]);
     const [selectedTitle, setSelectedTitle] = useState<string>("");
 
-    const fetchedData = useFetchData(`/activity_transitions/${jobId}`);
-
     useEffect(() => {
-        if (fetchedData) {
-            setTableData(add_index(fetchedData));
+        if (data) {
+            setTableData(add_index(data));
         }
-    }, [fetchedData]);
+    }, [data]);
 
     const handleClose = () => {
         setOpen(false);
