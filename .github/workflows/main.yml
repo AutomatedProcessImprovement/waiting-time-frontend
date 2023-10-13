@@ -27,7 +27,7 @@ jobs:
 
       - name: Install npm version 8.5.1
         run: npm install -g npm@8.5.1
-        
+
       - name: Install dependencies
         run: npm ci
 
