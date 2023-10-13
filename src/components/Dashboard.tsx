@@ -44,7 +44,7 @@ interface ActivityPair {
 
 const useFetchActivityPairs = (jobId: string) => {
     const [activityPairs, setActivityPairs] = useState<ActivityPair[]>([]);
-    const fetchedData = useFetchData(`activity_pairs/${jobId}`);
+    const fetchedData = useFetchData(`/activity_pairs/${jobId}`);
 
     useEffect(() => {
         if (fetchedData) {
