@@ -1,6 +1,7 @@
-FROM node:alpine as build
+FROM node:12.22.9 as build
 
 WORKDIR /app
+RUN npm install -g npm@8.5.1
 COPY package.json package.json
 COPY package-lock.json package-lock.json
 RUN npm ci

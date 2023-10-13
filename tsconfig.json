@@ -7,7 +7,9 @@
       "esnext"
     ],
     "types": [
-      "node", "react/next", "react-dom/next"
+      "node",
+      "react/next",
+      "react-dom/next"
     ],
     "allowJs": true,
     "skipLibCheck": true,
@@ -21,7 +23,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "preserve",
+    "jsx": "preserve"
   },
   "include": [
     "src"

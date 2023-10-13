@@ -1,7 +1,7 @@
 import * as React from 'react';
+import {useEffect, useState} from 'react';
 import Snackbar from '@mui/material/Snackbar';
-import MuiAlert, { AlertColor, AlertProps } from '@mui/material/Alert';
-import { useEffect, useState } from 'react';
+import MuiAlert, {AlertColor, AlertProps} from '@mui/material/Alert';
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
     props,
@@ -17,7 +17,7 @@ interface CustomizedSnackbarProps {
 }
 
 const CustomizedSnackbar = (props: CustomizedSnackbarProps) => {
-    const { message, onSnackbarClose, severityLevel } = props
+    const {message, onSnackbarClose, severityLevel} = props
     const [open, setOpen] = useState(message !== "")
     const [alertMessage, setAlertMessage] = useState(message)
     const [severity, setSeverity] = useState(severityLevel || "error")
@@ -46,7 +46,7 @@ const CustomizedSnackbar = (props: CustomizedSnackbarProps) => {
 
     return (
         <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
-            <Alert onClose={handleClose} severity={severity} sx={{ width: '100%' }}>
+            <Alert onClose={handleClose} severity={severity} sx={{width: '100%'}}>
                 {alertMessage}
             </Alert>
         </Snackbar>

@@ -1,8 +1,9 @@
 # pull official base image
-FROM node:16.16.0-alpine3.15
+FROM node:12.22.9
 
 # set working directory
 WORKDIR /app
+RUN npm install -g npm@8.5.1
 
 # add `/app/node_modules/.bin` to $PATH
 ENV PATH /app/node_modules/.bin:$PATH

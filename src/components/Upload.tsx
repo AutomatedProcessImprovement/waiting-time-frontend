@@ -20,7 +20,7 @@ const Upload = () => {
     const [snackColor, setSnackColor] = useState<AlertColor | undefined>(undefined)
 
 
-    const handleClose = (cancel:boolean, values: object) => {
+    const handleClose = (cancel: boolean, values: object) => {
         if (cancel) {
             setLoading(false);
         } else {
@@ -88,7 +88,7 @@ const Upload = () => {
             axios(
                 config
             )
-                .then(((res:any) => {
+                .then(((res: any) => {
                     let job = res.data
                     console.log(job.id)
                     setInfoMessage("'Analysis in progress...\n Job ID: " + job.id);
@@ -96,7 +96,7 @@ const Upload = () => {
                     let f = setInterval(() => {
                         axios.get(
                             'http://193.40.11.233/jobs/' + job.id,
-                        ).then((r:any)  => {
+                        ).then((r: any) => {
                             let j = r.data
                             console.log(j.status)
                             if (j.status === 'completed') {
@@ -104,9 +104,7 @@ const Upload = () => {
                                 let logN = selectedLogFile?.name
                                 navigate(paths.DASHBOARD_PATH, {
                                     state: {
-                                        jsonLog: j.result,
-                                        report: j,
-                                        logName: logN
+                                        jobId: job.id
                                     }
                                 })
                                 setLoading(false)
@@ -117,17 +115,18 @@ const Upload = () => {
                                     setErrorMessage(r.data.error.split(';')[0]);
                                     setLoading(false);
                                 } else {
-                                    let logN = selectedLogFile?.name
+                                    const report_csv = r.data.report_csv;
+                                    const url = new URL(report_csv);
+                                    const pathSegments = url.pathname.split('/');
+                                    const jobIdFromUrl = pathSegments[3];
+
                                     navigate(paths.DASHBOARD_PATH, {
                                         state: {
-                                            jsonLog: j.result,
-                                            report: j,
-                                            logName: logN
+                                            jobId: jobIdFromUrl
                                         }
-                                    })
-
+                                    });
                                 }
-                                setLoading(false)
+                                setLoading(false);
                             }
                             if (j.status === 'failed' || j.status === 'error') {
                                 setErrorMessage(r.data.error.split(';')[0]);
@@ -160,9 +159,10 @@ const Upload = () => {
         <>
             <br/>
             <br/>
-            <Grid container alignItems="center" justifyContent="center" spacing={4} style={{ paddingTop: '10px' }} className="centeredContent">
+            <Grid container alignItems="center" justifyContent="center" spacing={4} style={{paddingTop: '10px'}}
+                  className="centeredContent">
                 <Grid item xs={6}>
-                    <Paper elevation={5} sx={{ p: 3, minHeight: '20vw' }}>
+                    <Paper elevation={5} sx={{p: 3, minHeight: '20vw'}}>
                         <Grid container spacing={2}>
                             <Grid item xs={12}>
                                 <Typography variant="h4" align="center">

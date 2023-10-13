@@ -6,12 +6,13 @@ import Typography from '@mui/material/Typography';
 
 export default function Infobox(data: any) {
     return (
-        <Card sx={{ minWidth: 250}}>
+        <Card sx={{minWidth: 250}}>
             <CardContent>
-                <Typography align={"left"} variant="h5" component="div" sx={{ fontSize: 18 }} color="text.primary" gutterBottom>
+                <Typography align={"left"} variant="h5" component="div" sx={{fontSize: 18}} color="text.primary"
+                            gutterBottom>
                     {data.data.title}
                 </Typography>
-                <Typography  align={"left"} variant="h6" sx={{ fontSize: 16 }} color="text.secondary" component="div">
+                <Typography align={"left"} variant="h6" sx={{fontSize: 16}} color="text.secondary" component="div">
                     {data.data.subtitle}
                 </Typography>
                 <Typography variant="h4" align={"center"}>

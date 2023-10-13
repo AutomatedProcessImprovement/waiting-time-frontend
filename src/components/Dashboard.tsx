@@ -1,21 +1,35 @@
-import * as React from 'react';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import Box from '@mui/material/Box';
-import Overview from "./dashboard/overview/Overview";
-import Transitions from "./dashboard/transitions/Transitions";
-import {Button, ButtonGroup, Grid, Tooltip, Typography} from "@mui/material";
+import React, {useEffect, useState, Suspense} from 'react';
+import axios from 'axios';
+import {useLocation} from 'react-router-dom';
+import {useFetchData} from '../helpers/useFetchData';
+import {
+    Box,
+    Button,
+    ButtonGroup,
+    ClickAwayListener,
+    FormControl,
+    Grid,
+    Grow,
+    InputLabel,
+    MenuItem,
+    MenuList,
+    Paper,
+    Popper,
+    Select,
+    Tab,
+    Tabs,
+    Tooltip
+} from '@mui/material';
+import {SelectChangeEvent} from "@mui/material/Select";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import ClickAwayListener from '@mui/material/ClickAwayListener';
-import Grow from '@mui/material/Grow';
-import Paper from '@mui/material/Paper';
-import Popper from '@mui/material/Popper';
-import MenuItem from '@mui/material/MenuItem';
-import MenuList from '@mui/material/MenuList';
 import Download from '@mui/icons-material/CloudDownloadOutlined';
-import {useLocation} from "react-router-dom";
-import Cteimpact from "./dashboard/cteimpact/Cteimpact";
 
+const Overview = React.lazy(() => import('./dashboard/overview/Overview'));
+const Batching = React.lazy(() => import('./dashboard/batching/Batching'));
+const Prioritization = React.lazy(() => import('./dashboard/prioritization/Prioritization'));
+const Contention = React.lazy(() => import('./dashboard/contention/Contention'));
+const Unavailability = React.lazy(() => import('./dashboard/unavailability/Unavailability'));
+const Extraneous = React.lazy(() => import('./dashboard/extraneous/Extraneous'));
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -23,25 +37,44 @@ interface TabPanelProps {
     value: number;
 }
 
+interface ActivityPair {
+    destination_activity: string;
+    source_activity: string;
+}
+
+const useFetchActivityPairs = (jobId: string) => {
+    const [activityPairs, setActivityPairs] = useState<ActivityPair[]>([]);
+    const fetchedData = useFetchData(`activity_pairs/${jobId}`);
+
+    useEffect(() => {
+        if (fetchedData) {
+            setActivityPairs(fetchedData);
+        }
+    }, [fetchedData]);
+
+    return activityPairs;
+};
+
 function TabPanel(props: TabPanelProps) {
     const { children, value, index, ...other } = props;
+
+    const isHidden = value !== index;
 
     return (
         <div
             role="tabpanel"
-            hidden={value !== index}
+            hidden={isHidden}
             id={`simple-tabpanel-${index}`}
             aria-labelledby={`simple-tab-${index}`}
             {...other}
         >
-            {value === index && (
-                <Box sx={{ p: 3 }}>
-                    {children}
-                </Box>
-            )}
+            <Box sx={{ p: 3, display: isHidden ? 'none' : 'block' }}>
+                {children}
+            </Box>
         </div>
     );
 }
+
 
 function a11yProps(index: number) {
     return {
@@ -50,64 +83,71 @@ function a11yProps(index: number) {
     };
 }
 
-const onDownload = (report:any, type:number) => {
+const ActivityPairSelector = ({selectedActivityPair, handleActivityPairChange, activityPairs}: any) => (
+    <FormControl variant="outlined" size="small">
+        <InputLabel htmlFor="activity-pair-selector">Activity Pair</InputLabel>
+        <Select
+            label="Activity Pair"
+            id="activity-pair-selector"
+            value={selectedActivityPair}
+            onChange={handleActivityPairChange}
+        >
+            <MenuItem value="All transitions">All transitions</MenuItem>
+            {activityPairs.map((pair: ActivityPair, index: number) => (
+                <MenuItem key={index} value={`${pair.destination_activity} - ${pair.source_activity}`}>
+                    {`${pair.destination_activity} - ${pair.source_activity}`}
+                </MenuItem>
+            ))}
+        </Select>
+    </FormControl>
+);
+
+const onDownload = (type: number, jobId: string) => {
     const link = document.createElement("a");
     switch (type) {
         case 0:
-
-            link.href = report.report_csv;
-            link.setAttribute(
-                'download',
-                `report_csv.csv`
-            )
-            link.click();
-            break
+            link.href = `http://193.40.11.233/assets/results/${jobId}/event_log_transitions_report.csv`;
+            link.setAttribute('download', 'event_log_transitions_report.csv');
+            break;
         case 1:
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(report.result));
-            link.href = dataStr;
-            link.setAttribute(
-                'download',
-                `report_json.json`
-            )
-            link.click();
-            break
+            link.href = `http://193.40.11.233/assets/results/${jobId}/event_log_transitions_report.json`;
+            link.setAttribute('download', 'event_log_transitions_report.json');
+            break;
         default:
-            link.href = report.report_csv;
-            link.setAttribute(
-                'download',
-                `report_csv.csv`
-            )
-            link.click();
-            break
+            break;
     }
+    link.click();
 };
 
-interface LocationState {
-    jsonLog : File
-    report: any
-    logName: string
-}
+
 const options = ['Download as CSV', 'Download as JSON'];
 
 const BasicTabs = () => {
-    const [value, setValue] = React.useState(0);
-    const [open, setOpen] = React.useState(false);
+    const [value, setValue] = useState(0);
+    const [open, setOpen] = useState(false);
     const anchorRef = React.useRef<HTMLDivElement>(null);
-    const [selectedIndex, setSelectedIndex] = React.useState(3);
-
-    const {state} = useLocation()
-    const {report} = state as LocationState
-    const {logName} = state as LocationState
-
-    let clean_data = report.result
-    const data = JSON.parse(JSON.stringify(clean_data));
+    const [selectedIndex, setSelectedIndex] = useState(0);
+    const [selectedActivityPair, setSelectedActivityPair] = useState<string>('All transitions');
+    const {state} = useLocation();
+    const {jobId} = state as { jobId: string };
+    const activityPairs = useFetchActivityPairs(jobId);
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
     };
 
+    const handleActivityPairChange = (event: SelectChangeEvent) => {
+        setSelectedActivityPair(event.target.value as string);
+    };
+
+    const sortedActivityPairs = [...activityPairs].sort((a, b) => {
+        const nameA = `${a.destination_activity} - ${a.source_activity}`;
+        const nameB = `${b.destination_activity} - ${b.source_activity}`;
+        return nameA.localeCompare(nameB);
+    });
+
     const handleClick = () => {
-        onDownload(report, 0)
+        onDownload(0, jobId)
     };
 
     const handleToggle = () => {
@@ -131,11 +171,11 @@ const BasicTabs = () => {
     ) => {
         setSelectedIndex(index);
         setOpen(false);
-        onDownload(report, index)
+        onDownload(index, jobId)
     };
 
     return (
-        <Box sx={{ width: '100%', mt:1, zIndex: 100000 }}>
+        <Box sx={{width: '100%', mt: 1, zIndex: 100000}}>
             <Box>
                 <Grid
                     container
@@ -144,39 +184,28 @@ const BasicTabs = () => {
                     justifyContent="space-around"
                     direction="row"
                 >
+
                     <Grid item>
-                        <Typography variant={"h4"}>
-                            Dashboard
-                        </Typography>
+                        {/* Activity Pair Selector */}
+                        <ActivityPairSelector
+                            selectedActivityPair={selectedActivityPair}
+                            handleActivityPairChange={handleActivityPairChange}
+                            activityPairs={sortedActivityPairs}
+                        />
                     </Grid>
                     <Grid item>
-                        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" >
+                        <Tabs value={value} onChange={handleChange} aria-label=" ">
                             <Tab label="Overview" {...a11yProps(0)} />
-                            <Tab label="Transitions" {...a11yProps(1)} />
-                            <Tab label="CTE Impact" {...a11yProps(2)} />
+                            <Tab label="Batching" {...a11yProps(1)} />
+                            <Tab label="Prioritization" {...a11yProps(2)} />
+                            <Tab label="Resource Contention" {...a11yProps(3)} />
+                            <Tab label="Resource Unavailability" {...a11yProps(4)} />
+                            <Tab label="Extraneous Factors" {...a11yProps(5)} />
                         </Tabs>
                     </Grid>
                     <Grid item>
-                        {/*<Search>*/}
-                        {/*    <SearchIconWrapper>*/}
-                        {/*        <SearchIcon />*/}
-                        {/*    </SearchIconWrapper>*/}
-                        {/*    <StyledInputBase*/}
-                        {/*        placeholder="Search…"*/}
-                        {/*        inputProps={{ 'aria-label': 'search' }}*/}
-                        {/*    />*/}
-                        {/*</Search>*/}
-
-                    </Grid>
-                    <Grid item>
-                        <Tooltip title="Original Event Log Name">
-                            <Typography>
-                                <b>{logName}</b>
-                            </Typography>
-                        </Tooltip>
-                    </Grid>
-                    <Grid item>
-                        <ButtonGroup variant="contained" ref={anchorRef} aria-label="split button" sx={{zIndex: 100000}}>
+                        <ButtonGroup variant="contained" ref={anchorRef} aria-label="split button"
+                                     sx={{zIndex: 100000}}>
                             <Tooltip title={'Download as CSV'}>
                                 <Button size="small"
                                         aria-controls={open ? 'split-button-menu' : undefined}
@@ -185,7 +214,7 @@ const BasicTabs = () => {
                                         aria-haspopup="menu"
                                         onClick={handleClick}>
 
-                                    <Download />
+                                    <Download/>
                                 </Button>
                             </Tooltip>
                             <Button
@@ -196,7 +225,7 @@ const BasicTabs = () => {
                                 aria-haspopup="menu"
                                 onClick={handleToggle}
                             >
-                                <ArrowDropDownIcon />
+                                <ArrowDropDownIcon/>
                             </Button>
                         </ButtonGroup>
                         <Popper
@@ -208,7 +237,7 @@ const BasicTabs = () => {
                             sx={{zIndex: 100000}}
                             style={{zIndex: 100000}}
                         >
-                            {({ TransitionProps, placement }) => (
+                            {({TransitionProps, placement}) => (
                                 <Grow
                                     {...TransitionProps}
                                     style={{
@@ -242,15 +271,38 @@ const BasicTabs = () => {
                 </Grid>
 
             </Box>
-            <TabPanel value={value} index={0}>
-                <Overview data={data}/>
-            </TabPanel>
-            <TabPanel value={value} index={1}>
-                <Transitions data={data} sx={{ mx: "2rem" }}/>
-            </TabPanel>
-            <TabPanel value={value} index={2}>
-                <Cteimpact data={data}/>
-            </TabPanel>
+            <Suspense fallback={<div>Loading...</div>}>
+                {value === 0 && (
+                    <TabPanel value={value} index={0}>
+                        <Overview jobId={jobId} selectedActivityPair={selectedActivityPair} />
+                    </TabPanel>
+                )}
+                {value === 1 && (
+                    <TabPanel value={value} index={1}>
+                        <Batching jobId={jobId} selectedActivityPair={selectedActivityPair} />
+                    </TabPanel>
+                )}
+                {value === 2 && (
+                    <TabPanel value={value} index={2}>
+                        <Prioritization jobId={jobId} selectedActivityPair={selectedActivityPair} />
+                    </TabPanel>
+                )}
+                {value === 3 && (
+                    <TabPanel value={value} index={3}>
+                        <Contention jobId={jobId} selectedActivityPair={selectedActivityPair} />
+                    </TabPanel>
+                )}
+                {value === 4 && (
+                    <TabPanel value={value} index={4}>
+                        <Unavailability jobId={jobId} selectedActivityPair={selectedActivityPair} />
+                    </TabPanel>
+                )}
+                {value === 5 && (
+                    <TabPanel value={value} index={5}>
+                        <Extraneous jobId={jobId} selectedActivityPair={selectedActivityPair} />
+                    </TabPanel>
+                )}
+            </Suspense>
         </Box>
     );
 }
