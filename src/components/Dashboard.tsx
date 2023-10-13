@@ -130,7 +130,12 @@ const BasicTabs = () => {
     const [selectedActivityPair, setSelectedActivityPair] = useState<string>('All transitions');
     const {state} = useLocation();
     const {jobId} = state as { jobId: string };
-    const activityPairs = useFetchActivityPairs(jobId);
+    const activityPairsData = useFetchActivityPairs(jobId);
+
+    if (!activityPairsData) {
+        return <div>Loading...</div>;
+    }
+    const activityPairs = activityPairsData;
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
