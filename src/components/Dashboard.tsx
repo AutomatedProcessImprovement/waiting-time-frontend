@@ -1,6 +1,7 @@
 import React, {useEffect, useState, Suspense} from 'react';
 import axios from 'axios';
 import {useLocation} from 'react-router-dom';
+import {useFetchData} from '../helpers/useFetchData';
 import {
     Box,
     Button,
@@ -43,11 +44,14 @@ interface ActivityPair {
 
 const useFetchActivityPairs = (jobId: string) => {
     const [activityPairs, setActivityPairs] = useState<ActivityPair[]>([]);
+    const fetchedData = useFetchData(`activity_pairs/${jobId}`);
+
     useEffect(() => {
-        axios.get(`http://154.56.63.127:5000/activity_pairs/${jobId}`)
-            .then(response => setActivityPairs(response.data))
-            .catch(error => console.error('Error fetching activity pairs:', error));
-    }, [jobId]);
+        if (fetchedData) {
+            setActivityPairs(fetchedData);
+        }
+    }, [fetchedData]);
+
     return activityPairs;
 };
 
@@ -102,11 +106,11 @@ const onDownload = (type: number, jobId: string) => {
     const link = document.createElement("a");
     switch (type) {
         case 0:
-            link.href = `http://154.56.63.127:8080/assets/results/${jobId}/event_log_transitions_report.csv`;
+            link.href = `http://193.40.11.233/assets/results/${jobId}/event_log_transitions_report.csv`;
             link.setAttribute('download', 'event_log_transitions_report.csv');
             break;
         case 1:
-            link.href = `http://154.56.63.127:8080/assets/results/${jobId}/event_log_transitions_report.json`;
+            link.href = `http://193.40.11.233/assets/results/${jobId}/event_log_transitions_report.json`;
             link.setAttribute('download', 'event_log_transitions_report.json');
             break;
         default:

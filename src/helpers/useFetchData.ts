@@ -1,13 +1,20 @@
 import { useQuery } from 'react-query';
 
-const BASE_URL = "http://154.56.63.127:5000";
+const BASE_URL = "http://193.40.11.233/db-api/";
 
 export function useFetchData(endpoint: string) {
     const fullUrl = `${BASE_URL}${endpoint}`;
 
     const { data, isLoading, isError, error } = useQuery(endpoint, async () => {
-        const response = await fetch(fullUrl);
-        if (!response.ok) throw new Error('Network error');
+        const response = await fetch(fullUrl, {
+            headers: {
+                'Accept': 'application/json',
+            }
+        });
+        if (!response.ok) {
+            const text = await response.text();
+            throw new Error(`Network error: ${response.status} - ${text}`);
+        }
         return response.json();
     }, {
         refetchOnWindowFocus: false,

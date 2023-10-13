@@ -41,7 +41,7 @@ const Upload = () => {
             try {
                 const config = {
                     method: 'get',
-                    url: 'http://154.56.63.127:8080/jobs/' + selectedID,
+                    url: 'http://193.40.11.233/jobs' + selectedID,
                 };
                 axios(
                     config

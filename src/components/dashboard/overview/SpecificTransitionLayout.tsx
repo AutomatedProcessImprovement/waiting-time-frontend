@@ -28,7 +28,7 @@ const SpecificTransitionLayout: React.FC<SpecificTransitionLayoutProps> = ({jobI
         return <div>Loading...</div>;
     }
 
-    if (overviewData && overviewData.specific_case_count == 0 && overviewData.specific_wttotal_sum == null) {
+    if (overviewData && overviewData.specific_case_count === 0 && overviewData.specific_wttotal_sum == null) {
         return <strong>This transition has no waiting time</strong>;
     }
 
