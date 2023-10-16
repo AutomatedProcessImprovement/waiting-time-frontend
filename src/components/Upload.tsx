@@ -65,6 +65,13 @@ const Upload = () => {
             setErrorMessage("Upload a file to continue");
             return
         }
+
+        if (selectedLogFile.size > 30 * 1024 * 1024) {
+            setLoading(false);
+            setErrorMessage("File size exceeds 30 MB. Please upload a smaller file.");
+            return;
+        }
+        
         Papa.parse(selectedLogFile!, {
             preview: 1,
             complete: function (results) {
@@ -79,7 +86,7 @@ const Upload = () => {
         try {
             const config = {
                 method: 'post',
-                url: 'http://193.40.11.233/jobs?' + map_string,
+                url: 'http://154.56.63.127:80/jobs?' + map_string,
                 headers: {
                     'Content-Type': 'text/csv'
                 },
@@ -95,7 +102,7 @@ const Upload = () => {
                     let counter = 0
                     let f = setInterval(() => {
                         axios.get(
-                            'http://193.40.11.233/jobs/' + job.id,
+                            'http://154.56.63.127:80/jobs/' + job.id,
                         ).then((r: any) => {
                             let j = r.data
                             console.log(j.status)
