@@ -60,10 +60,10 @@ const Upload = () => {
     const onContinueClick = () => {
 
         setLoading(true)
-        if (!areFilesPresent()) {
-            setLoading(false)
+        if (!selectedLogFile) {
+            setLoading(false);
             setErrorMessage("Upload a file to continue");
-            return
+            return;
         }
 
         if (selectedLogFile.size > 30 * 1024 * 1024) {
@@ -71,7 +71,7 @@ const Upload = () => {
             setErrorMessage("File size exceeds 30 MB. Please upload a smaller file.");
             return;
         }
-        
+
         Papa.parse(selectedLogFile!, {
             preview: 1,
             complete: function (results) {
