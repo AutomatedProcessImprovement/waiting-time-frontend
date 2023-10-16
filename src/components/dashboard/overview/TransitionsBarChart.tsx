@@ -433,8 +433,7 @@ function TransitionsBarChart({data, selectedWTType}: Props) {
             }
         },
         title: {
-            text: 'Waiting time causes',
-            align: 'left'
+            text: '',
         },
         xAxis: {
             type: 'category',

@@ -1,5 +1,8 @@
 import React, {useState} from 'react';
-import {Box, FormControl, Grid, InputLabel, MenuItem, Select} from '@mui/material';
+import {Box, FormControl, Grid, InputLabel, MenuItem, Select, Typography} from '@mui/material';
+import Tooltip from '@mui/material/Tooltip';
+import IconButton from '@mui/material/IconButton';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import Highcharts from 'highcharts';
@@ -240,18 +243,31 @@ const AllTransitionsLayout: React.FC<AllTransitionsLayoutProps> = ({jobId}) => {
                         flexDirection: 'column',
                         justifyContent: 'space-between'
                     }}>
-
                         <div style={{
                             position: 'relative',
                             display: 'flex',
                             justifyContent: 'center',
                             alignItems: 'center'
                         }}>
-
                             <div style={{fontSize: 'large'}}>
                                 Waiting Times Distribution
+                                <Tooltip title={
+                                    <Typography variant="body2">
+                                        Kronos can discover 5 causes of waiting time, specifically due to:
+                                        <ol>
+                                            <li><strong>Batching</strong> – when an activity instance waits for another activity instance to be enabled in order to be processed together as a batch.</li>
+                                            <li><strong>Resource contention</strong> – when an activity instance waits to be processed by an assigned resource that is busy processing other activity instances, following a first-in-first-out (FIFO) order.</li>
+                                            <li><strong>Prioritization</strong> – when the assigned resource is busy with an activity instance that was prioritized over the waiting one (not executed in the FIFO order).</li>
+                                            <li><strong>Resource unavailability</strong> – when the assigned resource is unavailable (off duty) due to their working schedules.</li>
+                                            <li><strong>Extraneous factors</strong> – waiting times caused by external effects that cannot be identified from the event log, e.g., the resource is working on another process, fatigue effects, or context switches.</li>
+                                        </ol>
+                                    </Typography>
+                                }>
+                                    <IconButton size="small" style={{ marginLeft: '5px' }}>
+                                        <HelpOutlineIcon fontSize="inherit" />
+                                    </IconButton>
+                                </Tooltip>
                             </div>
-
                             <div style={{position: 'absolute', right: 0, top: '50%', transform: 'translateY(-50%)'}}>
                                 <FormControl variant="outlined" size="small" style={{marginBottom: '10px'}}>
                                     <InputLabel>Data Mode</InputLabel>
@@ -266,16 +282,32 @@ const AllTransitionsLayout: React.FC<AllTransitionsLayoutProps> = ({jobId}) => {
                                 </FormControl>
                             </div>
                         </div>
-
                         <PieChartBox key={pieChartDisplayMode} data={visData}/>
                     </div>
                 </Grid>
-
                 <Grid item xs={12}>
                     <WaitingTimeframe data={timeframeData}/>
                 </Grid>
                 <Grid item xs={12}>
-                    <TransitionsBarChart data={transitionsData}/>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <Typography variant="h6" style={{ marginRight: '8px' }}>
+                            Waiting time causes in transitions
+                        </Typography>
+
+                        <Tooltip
+                            title={
+                                <span style={{ fontSize: '1rem' }}>
+                            Waiting time between pairs of consecutive activities categorized by the causes of waiting.
+                        </span>
+                            }
+                        >
+                            <IconButton size="small" aria-label="info about waiting time causes">
+                                <HelpOutlineIcon />
+                            </IconButton>
+                        </Tooltip>
+                    </div>
+
+                    <TransitionsBarChart data={transitionsData} />
                 </Grid>
                 <Grid item xs={12} style={{textAlign: 'center'}}>
                 <span onClick={toggleTable}
@@ -293,13 +325,58 @@ const AllTransitionsLayout: React.FC<AllTransitionsLayoutProps> = ({jobId}) => {
                     </Grid>
                 )}
                 <Grid item xs={4}>
-                    <GaugeChart value={processingTimePercentage}/>
+                    <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px', justifyContent: 'flex-end' }}>
+
+                        <Tooltip
+                            title={
+                                <span style={{ fontSize: '1rem' }}>
+                    Measures the amount of value-added time in a process. Calculated as the ratio of processing time to cycle time. The closer CTE is to 100%, the relatively less waiting time is in the process.
+                </span>
+                            }
+                        >
+                            <IconButton size="small" aria-label="info about gauge chart">
+                                <HelpOutlineIcon />
+                            </IconButton>
+                        </Tooltip>
+                    </div>
+
+                    <GaugeChart value={processingTimePercentage} />
                 </Grid>
                 <Grid item xs={8}>
-                    <PotentialCteChart jsonData={potentialCteData} cte={processingTimePercentage}/>
+                    <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px', justifyContent: 'flex-end' }}>
+
+                        <Tooltip
+                            title={
+                                <span style={{ fontSize: '1rem' }}>
+                    The potential value of CTE if the waiting time due to each cause is eliminated. Helps identify which causes of waiting time to focus on to achieve greater improvements.
+                </span>
+                            }
+                        >
+                            <IconButton size="small" aria-label="info about potential CTE chart">
+                                <HelpOutlineIcon />
+                            </IconButton>
+                        </Tooltip>
+                    </div>
+
+                    <PotentialCteChart jsonData={potentialCteData} cte={processingTimePercentage} />
                 </Grid>
                 <Grid item xs={12}>
-                    <CTEHeatmap data={cteTableData}/>
+                    <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px', justifyContent: 'flex-end' }}>
+
+                        <Tooltip
+                            title={
+                                <span style={{ fontSize: '1rem' }}>
+                    Eliminating waiting times in these transitions has the potential to yield the most significant improvement in CTE. Distribution per cause reveals the improvement opportunities in each transition and indicates which opportunities could offer the highest CTE improvement.
+                </span>
+                            }
+                        >
+                            <IconButton size="small" aria-label="info about CTE heatmap">
+                                <HelpOutlineIcon />
+                            </IconButton>
+                        </Tooltip>
+                    </div>
+
+                    <CTEHeatmap data={cteTableData} />
                 </Grid>
                 <Grid item xs={12} style={{textAlign: 'center'}}>
                 <span onClick={toggleTable2}
