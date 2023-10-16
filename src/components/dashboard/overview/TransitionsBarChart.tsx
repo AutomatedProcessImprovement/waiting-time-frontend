@@ -421,7 +421,7 @@ function TransitionsBarChart({data, selectedWTType}: Props) {
 
     const options = {
         b_totals: [],
-        colors: COLORS.reverse(),
+        colors: COLORS,
         chart: {
             type: 'bar',
             padding: [0, 0, 0, 0],
@@ -488,7 +488,7 @@ function TransitionsBarChart({data, selectedWTType}: Props) {
         },
         legend: {
             enabled: true,
-            reversed: true
+            reversed: false
         },
         tooltip: {
             formatter(this: Highcharts.TooltipFormatterContextObject) {
@@ -498,7 +498,7 @@ function TransitionsBarChart({data, selectedWTType}: Props) {
             }
         },
 
-        series: processed_data.reverse()
+        series: processed_data
     }
 
     return (

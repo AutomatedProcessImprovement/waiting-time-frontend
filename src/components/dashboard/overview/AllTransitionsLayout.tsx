@@ -167,14 +167,12 @@ const AllTransitionsLayout: React.FC<AllTransitionsLayoutProps> = ({jobId}) => {
                         <Grid item>
                             <Infobox data={{
                                 title: "Cases",
-                                subtitle: "Total number of cases with wt",
                                 value: Intl.NumberFormat('en-US').format(overviewData.num_cases)
                             }}/>
                         </Grid>
                         <Grid item>
                             <Infobox data={{
                                 title: "Activities",
-                                subtitle: "Total number of activities",
                                 value: Intl.NumberFormat('en-US').format(overviewData.num_activities)
                             }}/>
                         </Grid>

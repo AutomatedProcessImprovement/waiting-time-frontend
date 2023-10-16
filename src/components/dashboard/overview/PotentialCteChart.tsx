@@ -19,14 +19,12 @@ const colorDict: { [key: string]: string } = {
 };
 
 export default function PotentialCteChart({jsonData, cte}: BarChartBoxProps) {
-    console.log("HELLO");
-    console.log(jsonData);
+    const orderedKeys = Object.keys(colorDict);
 
-    const categories = Object.keys(jsonData);
-    const series = categories.map(category => ({
-        name: category,
-        data: [jsonData[category]],
-        color: colorDict[category],
+    const series = orderedKeys.map(key => ({
+        name: key,
+        data: [jsonData[key] || 0],
+        color: colorDict[key],
     }));
 
     const options = {
