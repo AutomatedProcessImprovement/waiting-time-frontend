@@ -1,5 +1,5 @@
 import React from 'react';
-import {Box, Grid} from "@mui/material";
+import {Box, Grid, Typography} from "@mui/material";
 import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts";
 import {dhmToString} from "../../../helpers/dhmToString";
@@ -35,6 +35,7 @@ const BatchingSpecificTransitionsLayout: React.FC<BatchingSpecificTransitionsLay
         title: {
             text: null
         },
+        colors: ['#6C8EBF', 'lightblue'],
         series: [{
             type: 'pie',
             data: [
@@ -51,6 +52,7 @@ const BatchingSpecificTransitionsLayout: React.FC<BatchingSpecificTransitionsLay
         title: {
             text: null
         },
+        colors: ['#6C8EBF', 'lightblue'],
         tooltip: {
             pointFormatter: function (this: any) {
                 return `${this.series.name}: <b>${dhmToString(secondsToDhm(this.y))}</b>`;
@@ -134,6 +136,11 @@ const BatchingSpecificTransitionsLayout: React.FC<BatchingSpecificTransitionsLay
                     </div>
                 </Grid>
                 <Grid item xs={12}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <Typography variant="h6" style={{ marginRight: '8px' }}>
+                            Waiting time over the timeframe
+                        </Typography>
+                    </div>
                     <WaitingTimeframe
                         data={timeFrameData}
                         sourceActivity={sourceActivity}

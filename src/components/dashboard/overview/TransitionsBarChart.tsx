@@ -305,12 +305,13 @@ function TransitionsBarChart({data, selectedWTType}: Props) {
         return <div>No data available</div>;
     }
 
-    const isActivityType = dataArray.length > 0 && dataArray[0].hasOwnProperty('source_activity');
+    const isActivityTransitionType = dataArray.length > 0 && dataArray[0].hasOwnProperty('source_activity');
+    const isSingleActivityType = !isActivityTransitionType && dataArray.length > 0 && dataArray[0].hasOwnProperty('activity');
 
     let processed_data = []
     let pre_categories = []
     let categories = [] as string[]
-    if (isActivityType) {
+    if (isActivityTransitionType) {
         for (const dataKey in dataArray) {
             let out = {
                 name: dataArray[dataKey].source_activity.trim().charAt(0).toUpperCase() + dataArray[dataKey].source_activity.trim().slice(1).toLowerCase() +
@@ -324,6 +325,19 @@ function TransitionsBarChart({data, selectedWTType}: Props) {
 
             }
             pre_categories.push(out)
+        }
+    } else if (isSingleActivityType) {
+        for (const dataKey in dataArray) {
+            let out = {
+                name: dataArray[dataKey].activity.trim().charAt(0).toUpperCase() + dataArray[dataKey].activity.trim().slice(1).toLowerCase(),
+                total_wt: dataArray[dataKey].total_wt,
+                batching_wt: dataArray[dataKey].batching_wt,
+                prioritization_wt: dataArray[dataKey].prioritization_wt,
+                contention_wt: dataArray[dataKey].contention_wt,
+                unavailability_wt: dataArray[dataKey].unavailability_wt,
+                extraneous_wt: dataArray[dataKey].extraneous_wt,
+            };
+            pre_categories.push(out);
         }
     } else {
         for (const dataKey in dataArray) {
