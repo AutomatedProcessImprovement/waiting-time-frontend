@@ -421,7 +421,7 @@ function TransitionsBarChart({data, selectedWTType}: Props) {
 
     const options = {
         b_totals: [],
-        colors: COLORS,
+        colors: selectedWTType ? [_colorDict[selectedWTType], "lightblue"] : COLORS,
         chart: {
             type: 'bar',
             padding: [0, 0, 0, 0],

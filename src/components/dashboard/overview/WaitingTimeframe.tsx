@@ -243,7 +243,7 @@ const WaitingTimeframe = ({data, sourceActivity, destinationActivity, wtType}: {
                 {
                     name: 'Other Types',
                     data: data.map(d => otherTypes.reduce((acc, type) => acc + d[`total_${type}_wt`], 0)),
-                    color: '#999',
+                    color: 'lightblue',
                     tooltip: {
                         pointFormatter: function (this: Highcharts.Point): string {
                             const formattedValue = dhmToString(secondsToDhm(this.y as any));
