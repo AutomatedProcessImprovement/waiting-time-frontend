@@ -297,7 +297,7 @@ const WaitingTimeframe = ({data, sourceActivity, destinationActivity, wtType}: {
             zoomType: 'x',
         },
         title: {
-            text: 'Waiting time causes over the timeframe',
+            text: '',
             align: 'center',
             style: {
                 fontFamily: 'Roboto'

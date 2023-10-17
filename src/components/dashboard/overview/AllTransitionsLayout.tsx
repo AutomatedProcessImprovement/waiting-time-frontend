@@ -205,9 +205,9 @@ const AllTransitionsLayout: React.FC<AllTransitionsLayoutProps> = ({jobId}) => {
                             alignItems: 'center'
                         }}>
 
-                            <div style={{fontSize: 'large', marginBottom: '5px'}}>
+                            <Typography variant="h6" style={{ marginRight: '8px', display: 'inline' }}>
                                 Cycle Time
-                            </div>
+                            </Typography>
 
                             <div style={{position: 'absolute', right: 0, top: '50%', transform: 'translateY(-50%)'}}>
                                 <FormControl variant="outlined" size="small" style={{marginBottom: '10px'}}>
@@ -250,7 +250,9 @@ const AllTransitionsLayout: React.FC<AllTransitionsLayoutProps> = ({jobId}) => {
                             alignItems: 'center'
                         }}>
                             <div style={{fontSize: 'large'}}>
-                                Waiting Times Distribution
+                                <Typography variant="h6" style={{ marginRight: '8px', display: 'inline' }}>
+                                    Waiting Times Distribution
+                                </Typography>
                                 <Tooltip title={
                                     <Typography variant="body2">
                                         Kronos can discover 5 causes of waiting time, specifically due to:
@@ -286,6 +288,11 @@ const AllTransitionsLayout: React.FC<AllTransitionsLayoutProps> = ({jobId}) => {
                     </div>
                 </Grid>
                 <Grid item xs={12}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <Typography variant="h6" style={{ marginRight: '8px' }}>
+                            Waiting time causes over the timeframe
+                        </Typography>
+                    </div>
                     <WaitingTimeframe data={timeframeData}/>
                 </Grid>
                 <Grid item xs={12}>
@@ -325,7 +332,11 @@ const AllTransitionsLayout: React.FC<AllTransitionsLayoutProps> = ({jobId}) => {
                     </Grid>
                 )}
                 <Grid item xs={4}>
-                    <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px', justifyContent: 'flex-end' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px', justifyContent: 'center' }}>
+
+                        <Typography variant="h6" style={{ marginRight: '8px' }}>
+                            Cycle Time Efficiency
+                        </Typography>
 
                         <Tooltip
                             title={
@@ -343,7 +354,11 @@ const AllTransitionsLayout: React.FC<AllTransitionsLayoutProps> = ({jobId}) => {
                     <GaugeChart value={processingTimePercentage} />
                 </Grid>
                 <Grid item xs={8}>
-                    <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px', justifyContent: 'flex-end' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
+
+                        <Typography variant="h6" style={{ marginRight: '8px' }}>
+                            Potential CTE
+                        </Typography>
 
                         <Tooltip
                             title={
@@ -361,7 +376,11 @@ const AllTransitionsLayout: React.FC<AllTransitionsLayoutProps> = ({jobId}) => {
                     <PotentialCteChart jsonData={potentialCteData} cte={processingTimePercentage} />
                 </Grid>
                 <Grid item xs={12}>
-                    <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px', justifyContent: 'flex-end' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
+
+                        <Typography variant="h6" style={{ marginRight: '8px' }}>
+                            Transitions with the highest potential CTE improvement
+                        </Typography>
 
                         <Tooltip
                             title={

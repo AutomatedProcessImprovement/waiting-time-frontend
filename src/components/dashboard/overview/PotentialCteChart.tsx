@@ -37,7 +37,7 @@ export default function PotentialCteChart({jsonData, cte}: BarChartBoxProps) {
             },
         },
         title: {
-            text: 'Potential CTE Causes',
+            text: '',
             align: 'left',
             style: {
                 fontFamily: 'Roboto',
