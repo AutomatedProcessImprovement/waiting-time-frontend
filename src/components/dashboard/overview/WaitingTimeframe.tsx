@@ -235,12 +235,6 @@ const WaitingTimeframe = ({data, sourceActivity, destinationActivity, wtType}: {
             const otherTypes = Object.keys(_colorDict).filter(key => key !== wtType);
             return [
                 {
-                    name: wtType,
-                    data: data.map(d => d[`total_${wtType}_wt`]),
-                    color: _colorDict[wtType],
-                    tooltip: {pointFormatter: generateTooltipFormatter(wtType)}
-                },
-                {
                     name: 'Other Types',
                     data: data.map(d => otherTypes.reduce((acc, type) => acc + d[`total_${type}_wt`], 0)),
                     color: 'lightblue',
@@ -250,7 +244,13 @@ const WaitingTimeframe = ({data, sourceActivity, destinationActivity, wtType}: {
                             return `<span style="color:${this.color}">\u25CF</span> ${this.series.name}: <b>${formattedValue}</b><br/>`;
                         },
                     },
-                }
+                },
+                {
+                    name: wtType,
+                    data: data.map(d => d[`total_${wtType}_wt`]),
+                    color: _colorDict[wtType],
+                    tooltip: {pointFormatter: generateTooltipFormatter(wtType)}
+                },
             ];
         } else {
             return Object.keys(_colorDict).map((type) => {
