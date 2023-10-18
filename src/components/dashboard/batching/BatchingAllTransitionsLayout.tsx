@@ -11,6 +11,7 @@ import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import BatchingComponent from "./BatchingComponent";
+import ResourcesBarChart from "../ResourcesBarChart";
 
 
 interface BatchingAllTransitionsLayoutProps {
@@ -22,9 +23,10 @@ const BatchingAllTransitionsLayout: React.FC<BatchingAllTransitionsLayoutProps> 
     const transitionsData = useFetchData(`/activity_transitions/${jobId}`);
     const timeFrameData = useFetchData(`/daily_summary/${jobId}`);
     const activityWT = useFetchData(`/activity_wt/${jobId}`);
+    const activityResourceWT = useFetchData(`/activity_resource_wt/${jobId}`)
     const batching = useFetchData(`/process_csv/${jobId}`)
 
-    if (!overviewData || !transitionsData || !timeFrameData || !activityWT) {
+    if (!overviewData || !transitionsData || !timeFrameData || !activityWT || ! activityResourceWT) {
         return <div>Loading...</div>;
     }
 
@@ -186,6 +188,10 @@ const BatchingAllTransitionsLayout: React.FC<BatchingAllTransitionsLayoutProps> 
                     </div>
                     <TransitionsBarChart data={activityWT} selectedWTType={"batching"}/>
                 </Grid>
+                <Grid item xs={12}>
+                    <ResourcesBarChart data={activityResourceWT} selectedWt="batching" />
+                </Grid>
+
                 {/*<Grid item xs={12}>*/}
                 {/*    {!batching && (*/}
                 {/*        <Grid item xs={12}>*/}

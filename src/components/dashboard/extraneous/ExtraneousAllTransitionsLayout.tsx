@@ -10,7 +10,7 @@ import TransitionsBarChart from "../overview/TransitionsBarChart";
 import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
-
+import ResourcesBarChart from "../ResourcesBarChart";
 
 interface ExtraneousAllTransitionsLayout {
     jobId: string;
@@ -21,8 +21,9 @@ const ExtraneousAllTransitionsLayout: React.FC<ExtraneousAllTransitionsLayout> =
     const transitionsData = useFetchData(`/activity_transitions/${jobId}`);
     const timeFrameData = useFetchData(`/daily_summary/${jobId}`);
     const activityWT = useFetchData(`/activity_wt/${jobId}`);
+    const activityResourceWT = useFetchData(`/activity_resource_wt/${jobId}`)
 
-    if (!overviewData || !transitionsData || !timeFrameData || !activityWT) {
+    if (!overviewData || !transitionsData || !timeFrameData || !activityWT || !activityResourceWT) {
         return <div>Loading...</div>;
     }
 
@@ -129,7 +130,7 @@ const ExtraneousAllTransitionsLayout: React.FC<ExtraneousAllTransitionsLayout> =
                         <div style={{fontWeight: 'bold', fontSize: '1.2em', marginBottom: '20px'}}>Highest Source</div>
                         <div style={{textAlign: 'left'}}>Transition: {biggestSourceDestPair}</div>
                         <div style={{textAlign: 'left', marginBottom: '20px'}}>{valueText}</div>
-                        <div style={{textAlign: 'left', whiteSpace: 'pre-line'}}>{highestSourceText}</div>
+                        <div style={{textAlign: 'left', whiteSpace: 'pre-line'}}>Resource: {highestSourceText}</div>
                         <div style={{textAlign: 'left', whiteSpace: 'pre-line'}}>{highestSourceValue}</div>
                     </div>
                 </Grid>
@@ -183,6 +184,9 @@ const ExtraneousAllTransitionsLayout: React.FC<ExtraneousAllTransitionsLayout> =
                         </Tooltip>
                     </div>
                     <TransitionsBarChart data={activityWT} selectedWTType={"extraneous"}/>
+                </Grid>
+                <Grid item xs={12}>
+                    <ResourcesBarChart data={activityResourceWT} selectedWt="extraneous" />
                 </Grid>
             </Grid>
         </Box>
