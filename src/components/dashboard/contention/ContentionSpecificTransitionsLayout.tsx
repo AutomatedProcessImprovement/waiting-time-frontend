@@ -6,6 +6,7 @@ import {Box, Grid} from "@mui/material";
 import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts";
 import WaitingTimeframe from "../overview/WaitingTimeframe";
+import ResourcesBarChart from "../ResourcesBarChart";
 
 interface ContentionSpecificTransitionsLayoutProps {
     jobId: string;
@@ -19,8 +20,9 @@ const ContentionSpecificTransitionsLayout: React.FC<ContentionSpecificTransition
     const [sourceActivity, destinationActivity] = selectedActivityPair.split(' - ');
     const overviewData = useFetchData(`/wt_overview/${jobId}/contention/${sourceActivity}/${destinationActivity}`);
     const timeFrameData = useFetchData(`/daily_summary/${jobId}/${sourceActivity}/${destinationActivity}`);
+    const activityResourceWT = useFetchData(`/activity_resource_wt/${jobId}`)
 
-    if (!overviewData || !timeFrameData) {
+    if (!overviewData || !timeFrameData || !activityResourceWT) {
         return <div>Loading...</div>;
     }
 
@@ -140,6 +142,9 @@ const ContentionSpecificTransitionsLayout: React.FC<ContentionSpecificTransition
                         destinationActivity={destinationActivity}
                         wtType={"contention"}
                     />
+                </Grid>
+                <Grid item xs={12}>
+                    <ResourcesBarChart data={activityResourceWT} selectedWt="contention" selectedActivity={destinationActivity} />
                 </Grid>
             </Grid>
         </Box>

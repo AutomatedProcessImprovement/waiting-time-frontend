@@ -6,6 +6,7 @@ import {Box, Grid} from "@mui/material";
 import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts";
 import WaitingTimeframe from "../overview/WaitingTimeframe";
+import ResourcesBarChart from "../ResourcesBarChart";
 
 interface UnavailabilitySpecificTransitionsLayoutProps {
     jobId: string;
@@ -18,9 +19,10 @@ const UnavailabilitySpecificTransitionsLayout: React.FC<UnavailabilitySpecificTr
                                                                                                          }) => {
     const [sourceActivity, destinationActivity] = selectedActivityPair.split(' - ');
     const overviewData = useFetchData(`/wt_overview/${jobId}/unavailability/${sourceActivity}/${destinationActivity}`);
-    const timeFrameData = useFetchData(`/daily_summary/${jobId}/${sourceActivity}/${destinationActivity}`)
+    const timeFrameData = useFetchData(`/daily_summary/${jobId}/${sourceActivity}/${destinationActivity}`);
+    const activityResourceWT = useFetchData(`/activity_resource_wt/${jobId}`);
 
-    if (!overviewData || !timeFrameData) {
+    if (!overviewData || !timeFrameData || !activityResourceWT) {
         return <div>Loading...</div>;
     }
 
@@ -140,6 +142,9 @@ const UnavailabilitySpecificTransitionsLayout: React.FC<UnavailabilitySpecificTr
                         destinationActivity={destinationActivity}
                         wtType={"unavailability"}
                     />
+                </Grid>
+                <Grid item xs={12}>
+                    <ResourcesBarChart data={activityResourceWT} selectedWt="unavailability" selectedActivity={destinationActivity}/>
                 </Grid>
             </Grid>
         </Box>

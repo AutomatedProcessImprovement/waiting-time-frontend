@@ -6,6 +6,7 @@ import {Box, Grid} from "@mui/material";
 import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts";
 import WaitingTimeframe from "../overview/WaitingTimeframe";
+import ResourcesBarChart from "../ResourcesBarChart";
 
 interface PrioritizationSpecificTransitionsLayoutProps {
     jobId: string;
@@ -19,8 +20,9 @@ const PrioritizationSpecificTransitionsLayout: React.FC<PrioritizationSpecificTr
     const [sourceActivity, destinationActivity] = selectedActivityPair.split(' - ');
     const overviewData = useFetchData(`/wt_overview/${jobId}/prioritization/${sourceActivity}/${destinationActivity}`);
     const timeFrameData = useFetchData(`/daily_summary/${jobId}//${sourceActivity}/${destinationActivity}`);
+    const activityResourceWT = useFetchData(`/activity_resource_wt/${jobId}`)
 
-    if (!overviewData || !timeFrameData) {
+    if (!overviewData || !timeFrameData || !activityResourceWT) {
         return <div>Loading...</div>;
     }
 
@@ -143,6 +145,9 @@ const PrioritizationSpecificTransitionsLayout: React.FC<PrioritizationSpecificTr
                         destinationActivity={destinationActivity}
                         wtType={"prioritization"}
                     />
+                </Grid>
+                <Grid item xs={12}>
+                    <ResourcesBarChart data={activityResourceWT} selectedWt="prioritization" selectedActivity={destinationActivity} />
                 </Grid>
             </Grid>
         </Box>

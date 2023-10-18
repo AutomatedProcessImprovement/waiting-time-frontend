@@ -6,6 +6,7 @@ import {dhmToString} from "../../../helpers/dhmToString";
 import {secondsToDhm} from "../../../helpers/SecondsToDhm";
 import {useFetchData} from "../../../helpers/useFetchData";
 import WaitingTimeframe from "../overview/WaitingTimeframe";
+import ResourcesBarChart from "../ResourcesBarChart";
 
 interface BatchingSpecificTransitionsLayoutProps {
     jobId: string;
@@ -19,8 +20,9 @@ const BatchingSpecificTransitionsLayout: React.FC<BatchingSpecificTransitionsLay
     const [sourceActivity, destinationActivity] = selectedActivityPair.split(' - ');
     const overviewData = useFetchData(`/wt_overview/${jobId}/batching/${sourceActivity}/${destinationActivity}`);
     const timeFrameData = useFetchData(`/daily_summary/${jobId}/${sourceActivity}/${destinationActivity}`);
+    const activityResourceWT = useFetchData(`/activity_resource_wt/${jobId}`)
 
-    if (!overviewData) {
+    if (!overviewData || !timeFrameData || !activityResourceWT) {
         return <div>Loading...</div>;
     }
 
@@ -147,6 +149,9 @@ const BatchingSpecificTransitionsLayout: React.FC<BatchingSpecificTransitionsLay
                         destinationActivity={destinationActivity}
                         wtType={"batching"}
                     />
+                </Grid>
+                <Grid item xs={12}>
+                    <ResourcesBarChart data={activityResourceWT} selectedWt="batching" selectedActivity={destinationActivity} />
                 </Grid>
             </Grid>
         </Box>
