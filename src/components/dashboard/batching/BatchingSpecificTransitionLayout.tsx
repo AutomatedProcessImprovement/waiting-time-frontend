@@ -7,6 +7,10 @@ import {secondsToDhm} from "../../../helpers/SecondsToDhm";
 import {useFetchData} from "../../../helpers/useFetchData";
 import WaitingTimeframe from "../overview/WaitingTimeframe";
 import ResourcesBarChart from "../ResourcesBarChart";
+import Tooltip from "@mui/material/Tooltip";
+import IconButton from "@mui/material/IconButton";
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
+import TransitionsBarChart from "../overview/TransitionsBarChart";
 
 interface BatchingSpecificTransitionsLayoutProps {
     jobId: string;
@@ -20,6 +24,7 @@ const BatchingSpecificTransitionsLayout: React.FC<BatchingSpecificTransitionsLay
     const [sourceActivity, destinationActivity] = selectedActivityPair.split(' - ');
     const overviewData = useFetchData(`/wt_overview/${jobId}/batching/${sourceActivity}/${destinationActivity}`);
     const timeFrameData = useFetchData(`/daily_summary/${jobId}/${sourceActivity}/${destinationActivity}`);
+    const barChartDataByResource = useFetchData(`/activity_transitions_by_resource/${jobId}/${sourceActivity}/${destinationActivity}`);
     const activityResourceWT = useFetchData(`/activity_resource_wt/${jobId}`)
 
     if (!overviewData || !timeFrameData || !activityResourceWT) {
@@ -152,6 +157,26 @@ const BatchingSpecificTransitionsLayout: React.FC<BatchingSpecificTransitionsLay
                 </Grid>
                 <Grid item xs={12}>
                     <ResourcesBarChart data={activityResourceWT} selectedWt="batching" selectedActivity={destinationActivity} />
+                </Grid>
+                <Grid item xs={12}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <Typography variant="h6" style={{ marginRight: '8px' }}>
+                            Waiting time in handovers
+                        </Typography>
+
+                        <Tooltip
+                            title={
+                                <span style={{ fontSize: '1rem' }}>
+                            Waiting time between a pair of resources executing activities of the selected transition, categorized by the causes of waiting.
+                        </span>
+                            }
+                        >
+                            <IconButton size="small" aria-label="info about waiting time causes">
+                                <HelpOutlineIcon />
+                            </IconButton>
+                        </Tooltip>
+                    </div>
+                    <TransitionsBarChart data={barChartDataByResource} selectedWTType={'batching'}/>
                 </Grid>
             </Grid>
         </Box>

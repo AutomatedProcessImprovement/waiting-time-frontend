@@ -1,5 +1,5 @@
 import React from 'react';
-import {Box, Grid} from '@mui/material';
+import {Box, Grid, Typography} from '@mui/material';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import {secondsToDhm} from '../../../helpers/SecondsToDhm';
@@ -9,6 +9,9 @@ import TransitionsBarChart from './TransitionsBarChart';
 import WaitingTimeframe from "./WaitingTimeframe";
 import GaugeChart from "./GaugeChart";
 import PotentialCteChart from "./PotentialCteChart";
+import Tooltip from "@mui/material/Tooltip";
+import IconButton from "@mui/material/IconButton";
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 
 interface SpecificTransitionLayoutProps {
     jobId: string;
@@ -190,9 +193,11 @@ const SpecificTransitionLayout: React.FC<SpecificTransitionLayoutProps> = ({jobI
                     </div>
                 </Grid>
                 <Grid item xs={12}>
-                    <TransitionsBarChart data={barChartData}/>
-                </Grid>
-                <Grid item xs={12}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <Typography variant="h6" style={{ marginRight: '8px' }}>
+                            Waiting time causes over the timeframe
+                        </Typography>
+                    </div>
                     <WaitingTimeframe
                         data={timeFrameData}
                         sourceActivity={sourceActivity}
@@ -200,12 +205,86 @@ const SpecificTransitionLayout: React.FC<SpecificTransitionLayoutProps> = ({jobI
                     />
                 </Grid>
                 <Grid item xs={12}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <Typography variant="h6" style={{ marginRight: '8px' }}>
+                            Waiting time causes in transition
+                        </Typography>
+
+                        <Tooltip
+                            title={
+                                <span style={{ fontSize: '1rem' }}>
+                            Waiting time of transition by the causes of waiting.
+                        </span>
+                            }
+                        >
+                            <IconButton size="small" aria-label="info about waiting time causes">
+                                <HelpOutlineIcon />
+                            </IconButton>
+                        </Tooltip>
+                    </div>
+
+                    <TransitionsBarChart data={barChartData}/>
+                </Grid>
+                <Grid item xs={12}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <Typography variant="h6" style={{ marginRight: '8px' }}>
+                            Waiting time in handovers
+                        </Typography>
+
+                        <Tooltip
+                            title={
+                                <span style={{ fontSize: '1rem' }}>
+                            Waiting time between a pair of resources executing activities of the selected transition, categorized by the causes of waiting.
+                        </span>
+                            }
+                        >
+                            <IconButton size="small" aria-label="info about waiting time causes">
+                                <HelpOutlineIcon />
+                            </IconButton>
+                        </Tooltip>
+                    </div>
                     <TransitionsBarChart data={barChartDataByResource}/>
                 </Grid>
                 <Grid item xs={4}>
+                    <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px', justifyContent: 'center' }}>
+
+                        <Typography variant="h6" style={{ marginRight: '8px' }}>
+                            Cycle Time Efficiency
+                        </Typography>
+
+                        <Tooltip
+                            title={
+                                <span style={{ fontSize: '1rem' }}>
+                    Measures the amount of value-added time in a process. Calculated as the ratio of processing time to cycle time. The closer CTE is to 100%, the relatively less waiting time is in the process.
+                </span>
+                            }
+                        >
+                            <IconButton size="small" aria-label="info about gauge chart">
+                                <HelpOutlineIcon />
+                            </IconButton>
+                        </Tooltip>
+                    </div>
                     <GaugeChart value={processingTimePercentage}/>
                 </Grid>
                 <Grid item xs={8}>
+                    <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
+
+                        <Typography variant="h6" style={{ marginRight: '8px' }}>
+                            Potential CTE
+                        </Typography>
+
+                        <Tooltip
+                            title={
+                                <span style={{ fontSize: '1rem' }}>
+                    The potential value of CTE if the waiting time due to each cause is eliminated. Helps identify which causes of waiting time to focus on to achieve greater improvements.
+                </span>
+                            }
+                        >
+                            <IconButton size="small" aria-label="info about potential CTE chart">
+                                <HelpOutlineIcon />
+                            </IconButton>
+                        </Tooltip>
+                    </div>
                     <PotentialCteChart jsonData={transformedCteImpact[0]} cte={processingTimePercentage}/>
                 </Grid>
             </Grid>
