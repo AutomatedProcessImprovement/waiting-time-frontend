@@ -24,10 +24,11 @@ const ContentionSpecificTransitionsLayout: React.FC<ContentionSpecificTransition
     const [sourceActivity, destinationActivity] = selectedActivityPair.split(' - ');
     const overviewData = useFetchData(`/wt_overview/${jobId}/contention/${sourceActivity}/${destinationActivity}`);
     const timeFrameData = useFetchData(`/daily_summary/${jobId}/${sourceActivity}/${destinationActivity}`);
-    const activityResourceWT = useFetchData(`/activity_resource_wt/${jobId}`)
+    const activityResourceWT = useFetchData(`/activity_resource_wt/${jobId}`);
+    const barChartData = useFetchData(`/activity_transitions/${jobId}/${sourceActivity}/${destinationActivity}`);
     const barChartDataByResource = useFetchData(`/activity_transitions_by_resource/${jobId}/${sourceActivity}/${destinationActivity}`);
 
-    if (!overviewData || !timeFrameData || !activityResourceWT ||!activityResourceWT || !barChartDataByResource) {
+    if (!overviewData || !timeFrameData || !activityResourceWT ||!activityResourceWT || !barChartDataByResource || !barChartData) {
         return <div>Loading...</div>;
     }
 
@@ -141,6 +142,11 @@ const ContentionSpecificTransitionsLayout: React.FC<ContentionSpecificTransition
                     </div>
                 </Grid>
                 <Grid item xs={12}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <Typography variant="h6" style={{ marginRight: '8px' }}>
+                            Waiting time over the timeframe
+                        </Typography>
+                    </div>
                     <WaitingTimeframe
                         data={timeFrameData}
                         sourceActivity={sourceActivity}
@@ -149,6 +155,32 @@ const ContentionSpecificTransitionsLayout: React.FC<ContentionSpecificTransition
                     />
                 </Grid>
                 <Grid item xs={12}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <Typography variant="h6" style={{ marginRight: '8px' }}>
+                            Waiting time causes in transition
+                        </Typography>
+
+                        <Tooltip
+                            title={
+                                <span style={{ fontSize: '1rem' }}>
+                            Waiting time of transition by the causes of waiting.
+                        </span>
+                            }
+                        >
+                            <IconButton size="small" aria-label="info about waiting time causes">
+                                <HelpOutlineIcon />
+                            </IconButton>
+                        </Tooltip>
+                    </div>
+
+                    <TransitionsBarChart data={barChartData} selectedWTType={'contention'}/>
+                </Grid>
+                <Grid item xs={12}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <Typography variant="h6" style={{ marginRight: '8px' }}>
+                            Resources
+                        </Typography>
+                    </div>
                     <ResourcesBarChart data={activityResourceWT} selectedWt="contention" selectedActivity={destinationActivity} />
                 </Grid>
                 <Grid item xs={12}>
