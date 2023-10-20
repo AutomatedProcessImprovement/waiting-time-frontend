@@ -139,7 +139,7 @@ const AllTransitionsLayout: React.FC<AllTransitionsLayoutProps> = ({jobId}) => {
     };
 
     const totalCycleTime = overviewData.waiting_time + overviewData.processing_time;
-    const processingTimePercentage = +parseFloat(((overviewData.processing_time / totalCycleTime) * 100).toFixed(1))
+    const processingTimePercentage = +parseFloat(((overviewData.processing_time / totalCycleTime) * 100).toFixed(1));
     let avgCycleTime = overviewData.processing_time_avg + overviewData.waiting_time_avg;
 
     return (

@@ -18,13 +18,15 @@ interface SpecificTransitionLayoutProps {
 const SpecificTransitionLayout: React.FC<SpecificTransitionLayoutProps> = ({jobId, selectedActivityPair}) => {
     const [sourceActivity, destinationActivity] = selectedActivityPair.split(' - ');
 
+    const generalOverviewData = useFetchData(`/overview/${jobId}`);
     const overviewData = useFetchData(`/case_overview/${jobId}/${sourceActivity}/${destinationActivity}`);
     const barChartData = useFetchData(`/activity_transitions/${jobId}/${sourceActivity}/${destinationActivity}`);
     const barChartDataByResource = useFetchData(`/activity_transitions_by_resource/${jobId}/${sourceActivity}/${destinationActivity}`);
-    const potentialCteData = useFetchData(`/potential_cte_filtered/${jobId}/${sourceActivity}/${destinationActivity}`);
+    // const potentialCteData = useFetchData(`/potential_cte_filtered/${jobId}/${sourceActivity}/${destinationActivity}`);
+    const cteTableData = useFetchData(`/cte_improvement/${jobId}`);
     const timeFrameData = useFetchData(`/daily_summary/${jobId}/${sourceActivity}/${destinationActivity}`);
 
-    if (!overviewData || !barChartData || !barChartDataByResource || !potentialCteData || !timeFrameData) {
+    if (!overviewData || !barChartData || !barChartDataByResource || !timeFrameData || !generalOverviewData || !cteTableData) {
         return <div>Loading...</div>;
     }
 
@@ -32,11 +34,27 @@ const SpecificTransitionLayout: React.FC<SpecificTransitionLayoutProps> = ({jobI
         return <strong>This transition has no waiting time</strong>;
     }
 
-    const specificCte = +parseFloat(((overviewData.processing_time / (overviewData.specific_wttotal_sum + overviewData.processing_time)) * 100).toFixed(1))
+    // const specificCte = +parseFloat(((overviewData.processing_time / (overviewData.specific_wttotal_sum + overviewData.processing_time)) * 100).toFixed(1));
+    const totalCycleTime = generalOverviewData.waiting_time + generalOverviewData.processing_time;
+    const processingTimePercentage = +parseFloat(((generalOverviewData.processing_time / totalCycleTime) * 100).toFixed(1));
     const isMaxPairDefined = overviewData.max_wttotal_pair && overviewData.max_wttotal_pair[2] !== 0;
     const highestSourceText = isMaxPairDefined
         ? `Handover: ${overviewData.max_wttotal_pair[0]} - ${overviewData.max_wttotal_pair[1]}\n${dhmToString(secondsToDhm(overviewData.max_wttotal_pair[2]))}`
         : 'No highest handover';
+
+    const filteredData = cteTableData.data.filter((item: { source_activity: string; target_activity: string; }) =>
+        item.source_activity === sourceActivity && item.target_activity === destinationActivity
+    );
+
+    const transformedCteImpact = filteredData.map((item: { cte_impact: { batching_impact: any; contention_impact: any; extraneous_impact: any; prioritization_impact: any; unavailability_impact: any; }; }) => ({
+        "Batching": item.cte_impact.batching_impact,
+        "Contention": item.cte_impact.contention_impact,
+        "Extraneous": item.cte_impact.extraneous_impact,
+        "Prioritization": item.cte_impact.prioritization_impact,
+        "Unavailability": item.cte_impact.unavailability_impact
+    }));
+
+    console.log("CTE impact transformed: ", transformedCteImpact);
 
     const caseFrequencyOptions = {
         chart: {
@@ -185,10 +203,10 @@ const SpecificTransitionLayout: React.FC<SpecificTransitionLayoutProps> = ({jobI
                     <TransitionsBarChart data={barChartDataByResource}/>
                 </Grid>
                 <Grid item xs={4}>
-                    <GaugeChart value={specificCte}/>
+                    <GaugeChart value={processingTimePercentage}/>
                 </Grid>
                 <Grid item xs={8}>
-                    <PotentialCteChart jsonData={potentialCteData} cte={specificCte}/>
+                    <PotentialCteChart jsonData={transformedCteImpact[0]} cte={processingTimePercentage}/>
                 </Grid>
             </Grid>
         </Box>

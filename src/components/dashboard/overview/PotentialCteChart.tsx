@@ -10,6 +10,10 @@ interface BarChartBoxProps {
     cte: number;
 }
 
+interface DataLabelContext {
+    y: number;
+}
+
 const colorDict: { [key: string]: string } = {
     Batching: "#6C8EBF",
     Prioritization: "#B8544F",
@@ -20,12 +24,14 @@ const colorDict: { [key: string]: string } = {
 
 export default function PotentialCteChart({jsonData, cte}: BarChartBoxProps) {
     const orderedKeys = Object.keys(colorDict);
-
-    const series = orderedKeys.map(key => ({
-        name: key,
-        data: [jsonData[key] || 0],
-        color: colorDict[key],
-    }));
+    const series = orderedKeys.map(key => {
+        console.log(key, jsonData[key]);
+        return {
+            name: key,
+            data: [jsonData[key] || 0],
+            color: colorDict[key],
+        };
+    });
 
     const options = {
         chart: {
@@ -35,6 +41,21 @@ export default function PotentialCteChart({jsonData, cte}: BarChartBoxProps) {
                 fontFamily: 'Roboto',
                 fontSize: 18,
             },
+        },
+        plotOptions: {
+            column: {
+                dataLabels: {
+                    enabled: true,
+                    color: '#000000',
+                    style: {
+                        fontWeight: 'bold',
+                        fontSize: '15px'
+                    },
+                    formatter(this: DataLabelContext): string {
+                        return `${this.y.toFixed(2)}%`;
+                    }
+                }
+            }
         },
         title: {
             text: '',
