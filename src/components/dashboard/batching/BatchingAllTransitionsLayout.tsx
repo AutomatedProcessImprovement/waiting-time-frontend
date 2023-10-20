@@ -1,5 +1,5 @@
 import React from 'react';
-import {Box, Grid} from "@mui/material";
+import {Box, Grid, Typography} from "@mui/material";
 import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts";
 import {dhmToString} from "../../../helpers/dhmToString";
@@ -7,6 +7,11 @@ import {secondsToDhm} from "../../../helpers/SecondsToDhm";
 import {useFetchData} from "../../../helpers/useFetchData";
 import WaitingTimeframe from "../overview/WaitingTimeframe";
 import TransitionsBarChart from "../overview/TransitionsBarChart";
+import Tooltip from "@mui/material/Tooltip";
+import IconButton from "@mui/material/IconButton";
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
+import BatchingComponent from "./BatchingComponent";
+import ResourcesBarChart from "../ResourcesBarChart";
 
 
 interface BatchingAllTransitionsLayoutProps {
@@ -17,8 +22,11 @@ const BatchingAllTransitionsLayout: React.FC<BatchingAllTransitionsLayoutProps> 
     const overviewData = useFetchData(`/wt_overview/${jobId}/batching`);
     const transitionsData = useFetchData(`/activity_transitions/${jobId}`);
     const timeFrameData = useFetchData(`/daily_summary/${jobId}`);
+    const activityWT = useFetchData(`/activity_wt/${jobId}`);
+    const activityResourceWT = useFetchData(`/activity_resource_wt/${jobId}`)
+    // const batching = useFetchData(`/process_csv/${jobId}`)
 
-    if (!overviewData || !transitionsData || !timeFrameData) {
+    if (!overviewData || !transitionsData || !timeFrameData || !activityWT || ! activityResourceWT) {
         return <div>Loading...</div>;
     }
 
@@ -29,6 +37,7 @@ const BatchingAllTransitionsLayout: React.FC<BatchingAllTransitionsLayoutProps> 
         title: {
             text: null
         },
+        colors: ['#6C8EBF', 'lightblue'],
         series: [{
             type: 'pie',
             data: [
@@ -45,6 +54,7 @@ const BatchingAllTransitionsLayout: React.FC<BatchingAllTransitionsLayoutProps> 
         title: {
             text: null
         },
+        colors: ['#6C8EBF', 'lightblue'],
         tooltip: {
             pointFormatter: function (this: any) {
                 return `${this.series.name}: <b>${dhmToString(secondsToDhm(this.y))}</b>`;
@@ -123,19 +133,86 @@ const BatchingAllTransitionsLayout: React.FC<BatchingAllTransitionsLayoutProps> 
                         <div style={{fontWeight: 'bold', fontSize: '1.2em', marginBottom: '20px'}}>Highest Source</div>
                         <div style={{textAlign: 'left'}}>Transition: {biggestSourceDestPair}</div>
                         <div style={{textAlign: 'left', marginBottom: '20px'}}>{valueText}</div>
-                        <div style={{textAlign: 'left', whiteSpace: 'pre-line'}}>{highestSourceText}</div>
+                        <div style={{textAlign: 'left', whiteSpace: 'pre-line'}}>Resource: {highestSourceText}</div>
                         <div style={{textAlign: 'left', whiteSpace: 'pre-line'}}>{highestSourceValue}</div>
                     </div>
                 </Grid>
                 <Grid item xs={12}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <Typography variant="h6" style={{ marginRight: '8px' }}>
+                            Waiting time over the timeframe
+                        </Typography>
+                    </div>
                     <WaitingTimeframe
                         data={timeFrameData}
                         wtType={"batching"}
                     />
                 </Grid>
                 <Grid item xs={12}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <Typography variant="h6" style={{ marginRight: '8px' }}>
+                            Waiting time in transitions
+                        </Typography>
+
+                        <Tooltip
+                            title={
+                                <span style={{ fontSize: '1rem' }}>
+                            Waiting time between pairs of consecutive activities categorized by the causes of waiting.
+                        </span>
+                            }
+                        >
+                            <IconButton size="small" aria-label="info about waiting time causes">
+                                <HelpOutlineIcon />
+                            </IconButton>
+                        </Tooltip>
+                    </div>
                     <TransitionsBarChart data={transitionsData} selectedWTType={"batching"}/>
                 </Grid>
+                <Grid item xs={12}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <Typography variant="h6" style={{ marginRight: '8px' }}>
+                            Sum of waiting times before activities
+                        </Typography>
+
+                        <Tooltip
+                            title={
+                                <span style={{ fontSize: '1rem' }}>
+                            The sum of all transitions (waiting times) incoming in each activity. Indicates which activities could be bottlenecks in the process.
+                        </span>
+                            }
+                        >
+                            <IconButton size="small" aria-label="info about waiting time causes">
+                                <HelpOutlineIcon />
+                            </IconButton>
+                        </Tooltip>
+                    </div>
+                    <TransitionsBarChart data={activityWT} selectedWTType={"batching"}/>
+                </Grid>
+                <Grid item xs={12}>
+                    <ResourcesBarChart data={activityResourceWT} selectedWt="batching" />
+                </Grid>
+
+                {/*<Grid item xs={12}>*/}
+                {/*    {!batching && (*/}
+                {/*        <Grid item xs={12}>*/}
+                {/*            <div style={{ textAlign: 'center', padding: '20px' }}>*/}
+                {/*                <Typography variant="h6">*/}
+                {/*                    Batching strategies are loading...*/}
+                {/*                </Typography>*/}
+                {/*            </div>*/}
+                {/*        </Grid>*/}
+                {/*    )}*/}
+                {/*    {batching && (*/}
+                {/*        <Grid item xs={12}>*/}
+                {/*            <div style={{ textAlign: 'center', padding: '20px', justifyContent: 'left' }}>*/}
+                {/*                <Typography variant="h6">*/}
+                {/*                    Batching strategies*/}
+                {/*                </Typography>*/}
+                {/*            </div>*/}
+                {/*            <BatchingComponent data={batching} />,*/}
+                {/*        </Grid>*/}
+                {/*    )}*/}
+                {/*</Grid>*/}
             </Grid>
         </Box>
     );

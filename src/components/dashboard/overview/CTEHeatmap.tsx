@@ -53,7 +53,7 @@ export default function CTEHeatmap({data}: { data: any }) {
             }
         },
         title: {
-            text: 'Top 10 transitions with the highest potential CTE improvement',
+            text: '',
             align: 'left'
         },
 

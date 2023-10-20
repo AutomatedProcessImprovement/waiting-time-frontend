@@ -64,8 +64,6 @@ const GaugeChart: React.FC<GaugeChartProps> = ({value}) => {
 
     return (
         <div>
-            <div style={{textAlign: 'center', fontSize: 'large', marginBottom: '5px'}}>Cycle Time Efficiency (CTE)</div>
-            {/*<div style={{ textAlign: 'center' }}>{value.toFixed(2)}%</div>*/}
             <HighchartsReact
                 highcharts={Highcharts}
                 options={options}

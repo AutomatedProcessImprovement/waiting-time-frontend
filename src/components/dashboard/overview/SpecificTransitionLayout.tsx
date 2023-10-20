@@ -1,5 +1,5 @@
 import React from 'react';
-import {Box, Grid} from '@mui/material';
+import {Box, Grid, Typography} from '@mui/material';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import {secondsToDhm} from '../../../helpers/SecondsToDhm';
@@ -9,6 +9,9 @@ import TransitionsBarChart from './TransitionsBarChart';
 import WaitingTimeframe from "./WaitingTimeframe";
 import GaugeChart from "./GaugeChart";
 import PotentialCteChart from "./PotentialCteChart";
+import Tooltip from "@mui/material/Tooltip";
+import IconButton from "@mui/material/IconButton";
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 
 interface SpecificTransitionLayoutProps {
     jobId: string;
@@ -18,13 +21,15 @@ interface SpecificTransitionLayoutProps {
 const SpecificTransitionLayout: React.FC<SpecificTransitionLayoutProps> = ({jobId, selectedActivityPair}) => {
     const [sourceActivity, destinationActivity] = selectedActivityPair.split(' - ');
 
+    const generalOverviewData = useFetchData(`/overview/${jobId}`);
     const overviewData = useFetchData(`/case_overview/${jobId}/${sourceActivity}/${destinationActivity}`);
     const barChartData = useFetchData(`/activity_transitions/${jobId}/${sourceActivity}/${destinationActivity}`);
     const barChartDataByResource = useFetchData(`/activity_transitions_by_resource/${jobId}/${sourceActivity}/${destinationActivity}`);
-    const potentialCteData = useFetchData(`/potential_cte_filtered/${jobId}/${sourceActivity}/${destinationActivity}`);
+    // const potentialCteData = useFetchData(`/potential_cte_filtered/${jobId}/${sourceActivity}/${destinationActivity}`);
+    const cteTableData = useFetchData(`/cte_improvement/${jobId}`);
     const timeFrameData = useFetchData(`/daily_summary/${jobId}/${sourceActivity}/${destinationActivity}`);
 
-    if (!overviewData || !barChartData || !barChartDataByResource || !potentialCteData || !timeFrameData) {
+    if (!overviewData || !barChartData || !barChartDataByResource || !timeFrameData || !generalOverviewData || !cteTableData) {
         return <div>Loading...</div>;
     }
 
@@ -32,11 +37,27 @@ const SpecificTransitionLayout: React.FC<SpecificTransitionLayoutProps> = ({jobI
         return <strong>This transition has no waiting time</strong>;
     }
 
-    const specificCte = +parseFloat(((overviewData.processing_time / (overviewData.specific_wttotal_sum + overviewData.processing_time)) * 100).toFixed(1))
+    // const specificCte = +parseFloat(((overviewData.processing_time / (overviewData.specific_wttotal_sum + overviewData.processing_time)) * 100).toFixed(1));
+    const totalCycleTime = generalOverviewData.waiting_time + generalOverviewData.processing_time;
+    const processingTimePercentage = +parseFloat(((generalOverviewData.processing_time / totalCycleTime) * 100).toFixed(1));
     const isMaxPairDefined = overviewData.max_wttotal_pair && overviewData.max_wttotal_pair[2] !== 0;
     const highestSourceText = isMaxPairDefined
         ? `Handover: ${overviewData.max_wttotal_pair[0]} - ${overviewData.max_wttotal_pair[1]}\n${dhmToString(secondsToDhm(overviewData.max_wttotal_pair[2]))}`
         : 'No highest handover';
+
+    const filteredData = cteTableData.data.filter((item: { source_activity: string; target_activity: string; }) =>
+        item.source_activity === sourceActivity && item.target_activity === destinationActivity
+    );
+
+    const transformedCteImpact = filteredData.map((item: { cte_impact: { batching_impact: any; contention_impact: any; extraneous_impact: any; prioritization_impact: any; unavailability_impact: any; }; }) => ({
+        "Batching": item.cte_impact.batching_impact,
+        "Contention": item.cte_impact.contention_impact,
+        "Extraneous": item.cte_impact.extraneous_impact,
+        "Prioritization": item.cte_impact.prioritization_impact,
+        "Unavailability": item.cte_impact.unavailability_impact
+    }));
+
+    console.log("CTE impact transformed: ", transformedCteImpact);
 
     const caseFrequencyOptions = {
         chart: {
@@ -172,9 +193,11 @@ const SpecificTransitionLayout: React.FC<SpecificTransitionLayoutProps> = ({jobI
                     </div>
                 </Grid>
                 <Grid item xs={12}>
-                    <TransitionsBarChart data={barChartData}/>
-                </Grid>
-                <Grid item xs={12}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <Typography variant="h6" style={{ marginRight: '8px' }}>
+                            Waiting time causes over the timeframe
+                        </Typography>
+                    </div>
                     <WaitingTimeframe
                         data={timeFrameData}
                         sourceActivity={sourceActivity}
@@ -182,13 +205,87 @@ const SpecificTransitionLayout: React.FC<SpecificTransitionLayoutProps> = ({jobI
                     />
                 </Grid>
                 <Grid item xs={12}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <Typography variant="h6" style={{ marginRight: '8px' }}>
+                            Waiting time causes in transition
+                        </Typography>
+
+                        <Tooltip
+                            title={
+                                <span style={{ fontSize: '1rem' }}>
+                            Waiting time of transition by the causes of waiting.
+                        </span>
+                            }
+                        >
+                            <IconButton size="small" aria-label="info about waiting time causes">
+                                <HelpOutlineIcon />
+                            </IconButton>
+                        </Tooltip>
+                    </div>
+
+                    <TransitionsBarChart data={barChartData}/>
+                </Grid>
+                <Grid item xs={12}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <Typography variant="h6" style={{ marginRight: '8px' }}>
+                            Waiting time in handovers
+                        </Typography>
+
+                        <Tooltip
+                            title={
+                                <span style={{ fontSize: '1rem' }}>
+                            Waiting time between a pair of resources executing activities of the selected transition, categorized by the causes of waiting.
+                        </span>
+                            }
+                        >
+                            <IconButton size="small" aria-label="info about waiting time causes">
+                                <HelpOutlineIcon />
+                            </IconButton>
+                        </Tooltip>
+                    </div>
                     <TransitionsBarChart data={barChartDataByResource}/>
                 </Grid>
                 <Grid item xs={4}>
-                    <GaugeChart value={specificCte}/>
+                    <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px', justifyContent: 'center' }}>
+
+                        <Typography variant="h6" style={{ marginRight: '8px' }}>
+                            Cycle Time Efficiency
+                        </Typography>
+
+                        <Tooltip
+                            title={
+                                <span style={{ fontSize: '1rem' }}>
+                    Measures the amount of value-added time in a process. Calculated as the ratio of processing time to cycle time. The closer CTE is to 100%, the relatively less waiting time is in the process.
+                </span>
+                            }
+                        >
+                            <IconButton size="small" aria-label="info about gauge chart">
+                                <HelpOutlineIcon />
+                            </IconButton>
+                        </Tooltip>
+                    </div>
+                    <GaugeChart value={processingTimePercentage}/>
                 </Grid>
                 <Grid item xs={8}>
-                    <PotentialCteChart jsonData={potentialCteData} cte={specificCte}/>
+                    <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
+
+                        <Typography variant="h6" style={{ marginRight: '8px' }}>
+                            Potential CTE
+                        </Typography>
+
+                        <Tooltip
+                            title={
+                                <span style={{ fontSize: '1rem' }}>
+                    The potential value of CTE if the waiting time due to each cause is eliminated. Helps identify which causes of waiting time to focus on to achieve greater improvements.
+                </span>
+                            }
+                        >
+                            <IconButton size="small" aria-label="info about potential CTE chart">
+                                <HelpOutlineIcon />
+                            </IconButton>
+                        </Tooltip>
+                    </div>
+                    <PotentialCteChart jsonData={transformedCteImpact[0]} cte={processingTimePercentage}/>
                 </Grid>
             </Grid>
         </Box>

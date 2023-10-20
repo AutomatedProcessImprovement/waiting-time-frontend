@@ -2,10 +2,15 @@ import React from 'react';
 import {dhmToString} from "../../../helpers/dhmToString";
 import {secondsToDhm} from "../../../helpers/SecondsToDhm";
 import {useFetchData} from "../../../helpers/useFetchData";
-import {Box, Grid} from "@mui/material";
+import {Box, Grid, Typography} from "@mui/material";
 import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts";
 import WaitingTimeframe from "../overview/WaitingTimeframe";
+import ResourcesBarChart from "../ResourcesBarChart";
+import Tooltip from "@mui/material/Tooltip";
+import IconButton from "@mui/material/IconButton";
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
+import TransitionsBarChart from "../overview/TransitionsBarChart";
 
 interface ExtraneousSpecificTransitionsLayoutProps {
     jobId: string;
@@ -19,8 +24,11 @@ const ExtraneousSpecificTransitionsLayout: React.FC<ExtraneousSpecificTransition
     const [sourceActivity, destinationActivity] = selectedActivityPair.split(' - ');
     const overviewData = useFetchData(`/wt_overview/${jobId}/extraneous/${sourceActivity}/${destinationActivity}`);
     const timeFrameData = useFetchData(`/daily_summary/${jobId}/${sourceActivity}/${destinationActivity}`);
+    const activityResourceWT = useFetchData(`/activity_resource_wt/${jobId}`);
+    const barChartDataByResource = useFetchData(`/activity_transitions_by_resource/${jobId}/${sourceActivity}/${destinationActivity}`);
+    const barChartData = useFetchData(`/activity_transitions/${jobId}/${sourceActivity}/${destinationActivity}`);
 
-    if (!overviewData || !timeFrameData) {
+    if (!overviewData || !timeFrameData || !activityResourceWT || !barChartDataByResource || !barChartData) {
         return <div>Loading...</div>;
     }
 
@@ -134,12 +142,66 @@ const ExtraneousSpecificTransitionsLayout: React.FC<ExtraneousSpecificTransition
                     </div>
                 </Grid>
                 <Grid item xs={12}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <Typography variant="h6" style={{ marginRight: '8px' }}>
+                            Waiting time over the timeframe
+                        </Typography>
+                    </div>
                     <WaitingTimeframe
                         data={timeFrameData}
                         sourceActivity={sourceActivity}
                         destinationActivity={destinationActivity}
                         wtType={"extraneous"}
                     />
+                </Grid>
+                <Grid item xs={12}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <Typography variant="h6" style={{ marginRight: '8px' }}>
+                            Waiting time causes in transition
+                        </Typography>
+
+                        <Tooltip
+                            title={
+                                <span style={{ fontSize: '1rem' }}>
+                            Waiting time of transition by the causes of waiting.
+                        </span>
+                            }
+                        >
+                            <IconButton size="small" aria-label="info about waiting time causes">
+                                <HelpOutlineIcon />
+                            </IconButton>
+                        </Tooltip>
+                    </div>
+
+                    <TransitionsBarChart data={barChartData} selectedWTType={'extraneous'}/>
+                </Grid>
+                <Grid item xs={12}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <Typography variant="h6" style={{ marginRight: '8px' }}>
+                            Resources
+                        </Typography>
+                    </div>
+                    <ResourcesBarChart data={activityResourceWT} selectedWt="extraneous" selectedActivity={destinationActivity}/>
+                </Grid>
+                <Grid item xs={12}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <Typography variant="h6" style={{ marginRight: '8px' }}>
+                            Waiting time in handovers
+                        </Typography>
+
+                        <Tooltip
+                            title={
+                                <span style={{ fontSize: '1rem' }}>
+                            Waiting time between a pair of resources executing activities of the selected transition, categorized by the causes of waiting.
+                        </span>
+                            }
+                        >
+                            <IconButton size="small" aria-label="info about waiting time causes">
+                                <HelpOutlineIcon />
+                            </IconButton>
+                        </Tooltip>
+                    </div>
+                    <TransitionsBarChart data={barChartDataByResource} selectedWTType={'extraneous'}/>
                 </Grid>
             </Grid>
         </Box>

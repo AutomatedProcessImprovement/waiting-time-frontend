@@ -103,20 +103,27 @@ const ActivityPairSelector = ({selectedActivityPair, handleActivityPairChange, a
 );
 
 const onDownload = (type: number, jobId: string) => {
-    const link = document.createElement("a");
     switch (type) {
         case 0:
-            link.href = `http://193.40.11.233/assets/results/${jobId}/event_log_transitions_report.csv`;
-            link.setAttribute('download', 'event_log_transitions_report.csv');
+            window.location.href = `http://193.40.11.233/assets/results/${jobId}/event_log_transitions_report.csv`;
             break;
         case 1:
-            link.href = `http://193.40.11.233/assets/results/${jobId}/event_log_transitions_report.json`;
-            link.setAttribute('download', 'event_log_transitions_report.json');
+            axios({
+                url: `http://193.40.11.233/assets/results/${jobId}/event_log_transitions_report.json`,
+                method: 'GET',
+                responseType: 'blob'
+            }).then(response => {
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', 'event_log_transitions_report.json');
+                document.body.appendChild(link);
+                link.click();
+            });
             break;
         default:
             break;
     }
-    link.click();
 };
 
 
