@@ -24,7 +24,7 @@ const BatchingAllTransitionsLayout: React.FC<BatchingAllTransitionsLayoutProps> 
     const timeFrameData = useFetchData(`/daily_summary/${jobId}`);
     const activityWT = useFetchData(`/activity_wt/${jobId}`);
     const activityResourceWT = useFetchData(`/activity_resource_wt/${jobId}`)
-    const batching = useFetchData(`/process_csv/${jobId}`)
+    // const batching = useFetchData(`/process_csv/${jobId}`)
 
     if (!overviewData || !transitionsData || !timeFrameData || !activityWT || ! activityResourceWT) {
         return <div>Loading...</div>;
