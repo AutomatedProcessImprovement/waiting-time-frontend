@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {AlertColor, Grid, Paper, Typography} from "@mui/material";
+import {AlertColor, Grid, Paper, Typography, Link} from "@mui/material";
 import {useNavigate} from 'react-router-dom';
 import CustomDropzoneArea from './upload/CustomDropzoneArea';
 import {LoadingButton} from '@mui/lab';
@@ -205,6 +205,36 @@ const Upload = () => {
                                             </Grid>
                                         </Grid>
                                     </Grid>
+                                    <Grid item xs={12}>
+                                        <Grid container>
+                                            <Grid item xs={3}>
+                                                <Typography variant="body1" align="left" sx={{fontWeight: 'bold'}}>
+                                                    Max size:
+                                                </Typography>
+                                            </Grid>
+                                            <Grid item xs={9}>
+                                                <Typography variant="body1" align="left">
+                                                    30 MB
+                                                </Typography>
+                                            </Grid>
+                                        </Grid>
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <Grid container>
+                                            <Grid item xs={3}>
+                                                <Typography variant="body1" align="left" sx={{fontWeight: 'bold'}}>
+                                                    Sample event log:
+                                                </Typography>
+                                            </Grid>
+                                            <Grid item xs={9}>
+                                                <Typography variant="body1" align="left">
+                                                    <Link href="https://owncloud.ut.ee/owncloud/s/rMHMfGBBgsLF7oD" target="_blank" rel="noopener noreferrer">
+                                                        Download here
+                                                    </Link>
+                                                </Typography>
+                                            </Grid>
+                                        </Grid>
+                                    </Grid>
                                 </Grid>
                             </Grid>
                             <Grid item xs={12}>
@@ -230,6 +260,11 @@ const Upload = () => {
                     >
                         Upload event log
                     </LoadingButton>
+                </Grid>
+                <Grid item xs={12}>
+                    <Typography variant="body1" align="center">
+                        The analysis process may take several minutes to complete.
+                    </Typography>
                 </Grid>
             </Grid>
             {snackMessage && <CustomizedSnackbar
