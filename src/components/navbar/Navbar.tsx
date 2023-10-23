@@ -40,7 +40,7 @@ function NavBar() {
                         />
                     </IconButton>
                     <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
-                        Waiting Time Analyser
+                        Kronos
                     </Typography>
                     {menuOptions.map(({title, to}, index) => (
                         <Button

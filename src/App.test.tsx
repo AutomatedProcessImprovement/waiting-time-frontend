@@ -4,6 +4,6 @@ import App from './App';
 
 test('renders navbar title', () => {
     render(<App/>);
-    const navbarTitle = screen.getByText(/Waiting Time Analyser/i);
+    const navbarTitle = screen.getByText(/Kronos/i);
     expect(navbarTitle).toBeInTheDocument();
 });
