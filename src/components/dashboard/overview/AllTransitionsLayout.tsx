@@ -26,7 +26,6 @@ interface AllTransitionsLayoutProps {
 
 const AllTransitionsLayout: React.FC<AllTransitionsLayoutProps> = ({jobId}) => {
     const overviewData = useFetchData(`/overview/${jobId}`);
-    const transitionsData = useFetchData(`/activity_transitions/${jobId}`);
     const potentialCteData = useFetchData(`/potential_cte/${jobId}`);
     const cteTableData = useFetchData(`/cte_improvement/${jobId}`);
     const timeframeData = useFetchData(`/daily_summary/${jobId}`);
@@ -34,6 +33,12 @@ const AllTransitionsLayout: React.FC<AllTransitionsLayoutProps> = ({jobId}) => {
     const [showTable2, setShowTable2] = useState(false);
     const [displayMode, setDisplayMode] = useState("average");
     const [pieChartDisplayMode, setPieChartDisplayMode] = useState("average");
+    const [dataMode, setDataMode] = useState("Average");
+    const endpoint = dataMode === "Average"
+        ? `/activity_transitions_average/${jobId}`
+        : `/activity_transitions/${jobId}`;
+
+    const transitionsData = useFetchData(endpoint);
 
     if (!overviewData || !transitionsData || !cteTableData || !potentialCteData || !timeframeData) {
         return <div>Loading...</div>;
@@ -296,22 +301,38 @@ const AllTransitionsLayout: React.FC<AllTransitionsLayoutProps> = ({jobId}) => {
                     <WaitingTimeframe data={timeframeData}/>
                 </Grid>
                 <Grid item xs={12}>
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                        <Typography variant="h6" style={{ marginRight: '8px' }}>
-                            Waiting time causes in transitions
-                        </Typography>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
 
-                        <Tooltip
-                            title={
-                                <span style={{ fontSize: '1rem' }}>
-                            Waiting time between pairs of consecutive activities categorized by the causes of waiting.
-                        </span>
-                            }
-                        >
-                            <IconButton size="small" aria-label="info about waiting time causes">
-                                <HelpOutlineIcon />
-                            </IconButton>
-                        </Tooltip>
+                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                            <Typography variant="h6" style={{ marginRight: '8px' }}>
+                                Waiting time causes in transitions
+                            </Typography>
+
+                            <Tooltip
+                                title={
+                                    <span style={{ fontSize: '1rem' }}>
+                        Waiting time between pairs of consecutive activities categorized by the causes of waiting.
+                    </span>
+                                }
+                            >
+                                <IconButton size="small" aria-label="info about waiting time causes">
+                                    <HelpOutlineIcon />
+                                </IconButton>
+                            </Tooltip>
+                        </div>
+
+                        <FormControl variant="outlined">
+                            <InputLabel>Data Mode</InputLabel>
+                            <Select
+                                value={dataMode}
+                                onChange={(e) => setDataMode(e.target.value)}
+                                label="Data Mode"
+                            >
+                                <MenuItem value={"Total"}>Total</MenuItem>
+                                <MenuItem value={"Average"}>Average</MenuItem>
+                            </Select>
+                        </FormControl>
+
                     </div>
 
                     <TransitionsBarChart data={transitionsData} />
