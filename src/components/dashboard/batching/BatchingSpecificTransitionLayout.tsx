@@ -47,8 +47,8 @@ const BatchingSpecificTransitionsLayout: React.FC<BatchingSpecificTransitionsLay
         series: [{
             type: 'pie',
             data: [
-                ['Affected Cases', overviewData.distinct_cases],
-                ['Total Cases', overviewData.cases - overviewData.distinct_cases]
+                ['Affected', overviewData.distinct_cases],
+                ['Not Affected', overviewData.cases - overviewData.distinct_cases]
             ]
         }]
     };
@@ -69,8 +69,8 @@ const BatchingSpecificTransitionsLayout: React.FC<BatchingSpecificTransitionsLay
         series: [{
             type: 'pie',
             data: [
-                ['Batching WT', overviewData.wt_sum],
-                ['Total WT', overviewData.total_wt_sum]
+                ['Batching', overviewData.wt_sum],
+                ['Other Causes', overviewData.total_wt_sum]
             ]
         }]
     };

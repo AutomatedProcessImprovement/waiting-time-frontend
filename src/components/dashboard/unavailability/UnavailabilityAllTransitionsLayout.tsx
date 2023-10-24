@@ -39,8 +39,8 @@ const UnavailabilityAllTransitionsLayout: React.FC<UnavailabilityAllTransitionsL
         series: [{
             type: 'pie',
             data: [
-                ['Affected Cases', overviewData.distinct_cases],
-                ['Total Cases', overviewData.cases - overviewData.distinct_cases]
+                ['Affected', overviewData.distinct_cases],
+                ['Not Affected', overviewData.cases - overviewData.distinct_cases]
             ]
         }]
     };
@@ -61,8 +61,8 @@ const UnavailabilityAllTransitionsLayout: React.FC<UnavailabilityAllTransitionsL
         series: [{
             type: 'pie',
             data: [
-                ['Unavailability WT', overviewData.wt_sum],
-                ['Total WT', overviewData.total_wt_sum]
+                ['Unavailability', overviewData.wt_sum],
+                ['Other Causes', overviewData.total_wt_sum]
             ]
         }]
     };
