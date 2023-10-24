@@ -1,11 +1,11 @@
 import * as React from 'react';
 import * as Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
-import {Card} from '@mui/material';
+import { Card, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
+import { SelectChangeEvent } from '@mui/material/Select';
 import moment from 'moment';
 import {secondsToDhm} from '../../../helpers/SecondsToDhm';
 import {dhmToString} from '../../../helpers/dhmToString';
-import {useFetchData} from "../../../helpers/useFetchData";
 
 const _colorDict = {
     batching: "#6C8EBF",
@@ -85,7 +85,7 @@ const WaitingTimeframe = ({data, sourceActivity, destinationActivity, wtType}: {
         };
     };
 
-    const handleTimeUnitChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const handleTimeUnitChange = (e: SelectChangeEvent<string>) => {
         const newTimeUnit = e.target.value as moment.unitOfTime.StartOf;
         setTimeUnit(newTimeUnit);
         const aggregatedData = aggregateData(chartData, newTimeUnit);
@@ -146,14 +146,21 @@ const WaitingTimeframe = ({data, sourceActivity, destinationActivity, wtType}: {
 
     return (
         <Card>
-            <div>
-                <label htmlFor="timeUnit">Time Unit: </label>
-                <select id="timeUnit" onChange={handleTimeUnitChange} value={timeUnit as string}>
-                    <option value="day">Day</option>
-                    <option value="week">Week</option>
-                    <option value="month">Month</option>
-                    <option value="year">Year</option>
-                </select>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
+                <FormControl variant="outlined" style={{ minWidth: 150, marginBottom: '20px', marginTop: '20px' }}>
+                    <InputLabel htmlFor="timeUnit">Time Unit</InputLabel>
+                    <Select
+                        label="Time Unit"
+                        id="timeUnit"
+                        value={timeUnit as string}
+                        onChange={handleTimeUnitChange}
+                    >
+                        <MenuItem value="day">Day</MenuItem>
+                        <MenuItem value="week">Week</MenuItem>
+                        <MenuItem value="month">Month</MenuItem>
+                        <MenuItem value="year">Year</MenuItem>
+                    </Select>
+                </FormControl>
             </div>
             <HighchartsReact highcharts={Highcharts} options={options}/>
         </Card>
