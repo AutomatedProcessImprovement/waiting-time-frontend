@@ -230,6 +230,10 @@ function TransitionsBarChart({data, selectedWTType}: Props) {
                 align: 'right',
                 x: 20,
                 enabled: true,
+                formatter: function(this: any) {
+                    const [y, mo, d, h, m] = secondsToDhm(this.total);
+                    return dhmToString([y, mo, d, h, m]);
+                },
                 tooltip: {
                     formatter(this: any) {
                         const [y, mo, d, h, m] = secondsToDhm(this.y);
