@@ -24,11 +24,14 @@ const SpecificTransitionLayout: React.FC<SpecificTransitionLayoutProps> = ({jobI
     const generalOverviewData = useFetchData(`/overview/${jobId}`);
     const overviewData = useFetchData(`/case_overview/${jobId}/${sourceActivity}/${destinationActivity}`);
     const barChartData = useFetchData(`/activity_transitions/${jobId}/${sourceActivity}/${destinationActivity}`);
-    const barChartDataByResource = useFetchData(`/activity_transitions_by_resource/${jobId}/${sourceActivity}/${destinationActivity}`);
+    const barChartAvgDataByResource = useFetchData(`/activity_transitions_avg_by_resource/${jobId}/${sourceActivity}/${destinationActivity}`);
+    const barChartTotalDataByResource = useFetchData(`/activity_transitions_by_resource/${jobId}/${sourceActivity}/${destinationActivity}`);
     // const potentialCteData = useFetchData(`/potential_cte_filtered/${jobId}/${sourceActivity}/${destinationActivity}`);
     const cteTableData = useFetchData(`/cte_improvement/${jobId}`);
     const timeFrameData = useFetchData(`/daily_summary/${jobId}/${sourceActivity}/${destinationActivity}`);
     const [selectedMode, setSelectedMode] = React.useState('Average');
+    const [selectedMode2, setSelectedMode2] = React.useState('Average');
+    const barChartDataByResource = selectedMode2 === "Average" ? barChartAvgDataByResource : barChartTotalDataByResource;
 
     if (!overviewData || !barChartData || !barChartDataByResource || !timeFrameData || !generalOverviewData || !cteTableData) {
         return <div>Loading...</div>;
@@ -319,22 +322,36 @@ const SpecificTransitionLayout: React.FC<SpecificTransitionLayoutProps> = ({jobI
                     <TransitionsBarChart data={barChartData}/>
                 </Grid>
                 <Grid item xs={12}>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <Typography variant="h6" style={{ marginRight: '8px' }}>
-                            Waiting time in handovers
-                        </Typography>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center' }}>
 
-                        <Tooltip
-                            title={
-                                <span style={{ fontSize: '1rem' }}>
+                            <Typography variant="h6" style={{ marginRight: '8px' }}>
+                                Waiting time in handovers
+                            </Typography>
+
+                            <Tooltip
+                                title={
+                                    <span style={{ fontSize: '1rem' }}>
                             Waiting time between a pair of resources executing activities of the selected transition, categorized by the causes of waiting.
                         </span>
-                            }
-                        >
-                            <IconButton size="small" aria-label="info about waiting time causes">
-                                <HelpOutlineIcon />
-                            </IconButton>
-                        </Tooltip>
+                                }
+                            >
+                                <IconButton size="small" aria-label="info about waiting time causes">
+                                    <HelpOutlineIcon />
+                                </IconButton>
+                            </Tooltip>
+                        </div>
+                        <FormControl variant="outlined">
+                            <InputLabel>Data Mode</InputLabel>
+                            <Select
+                                value={selectedMode2}
+                                onChange={(e) => setSelectedMode2(e.target.value)}
+                                label="Data Mode"
+                            >
+                                <MenuItem value={"Average"}>Average</MenuItem>
+                                <MenuItem value={"Total"}>Total</MenuItem>
+                            </Select>
+                        </FormControl>
                     </div>
                     <TransitionsBarChart data={barChartDataByResource}/>
                 </Grid>
