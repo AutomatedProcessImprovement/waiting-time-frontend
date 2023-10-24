@@ -60,6 +60,7 @@ const UnavailabilitySpecificTransitionsLayout: React.FC<UnavailabilitySpecificTr
         title: {
             text: null
         },
+        colors: ['#63B7B0', 'lightblue'],
         tooltip: {
             pointFormatter: function (this: any) {
                 return `${this.series.name}: <b>${dhmToString(secondsToDhm(this.y))}</b>`;
