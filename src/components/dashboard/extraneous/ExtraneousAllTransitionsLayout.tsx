@@ -19,7 +19,10 @@ interface ExtraneousAllTransitionsLayout {
 const ExtraneousAllTransitionsLayout: React.FC<ExtraneousAllTransitionsLayout> = ({jobId}) => {
     const overviewData = useFetchData(`/wt_overview/${jobId}/extraneous`);
     const timeFrameData = useFetchData(`/daily_summary/${jobId}`);
-    const activityWT = useFetchData(`/activity_wt/${jobId}`);
+    const activityWTTotal = useFetchData(`/activity_wt/${jobId}`);
+    const activityWTAvg = useFetchData(`/activity_avg_wt/${jobId}`);
+    const [dataMode2, setDataMode2] = useState("Average");
+    const activityWT = dataMode2 === "Average" ? activityWTAvg : activityWTTotal;
     const activityResourceWT = useFetchData(`/activity_resource_wt/${jobId}`);
     const [dataMode, setDataMode] = useState("Average");
     const transitionsDataAverage = useFetchData(`/activity_transitions_average/${jobId}`);
@@ -244,22 +247,36 @@ const ExtraneousAllTransitionsLayout: React.FC<ExtraneousAllTransitionsLayout> =
                     <TransitionsBarChart data={transitionsData} selectedWTType={"extraneous"}/>
                 </Grid>
                 <Grid item xs={12}>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <Typography variant="h6" style={{ marginRight: '8px' }}>
-                            Sum of waiting times before activities
-                        </Typography>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center' }}>
 
-                        <Tooltip
-                            title={
-                                <span style={{ fontSize: '1rem' }}>
-                            The sum of all transitions (waiting times) incoming in each activity. Indicates which activities could be bottlenecks in the process.
-                        </span>
-                            }
-                        >
-                            <IconButton size="small" aria-label="info about waiting time causes">
-                                <HelpOutlineIcon />
-                            </IconButton>
-                        </Tooltip>
+                            <Typography variant="h6" style={{ marginRight: '8px' }}>
+                                Sum of waiting times before activities
+                            </Typography>
+
+                            <Tooltip
+                                title={
+                                    <span style={{ fontSize: '1rem' }}>
+                                The sum of all transitions (waiting times) incoming in each activity. Indicates which activities could be bottlenecks in the process.
+                            </span>
+                                }
+                            >
+                                <IconButton size="small" aria-label="info about waiting time causes">
+                                    <HelpOutlineIcon />
+                                </IconButton>
+                            </Tooltip>
+                        </div>
+                        <FormControl variant="outlined">
+                            <InputLabel>Data Mode</InputLabel>
+                            <Select
+                                value={dataMode2}
+                                onChange={(e) => setDataMode2(e.target.value)}
+                                label="Data Mode"
+                            >
+                                <MenuItem value={"Average"}>Average</MenuItem>
+                                <MenuItem value={"Total"}>Total</MenuItem>
+                            </Select>
+                        </FormControl>
                     </div>
                     <TransitionsBarChart data={activityWT} selectedWTType={"extraneous"}/>
                 </Grid>
