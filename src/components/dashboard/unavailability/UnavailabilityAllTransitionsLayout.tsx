@@ -71,13 +71,13 @@ const UnavailabilityAllTransitionsLayout: React.FC<UnavailabilityAllTransitionsL
     };
 
     // Setting up data for 'On Average'
-    const avgBiggestSourceDestPair = `${overviewData.avg_biggest_source_dest_pair[0]} - ${overviewData.avg_biggest_source_dest_pair[1]}`;
+    const avgBiggestSourceDestPair = `${overviewData.avg_biggest_source_dest_pair[1]} - ${overviewData.avg_biggest_source_dest_pair[0]}`;
     const avgValueText = dhmToString(secondsToDhm(overviewData.avg_biggest_source_dest_pair[2]));
     const avgHighestSourceText = overviewData.avg_biggest_resource[0];
     const avgHighestSourceValue = dhmToString(secondsToDhm(overviewData.avg_biggest_resource[1]));
 
     // Setting up data for 'In Total'
-    const totalBiggestSourceDestPair = `${overviewData.biggest_source_dest_pair[0]} - ${overviewData.biggest_source_dest_pair[1]}`;
+    const totalBiggestSourceDestPair = `${overviewData.biggest_source_dest_pair[1]} - ${overviewData.biggest_source_dest_pair[0]}`;
     const totalValueText = dhmToString(secondsToDhm(overviewData.biggest_source_dest_pair[2]));
     const totalHighestSourceText = overviewData.biggest_resource[0];
     const totalHighestSourceValue = dhmToString(secondsToDhm(overviewData.biggest_resource[1]));

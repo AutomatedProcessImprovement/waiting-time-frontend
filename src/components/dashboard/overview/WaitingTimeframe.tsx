@@ -64,7 +64,7 @@ const WaitingTimeframe = ({data, sourceActivity, destinationActivity, wtType}: {
                     color: _colorDict[wtType],
                     tooltip: {pointFormatter: generateTooltipFormatter(wtType)}
                 },
-            ];
+            ].reverse();
         } else {
             return Object.keys(_colorDict).map((type) => {
                 const key = type as WTType;

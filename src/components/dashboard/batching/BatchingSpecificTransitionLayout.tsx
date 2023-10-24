@@ -75,10 +75,17 @@ const BatchingSpecificTransitionsLayout: React.FC<BatchingSpecificTransitionsLay
         }]
     };
 
-    const biggestSourceDestPair = `${overviewData.biggest_source_dest_resource_pair[0]} - ${overviewData.biggest_source_dest_resource_pair[1]}`;
-    const valueText = dhmToString(secondsToDhm(overviewData.biggest_source_dest_resource_pair[2]));
-    const highestSourceText = overviewData.biggest_resource[0];
-    const highestSourceValue = dhmToString(secondsToDhm(overviewData.biggest_resource[1]));
+    // Setting up data for 'On Average'
+    const avgBiggestSourceDestPair = `${overviewData.avg_biggest_source_dest_resource_pair[1]} - ${overviewData.avg_biggest_source_dest_resource_pair[0]}`;
+    const avgValueText = dhmToString(secondsToDhm(overviewData.avg_biggest_source_dest_resource_pair[2]));
+    const avgHighestSourceText = overviewData.avg_biggest_resource[0];
+    const avgHighestSourceValue = dhmToString(secondsToDhm(overviewData.avg_biggest_resource[1]));
+
+    // Setting up data for 'In Total'
+    const totalBiggestSourceDestPair = `${overviewData.biggest_source_dest_resource_pair[1]} - ${overviewData.biggest_source_dest_resource_pair[0]}`;
+    const totalValueText = dhmToString(secondsToDhm(overviewData.biggest_source_dest_resource_pair[2]));
+    const totalHighestSourceText = overviewData.biggest_resource[0];
+    const totalHighestSourceValue = dhmToString(secondsToDhm(overviewData.biggest_resource[1]));
 
     return (
         <Box sx={{
@@ -136,11 +143,21 @@ const BatchingSpecificTransitionsLayout: React.FC<BatchingSpecificTransitionsLay
                         borderRadius: '8px',
                         border: '1px solid #ccc'
                     }}>
-                        <div style={{fontWeight: 'bold', fontSize: '1.2em', marginBottom: '20px'}}>Highest Source</div>
-                        <div style={{textAlign: 'left'}}>Resource: {highestSourceText}</div>
-                        <div style={{textAlign: 'left', marginBottom: '20px'}}>{highestSourceValue}</div>
-                        <div style={{textAlign: 'left', whiteSpace: 'pre-line'}}>Handover: {biggestSourceDestPair}</div>
-                        <div style={{textAlign: 'left', whiteSpace: 'pre-line'}}>{valueText}</div>
+                        <div style={{fontWeight: 'bold', fontSize: '1.2em', marginBottom: '35px'}}>Highest Source</div>
+
+                        {/* On Average */}
+                        <div style={{fontWeight: 'bold', marginBottom: '10px', textAlign: 'left'}}>Average</div>
+                        <div style={{textAlign: 'left'}}>Handover: {avgBiggestSourceDestPair}</div>
+                        <div style={{textAlign: 'left', marginBottom: '10px'}}>{avgValueText}</div>
+                        <div style={{textAlign: 'left', whiteSpace: 'pre-line'}}>Resource: {avgHighestSourceText}</div>
+                        <div style={{textAlign: 'left', marginBottom: '35px', whiteSpace: 'pre-line'}}>{avgHighestSourceValue}</div>
+
+                        {/* In Total */}
+                        <div style={{fontWeight: 'bold', marginBottom: '10px', textAlign: 'left'}}>Total</div>
+                        <div style={{textAlign: 'left'}}>Handover: {totalBiggestSourceDestPair}</div>
+                        <div style={{textAlign: 'left', marginBottom: '10px'}}>{totalValueText}</div>
+                        <div style={{textAlign: 'left', whiteSpace: 'pre-line'}}>Resource: {totalHighestSourceText}</div>
+                        <div style={{textAlign: 'left', whiteSpace: 'pre-line'}}>{totalHighestSourceValue}</div>
                     </div>
                 </Grid>
                 <Grid item xs={12}>
