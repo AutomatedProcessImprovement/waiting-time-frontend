@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Box, FormControl, Grid, InputLabel, MenuItem, Select, Typography} from "@mui/material";
+import {Box, FormControl, Grid, InputLabel, MenuItem, Select, SelectChangeEvent, Typography} from "@mui/material";
 import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts";
 import {dhmToString} from "../../../helpers/dhmToString";
@@ -26,6 +26,11 @@ const UnavailabilityAllTransitionsLayout: React.FC<UnavailabilityAllTransitionsL
     const transitionsDataAverage = useFetchData(`/activity_transitions_average/${jobId}`);
     const transitionsDataTotal = useFetchData(`/activity_transitions/${jobId}`);
     const transitionsData = dataMode === "Average" ? transitionsDataAverage : transitionsDataTotal;
+    const [selectedMode, setSelectedMode] = React.useState('Average');
+
+    const handleChange = (event: SelectChangeEvent<string>) => {
+        setSelectedMode(event.target.value);
+    };
 
     if (!overviewData || !transitionsData || !timeFrameData || !activityWT || !activityResourceWT) {
         return <div>Loading...</div>;
@@ -48,6 +53,17 @@ const UnavailabilityAllTransitionsLayout: React.FC<UnavailabilityAllTransitionsL
         }]
     };
 
+    let wtValue: number;
+    let otherCausesValue: number;
+
+    if (selectedMode === 'Average') {
+        wtValue = overviewData.avg_wt;
+        otherCausesValue = overviewData.avg_total_wt;
+    } else {
+        wtValue = overviewData.wt_sum;
+        otherCausesValue = overviewData.total_wt_sum;
+    }
+
     const waitingTimeOptions = {
         chart: {
             height: 300,
@@ -64,8 +80,8 @@ const UnavailabilityAllTransitionsLayout: React.FC<UnavailabilityAllTransitionsL
         series: [{
             type: 'pie',
             data: [
-                ['Unavailability', overviewData.wt_sum],
-                ['Other Causes', overviewData.total_wt_sum]
+                ['Unavailability', wtValue],
+                ['Other Causes', otherCausesValue]
             ]
         }]
     };
@@ -123,10 +139,36 @@ const UnavailabilityAllTransitionsLayout: React.FC<UnavailabilityAllTransitionsL
                         borderRadius: '8px',
                         border: '1px solid #ccc'
                     }}>
-                        <div style={{fontWeight: 'bold', fontSize: '1.2em'}}>WT due to Unavailability</div>
-                        <div>{overviewData.wt_sum === 0 ? "0" : dhmToString(secondsToDhm(overviewData.wt_sum))}</div>
-                        <div style={{width: '100%', height: '300px'}}>
-                            <HighchartsReact highcharts={Highcharts} options={waitingTimeOptions}/>
+                        <div style={{
+                            position: 'relative',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                        }}>
+                            <Typography variant="h6" style={{ marginRight: '8px', display: 'inline' }}>
+                                WT due to Unavailability
+                            </Typography>
+                            <div style={{ position: 'absolute', right: 0, top: '50%', transform: 'translateY(-50%)' }}>
+                                <FormControl variant="outlined" size="small" style={{ width: '120px' }}>
+                                    <InputLabel>Data Mode</InputLabel>
+                                    <Select
+                                        value={selectedMode}
+                                        onChange={handleChange}
+                                        label="Data Mode"
+                                    >
+                                        <MenuItem value={'Average'}>Average</MenuItem>
+                                        <MenuItem value={'Total'}>Total</MenuItem>
+                                    </Select>
+                                </FormControl>
+                            </div>
+                        </div>
+
+                        <div>
+                            {wtValue === 0 ? "0" : dhmToString(secondsToDhm(wtValue))}
+                        </div>
+
+                        <div style={{ width: '100%', height: '300px' }}>
+                            <HighchartsReact highcharts={Highcharts} options={waitingTimeOptions} />
                         </div>
                     </div>
                 </Grid>
