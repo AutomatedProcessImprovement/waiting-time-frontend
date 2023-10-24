@@ -9,6 +9,19 @@ require("moment-duration-format");
 
 stockInit(Highcharts)
 
+
+type DataObject = {
+    name: any;
+    total_wt: any;
+    batching_wt: any;
+    prioritization_wt: any;
+    contention_wt: any;
+    unavailability_wt: any;
+    extraneous_wt: any;
+    [key: string]: any;
+};
+
+
 const _colorDict = {
     batching: "#6C8EBF",
     prioritization: "#B8544F",
@@ -97,9 +110,13 @@ function TransitionsBarChart({data, selectedWTType}: Props) {
         }
     }
 
-    let sorted_categories = pre_categories.sort(
-        (p1, p2) => (p1.total_wt < p2.total_wt ? 1 : (p1.total_wt > p2.total_wt) ? -1 : 0)
-    )
+    let sorted_categories = pre_categories.sort((p1: DataObject, p2: DataObject) => {
+        // If a specific WTType is selected, sort based on that. Otherwise, sort based on total_wt.
+        const sortKey = selectedWTType ? `${selectedWTType}_wt` : 'total_wt';
+
+        return (p1[sortKey] < p2[sortKey] ? 1 : (p1[sortKey] > p2[sortKey] ? -1 : 0));
+    });
+
     for (const x in sorted_categories) {
 
         categories.push(sorted_categories[x].name)
@@ -197,6 +214,7 @@ function TransitionsBarChart({data, selectedWTType}: Props) {
             tickLength: 0
         },
         yAxis: {
+            reversedStacks: false,
             title: {
                 text: 'Time',
                 align: 'high'
