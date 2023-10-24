@@ -2,7 +2,7 @@ import React from 'react';
 import {dhmToString} from "../../../helpers/dhmToString";
 import {secondsToDhm} from "../../../helpers/SecondsToDhm";
 import {useFetchData} from "../../../helpers/useFetchData";
-import {Box, Grid, Typography} from "@mui/material";
+import {Box, FormControl, Grid, InputLabel, MenuItem, Select, SelectChangeEvent, Typography} from "@mui/material";
 import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts";
 import WaitingTimeframe from "../overview/WaitingTimeframe";
@@ -27,6 +27,11 @@ const PrioritizationSpecificTransitionsLayout: React.FC<PrioritizationSpecificTr
     const activityResourceWT = useFetchData(`/activity_resource_wt/${jobId}`);
     const barChartDataByResource = useFetchData(`/activity_transitions_by_resource/${jobId}/${sourceActivity}/${destinationActivity}`);
     const barChartData = useFetchData(`/activity_transitions/${jobId}/${sourceActivity}/${destinationActivity}`);
+    const [selectedMode, setSelectedMode] = React.useState('Average');
+
+    const handleChange = (event: SelectChangeEvent<string>) => {
+        setSelectedMode(event.target.value);
+    };
 
     if (!overviewData || !timeFrameData || !activityResourceWT || !barChartDataByResource || !barChartData) {
         return <div>Loading...</div>;
@@ -53,6 +58,17 @@ const PrioritizationSpecificTransitionsLayout: React.FC<PrioritizationSpecificTr
         }]
     };
 
+    let wtValue: number;
+    let otherCausesValue: number;
+
+    if (selectedMode === 'Average') {
+        wtValue = overviewData.avg_wt;
+        otherCausesValue = overviewData.avg_total_wt;
+    } else {
+        wtValue = overviewData.wt_sum;
+        otherCausesValue = overviewData.total_wt_sum;
+    }
+
     const waitingTimeOptions = {
         chart: {
             height: 300,
@@ -72,8 +88,8 @@ const PrioritizationSpecificTransitionsLayout: React.FC<PrioritizationSpecificTr
         series: [{
             type: 'pie',
             data: [
-                ['Prioritization', overviewData.wt_sum],
-                ['Other Causes', overviewData.total_wt_sum]
+                ['Prioritization', wtValue],
+                ['Other Causes', otherCausesValue]
             ]
         }]
     };
@@ -131,10 +147,36 @@ const PrioritizationSpecificTransitionsLayout: React.FC<PrioritizationSpecificTr
                         borderRadius: '8px',
                         border: '1px solid #ccc'
                     }}>
-                        <div style={{fontWeight: 'bold', fontSize: '1.2em'}}>WT due to Prioritization</div>
-                        <div>{overviewData.wt_sum === 0 ? "0" : dhmToString(secondsToDhm(overviewData.wt_sum))}</div>
-                        <div style={{width: '100%', height: '300px'}}>
-                            <HighchartsReact highcharts={Highcharts} options={waitingTimeOptions}/>
+                        <div style={{
+                            position: 'relative',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                        }}>
+                            <Typography variant="h6" style={{ marginRight: '8px', display: 'inline' }}>
+                                WT due to Prioritization
+                            </Typography>
+                            <div style={{ position: 'absolute', right: 0, top: '50%', transform: 'translateY(-50%)' }}>
+                                <FormControl variant="outlined" size="small" style={{ width: '120px' }}>
+                                    <InputLabel>Data Mode</InputLabel>
+                                    <Select
+                                        value={selectedMode}
+                                        onChange={handleChange}
+                                        label="Data Mode"
+                                    >
+                                        <MenuItem value={'Average'}>Average</MenuItem>
+                                        <MenuItem value={'Total'}>Total</MenuItem>
+                                    </Select>
+                                </FormControl>
+                            </div>
+                        </div>
+
+                        <div>
+                            {wtValue === 0 ? "0" : dhmToString(secondsToDhm(wtValue))}
+                        </div>
+
+                        <div style={{ width: '100%', height: '300px' }}>
+                            <HighchartsReact highcharts={Highcharts} options={waitingTimeOptions} />
                         </div>
                     </div>
                 </Grid>
