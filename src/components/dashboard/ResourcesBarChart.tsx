@@ -63,15 +63,17 @@ export default function ResourcesBarChart({ data, selectedWt, selectedActivity: 
             },
             labels: {
                 formatter(this: any) {
-                    const [y, d, h, m] = secondsToDhm(this.value);
-                    return dhmToString([y, d, h, m]);
+                    const [y, mo, d, h, m] = secondsToDhm(this.value);
+                    return dhmToString([y, mo, d, h, m]);
                 }
             }
         },
         tooltip: {
-            formatter(this: any) {
-                const [y, d, h, m] = secondsToDhm(this.y);
-                return `${this.series.name}: ${dhmToString([y, d, h, m])}`;
+            tooltip: {
+                formatter(this: any) {
+                    const [y, mo, d, h, m] = secondsToDhm(this.y);
+                    return `${this.series.name}: ${dhmToString([y, mo, d, h, m])}`;
+                }
             }
         },
         series: [{

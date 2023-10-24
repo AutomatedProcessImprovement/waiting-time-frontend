@@ -32,8 +32,8 @@ const AllTransitionsLayout: React.FC<AllTransitionsLayoutProps> = ({jobId}) => {
     const timeframeData = useFetchData(`/daily_summary/${jobId}`);
     const [showTable, setShowTable] = useState(false);
     const [showTable2, setShowTable2] = useState(false);
-    const [displayMode, setDisplayMode] = useState("total");
-    const [pieChartDisplayMode, setPieChartDisplayMode] = useState("total");
+    const [displayMode, setDisplayMode] = useState("average");
+    const [pieChartDisplayMode, setPieChartDisplayMode] = useState("average");
 
     if (!overviewData || !transitionsData || !cteTableData || !potentialCteData || !timeframeData) {
         return <div>Loading...</div>;

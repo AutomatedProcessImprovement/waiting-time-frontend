@@ -228,7 +228,7 @@ const Upload = () => {
                                             </Grid>
                                             <Grid item xs={9}>
                                                 <Typography variant="body1" align="left">
-                                                    <Link href="https://owncloud.ut.ee/owncloud/s/rMHMfGBBgsLF7oD" target="_blank" rel="noopener noreferrer">
+                                                    <Link href="https://owncloud.ut.ee/owncloud/s/rZ4dSoTzwpwfpci" target="_blank" rel="noopener noreferrer">
                                                         Download here
                                                     </Link>
                                                 </Typography>

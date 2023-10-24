@@ -222,17 +222,19 @@ function TransitionsBarChart({data, selectedWTType}: Props) {
             labels: {
                 align: 'right',
                 formatter(this: any) {
-                    const [y, d, h, m] = secondsToDhm(this.value);
-                    return dhmToString([y, d, h, m]);
+                    const [y, mo, d, h, m] = secondsToDhm(this.value);
+                    return dhmToString([y, mo, d, h, m]);
                 }
             },
             stackLabels: {
                 align: 'right',
                 x: 20,
                 enabled: true,
-                formatter(this: any) {
-                    const [y, d, h, m] = secondsToDhm(this.total);
-                    return dhmToString([y, d, h, m]);
+                tooltip: {
+                    formatter(this: any) {
+                        const [y, mo, d, h, m] = secondsToDhm(this.y);
+                        return `${this.series.name}: ${dhmToString([y, mo, d, h, m])}`;
+                    }
                 }
             }
         },
@@ -259,13 +261,11 @@ function TransitionsBarChart({data, selectedWTType}: Props) {
             reversed: false
         },
         tooltip: {
-            formatter(this: Highcharts.TooltipFormatterContextObject) {
-                const [y, d, h, m] = secondsToDhm(this.y as number);
-                const timeString = dhmToString([y, d, h, m]);
-                return `${this.series.name}: ${timeString}`;
+            formatter(this: any) {
+                const [y, mo, d, h, m] = secondsToDhm(this.y);
+                return `${this.series.name}: ${dhmToString([y, mo, d, h, m])}`;
             }
         },
-
         series: processed_data
     }
 
