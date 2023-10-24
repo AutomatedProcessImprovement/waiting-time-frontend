@@ -1,5 +1,5 @@
-import React from 'react';
-import {Box, Grid, Typography} from "@mui/material";
+import React, {useState} from 'react';
+import {Box, FormControl, Grid, InputLabel, MenuItem, Select, Typography} from "@mui/material";
 import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts";
 import {dhmToString} from "../../../helpers/dhmToString";
@@ -20,11 +20,14 @@ interface BatchingAllTransitionsLayoutProps {
 
 const BatchingAllTransitionsLayout: React.FC<BatchingAllTransitionsLayoutProps> = ({jobId}) => {
     const overviewData = useFetchData(`/wt_overview/${jobId}/batching`);
-    const transitionsData = useFetchData(`/activity_transitions/${jobId}`);
     const timeFrameData = useFetchData(`/daily_summary/${jobId}`);
     const activityWT = useFetchData(`/activity_wt/${jobId}`);
     const activityResourceWT = useFetchData(`/activity_resource_wt/${jobId}`)
     // const batching = useFetchData(`/process_csv/${jobId}`)
+    const [dataMode, setDataMode] = useState("Average");
+    const transitionsDataAverage = useFetchData(`/activity_transitions_average/${jobId}`);
+    const transitionsDataTotal = useFetchData(`/activity_transitions/${jobId}`);
+    const transitionsData = dataMode === "Average" ? transitionsDataAverage : transitionsDataTotal;
 
     if (!overviewData || !transitionsData || !timeFrameData || !activityWT || ! activityResourceWT) {
         return <div>Loading...</div>;
@@ -149,22 +152,38 @@ const BatchingAllTransitionsLayout: React.FC<BatchingAllTransitionsLayoutProps> 
                     />
                 </Grid>
                 <Grid item xs={12}>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <Typography variant="h6" style={{ marginRight: '8px' }}>
-                            Waiting time in transitions
-                        </Typography>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
 
-                        <Tooltip
-                            title={
-                                <span style={{ fontSize: '1rem' }}>
-                            Waiting time between pairs of consecutive activities categorized by the causes of waiting.
-                        </span>
-                            }
-                        >
-                            <IconButton size="small" aria-label="info about waiting time causes">
-                                <HelpOutlineIcon />
-                            </IconButton>
-                        </Tooltip>
+                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                            <Typography variant="h6" style={{ marginRight: '8px' }}>
+                                Waiting time causes in transitions
+                            </Typography>
+
+                            <Tooltip
+                                title={
+                                    <span style={{ fontSize: '1rem' }}>
+                        Waiting time between pairs of consecutive activities categorized by the causes of waiting.
+                    </span>
+                                }
+                            >
+                                <IconButton size="small" aria-label="info about waiting time causes">
+                                    <HelpOutlineIcon />
+                                </IconButton>
+                            </Tooltip>
+                        </div>
+
+                        <FormControl variant="outlined">
+                            <InputLabel>Data Mode</InputLabel>
+                            <Select
+                                value={dataMode}
+                                onChange={(e) => setDataMode(e.target.value)}
+                                label="Data Mode"
+                            >
+                                <MenuItem value={"Average"}>Average</MenuItem>
+                                <MenuItem value={"Total"}>Total</MenuItem>
+                            </Select>
+                        </FormControl>
+
                     </div>
                     <TransitionsBarChart data={transitionsData} selectedWTType={"batching"}/>
                 </Grid>
