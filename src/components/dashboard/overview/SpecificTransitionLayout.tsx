@@ -1,5 +1,5 @@
 import React from 'react';
-import {Box, Grid, Typography} from '@mui/material';
+import {Box, FormControl, Grid, InputLabel, MenuItem, Select, SelectChangeEvent, Typography} from '@mui/material';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import {secondsToDhm} from '../../../helpers/SecondsToDhm';
@@ -28,6 +28,7 @@ const SpecificTransitionLayout: React.FC<SpecificTransitionLayoutProps> = ({jobI
     // const potentialCteData = useFetchData(`/potential_cte_filtered/${jobId}/${sourceActivity}/${destinationActivity}`);
     const cteTableData = useFetchData(`/cte_improvement/${jobId}`);
     const timeFrameData = useFetchData(`/daily_summary/${jobId}/${sourceActivity}/${destinationActivity}`);
+    const [selectedMode, setSelectedMode] = React.useState('Average');
 
     if (!overviewData || !barChartData || !barChartDataByResource || !timeFrameData || !generalOverviewData || !cteTableData) {
         return <div>Loading...</div>;
@@ -37,6 +38,10 @@ const SpecificTransitionLayout: React.FC<SpecificTransitionLayoutProps> = ({jobI
         return <strong>This transition has no waiting time</strong>;
     }
 
+    const handleChange = (event: SelectChangeEvent<string>) => {
+        setSelectedMode(event.target.value);
+    };
+
     // const specificCte = +parseFloat(((overviewData.processing_time / (overviewData.specific_wttotal_sum + overviewData.processing_time)) * 100).toFixed(1));
     const totalCycleTime = generalOverviewData.waiting_time + generalOverviewData.processing_time;
     const processingTimePercentage = +parseFloat(((generalOverviewData.processing_time / totalCycleTime) * 100).toFixed(1));
@@ -44,6 +49,9 @@ const SpecificTransitionLayout: React.FC<SpecificTransitionLayoutProps> = ({jobI
     const highestSourceText = isMaxPairDefined
         ? `Handover: ${overviewData.max_wttotal_pair[0]} - ${overviewData.max_wttotal_pair[1]}\n${dhmToString(secondsToDhm(overviewData.max_wttotal_pair[2]))}`
         : 'No highest handover';
+    const highestAvgSourceText = isMaxPairDefined
+        ? `Handover: ${overviewData.max_wttotal_avg_pair[0]} - ${overviewData.max_wttotal_avg_pair[1]}\n${dhmToString(secondsToDhm(overviewData.max_wttotal_avg_pair[2]))}`
+        : 'No highest average handover';
 
     const filteredData = cteTableData.data.filter((item: { source_activity: string; target_activity: string; }) =>
         item.source_activity === sourceActivity && item.target_activity === destinationActivity
@@ -69,11 +77,22 @@ const SpecificTransitionLayout: React.FC<SpecificTransitionLayoutProps> = ({jobI
         series: [{
             type: 'pie',
             data: [
-                ['Specific Case Count', overviewData.specific_case_count],
-                ['Total Case Count', overviewData.total_case_count - overviewData.specific_case_count]
+                ['Executed', overviewData.specific_case_count],
+                ['Not Executed', overviewData.total_case_count - overviewData.specific_case_count]
             ]
         }]
     };
+
+    let wtValue: number;
+    let otherCausesValue: number;
+    console.log("OVERVIEW, ", overviewData);
+    if (selectedMode === 'Average') {
+        wtValue = overviewData.avg_specific_wttotal;
+        otherCausesValue = overviewData.avg_total_wttotal;
+    } else {
+        wtValue = overviewData.specific_wttotal_sum;
+        otherCausesValue = overviewData.total_wttotal_sum;
+    }
 
     const waitingTimeOptions = {
         chart: {
@@ -90,8 +109,8 @@ const SpecificTransitionLayout: React.FC<SpecificTransitionLayoutProps> = ({jobI
         series: [{
             type: 'pie',
             data: [
-                ['Specific Waiting Time', overviewData.specific_wttotal_sum],
-                ['Total Waiting Time', overviewData.total_wttotal_sum]
+                ['Selected Transition', wtValue],
+                ['Other transitions', otherCausesValue]
             ]
         }]
     };
@@ -103,8 +122,18 @@ const SpecificTransitionLayout: React.FC<SpecificTransitionLayoutProps> = ({jobI
         return (value as number) > acc.value ? {key, value: value as number} : acc;
     }, {key: '', value: 0});
 
+    const highestAvgSource = Object.entries(overviewData.specific_avg).reduce<{
+        key: string,
+        value: number
+    }>((acc, [key, value]) => {
+        return (value as number) > acc.value ? {key, value: value as number} : acc;
+    }, {key: '', value: 0});
+
     let causeText = "No highest cause";
     let valueText = "0";
+
+    let avgCauseText = "No highest average cause";
+    let avgValueText = "0";
 
     if (highestSource.key) {
         valueText = dhmToString(secondsToDhm(highestSource.value));
@@ -126,6 +155,30 @@ const SpecificTransitionLayout: React.FC<SpecificTransitionLayoutProps> = ({jobI
                 break;
             default:
                 causeText = highestSource.key;
+                break;
+        }
+    }
+
+    if (highestAvgSource.key) {
+        avgValueText = dhmToString(secondsToDhm(highestAvgSource.value));
+        switch (highestAvgSource.key) {
+            case "contention_wt":
+                avgCauseText = "Resource Contention";
+                break;
+            case "batching_wt":
+                avgCauseText = "Batching";
+                break;
+            case "prioritization_wt":
+                avgCauseText = "Prioritization";
+                break;
+            case "unavailability_wt":
+                avgCauseText = "Resource Unavailability";
+                break;
+            case "extraneous_wt":
+                avgCauseText = "Extraneous Factors";
+                break;
+            default:
+                avgCauseText = highestAvgSource.key;
                 break;
         }
     }
@@ -171,10 +224,36 @@ const SpecificTransitionLayout: React.FC<SpecificTransitionLayoutProps> = ({jobI
                         borderRadius: '8px',
                         border: '1px solid #ccc'
                     }}>
-                        <div style={{fontWeight: 'bold', fontSize: '1.2em'}}>Waiting Time in Transition</div>
-                        <div>{overviewData.specific_wttotal_sum === 0 ? "0" : dhmToString(secondsToDhm(overviewData.specific_wttotal_sum))}</div>
-                        <div style={{width: '100%', height: '300px'}}>
-                            <HighchartsReact highcharts={Highcharts} options={waitingTimeOptions}/>
+                        <div style={{
+                            position: 'relative',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                        }}>
+                            <Typography variant="h6" style={{ marginRight: '8px', display: 'inline' }}>
+                                WT in Transition
+                            </Typography>
+                            <div style={{ position: 'absolute', right: 0, top: '50%', transform: 'translateY(-50%)' }}>
+                                <FormControl variant="outlined" size="small" style={{ width: '120px' }}>
+                                    <InputLabel>Data Mode</InputLabel>
+                                    <Select
+                                        value={selectedMode}
+                                        onChange={handleChange}
+                                        label="Data Mode"
+                                    >
+                                        <MenuItem value={'Average'}>Average</MenuItem>
+                                        <MenuItem value={'Total'}>Total</MenuItem>
+                                    </Select>
+                                </FormControl>
+                            </div>
+                        </div>
+
+                        <div>
+                            {wtValue === 0 ? "0" : dhmToString(secondsToDhm(wtValue))}
+                        </div>
+
+                        <div style={{ width: '100%', height: '300px' }}>
+                            <HighchartsReact highcharts={Highcharts} options={waitingTimeOptions} />
                         </div>
                     </div>
                 </Grid>
@@ -186,9 +265,23 @@ const SpecificTransitionLayout: React.FC<SpecificTransitionLayoutProps> = ({jobI
                         borderRadius: '8px',
                         border: '1px solid #ccc'
                     }}>
-                        <div style={{fontWeight: 'bold', fontSize: '1.2em', marginBottom: '20px'}}>Highest Source</div>
+                        {/*<div style={{fontWeight: 'bold', fontSize: '1.2em', marginBottom: '20px'}}>Highest Source</div>*/}
+                        {/*<div style={{textAlign: 'left'}}>Cause: {causeText}</div>*/}
+                        {/*<div style={{textAlign: 'left'}}>{valueText}</div>*/}
+                        {/*<div style={{textAlign: 'left', whiteSpace: 'pre-line'}}>{highestSourceText}</div>*/}
+
+                        <div style={{fontWeight: 'bold', fontSize: '1.2em', marginBottom: '35px'}}>Highest Source</div>
+
+                        {/* On Average */}
+                        <div style={{fontWeight: 'bold', marginBottom: '10px', textAlign: 'left'}}>Average</div>
+                        <div style={{textAlign: 'left'}}>Cause: {avgCauseText}</div>
+                        <div style={{textAlign: 'left', marginBottom: '10px'}}>{avgValueText}</div>
+                        <div style={{textAlign: 'left', marginBottom: '35px', whiteSpace: 'pre-line'}}>{highestAvgSourceText}</div>
+
+                        {/* In Total */}
+                        <div style={{fontWeight: 'bold', marginBottom: '10px', textAlign: 'left'}}>Total</div>
                         <div style={{textAlign: 'left'}}>Cause: {causeText}</div>
-                        <div style={{textAlign: 'left'}}>{valueText}</div>
+                        <div style={{textAlign: 'left', marginBottom: '10px'}}>{valueText}</div>
                         <div style={{textAlign: 'left', whiteSpace: 'pre-line'}}>{highestSourceText}</div>
                     </div>
                 </Grid>
