@@ -55,7 +55,17 @@ const PrioritizationSpecificTransitionsLayout: React.FC<PrioritizationSpecificTr
                 ['Affected', overviewData.distinct_cases],
                 ['Not Affected', overviewData.cases - overviewData.distinct_cases]
             ]
-        }]
+        }],
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                }
+            }
+        },
     };
 
     let wtValue: number;
@@ -91,7 +101,17 @@ const PrioritizationSpecificTransitionsLayout: React.FC<PrioritizationSpecificTr
                 ['Prioritization', wtValue],
                 ['Other Causes', otherCausesValue]
             ]
-        }]
+        }],
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                }
+            }
+        },
     };
 
     // Setting up data for 'On Average'
@@ -164,7 +184,7 @@ const PrioritizationSpecificTransitionsLayout: React.FC<PrioritizationSpecificTr
                                         onChange={handleChange}
                                         label="Data Mode"
                                     >
-                                        <MenuItem value={'Average'}>Average</MenuItem>
+                                        <MenuItem value={'Average'}>Average by case</MenuItem>
                                         <MenuItem value={'Total'}>Total</MenuItem>
                                     </Select>
                                 </FormControl>

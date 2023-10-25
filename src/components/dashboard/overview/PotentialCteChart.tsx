@@ -22,12 +22,20 @@ const colorDict: { [key: string]: string } = {
     Extraneous: "#B3B3B3",
 };
 
+const legendNameMap: { [key: string]: string } = {
+    Batching: "Batching",
+    Prioritization: "Prioritization",
+    Contention: "Resource Contention",
+    Unavailability: "Resource Unavailability",
+    Extraneous: "Extraneous",
+};
+
 export default function PotentialCteChart({jsonData, cte}: BarChartBoxProps) {
     const orderedKeys = Object.keys(colorDict);
     const series = orderedKeys.map(key => {
         console.log(key, jsonData[key]);
         return {
-            name: key,
+            name: legendNameMap[key] || key,
             data: [jsonData[key] || 0],
             color: colorDict[key],
         };

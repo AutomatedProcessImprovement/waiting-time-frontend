@@ -221,7 +221,7 @@ const AllTransitionsLayout: React.FC<AllTransitionsLayoutProps> = ({jobId}) => {
                                         label="Data Mode"
                                     >
                                         <MenuItem value={"total"}>Total</MenuItem>
-                                        <MenuItem value={"average"}>Average</MenuItem>
+                                        <MenuItem value={"average"}>Average by case</MenuItem>
                                     </Select>
                                 </FormControl>
                             </div>
@@ -282,7 +282,7 @@ const AllTransitionsLayout: React.FC<AllTransitionsLayoutProps> = ({jobId}) => {
                                         label="Data Mode"
                                     >
                                         <MenuItem value={"total"}>Total</MenuItem>
-                                        <MenuItem value={"average"}>Average</MenuItem>
+                                        <MenuItem value={"average"}>Average by case</MenuItem>
                                     </Select>
                                 </FormControl>
                             </div>
@@ -326,7 +326,7 @@ const AllTransitionsLayout: React.FC<AllTransitionsLayoutProps> = ({jobId}) => {
                                 onChange={(e) => setDataMode(e.target.value)}
                                 label="Data Mode"
                             >
-                                <MenuItem value={"Average"}>Average</MenuItem>
+                                <MenuItem value={"Average"}>Average by transition</MenuItem>
                                 <MenuItem value={"Total"}>Total</MenuItem>
                             </Select>
                         </FormControl>

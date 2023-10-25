@@ -56,7 +56,17 @@ const ContentionSpecificTransitionsLayout: React.FC<ContentionSpecificTransition
                 ['Affected', overviewData.distinct_cases],
                 ['Not Affected', overviewData.cases - overviewData.distinct_cases]
             ]
-        }]
+        }],
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                }
+            }
+        },
     };
 
     let wtValue: number;
@@ -86,10 +96,20 @@ const ContentionSpecificTransitionsLayout: React.FC<ContentionSpecificTransition
         series: [{
             type: 'pie',
             data: [
-                ['Contention', wtValue],
+                ['Resourse Contention', wtValue],
                 ['Other Causes', otherCausesValue]
             ]
-        }]
+        }],
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                }
+            }
+        },
     };
 
     // Setting up data for 'On Average'
@@ -162,7 +182,7 @@ const ContentionSpecificTransitionsLayout: React.FC<ContentionSpecificTransition
                                         onChange={handleChange}
                                         label="Data Mode"
                                     >
-                                        <MenuItem value={'Average'}>Average</MenuItem>
+                                        <MenuItem value={'Average'}>Average by case</MenuItem>
                                         <MenuItem value={'Total'}>Total</MenuItem>
                                     </Select>
                                 </FormControl>

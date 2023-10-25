@@ -55,7 +55,17 @@ const BatchingAllTransitionsLayout: React.FC<BatchingAllTransitionsLayoutProps> 
                 ['Affected', overviewData.distinct_cases],
                 ['Not Affected', overviewData.cases - overviewData.distinct_cases]
             ]
-        }]
+        }],
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                }
+            }
+        },
     };
 
     let wtValue: number;
@@ -88,7 +98,17 @@ const BatchingAllTransitionsLayout: React.FC<BatchingAllTransitionsLayoutProps> 
                 ['Batching', wtValue],
                 ['Other Causes', otherCausesValue]
             ]
-        }]
+        }],
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                }
+            }
+        },
     };
 
     // Setting up data for 'On Average'
@@ -161,7 +181,7 @@ const BatchingAllTransitionsLayout: React.FC<BatchingAllTransitionsLayoutProps> 
                                         onChange={handleChange}
                                         label="Data Mode"
                                     >
-                                        <MenuItem value={'Average'}>Average</MenuItem>
+                                        <MenuItem value={'Average'}>Average by case</MenuItem>
                                         <MenuItem value={'Total'}>Total</MenuItem>
                                     </Select>
                                 </FormControl>
@@ -188,7 +208,7 @@ const BatchingAllTransitionsLayout: React.FC<BatchingAllTransitionsLayoutProps> 
                         <div style={{fontWeight: 'bold', fontSize: '1.2em', marginBottom: '35px'}}>Highest Source</div>
 
                         {/* On Average */}
-                        <div style={{fontWeight: 'bold', marginBottom: '10px', textAlign: 'left'}}>Average</div>
+                        <div style={{fontWeight: 'bold', marginBottom: '10px', textAlign: 'left'}}>Average by transition</div>
                         <div style={{textAlign: 'left'}}>Transition: {avgBiggestSourceDestPair}</div>
                         <div style={{textAlign: 'left', marginBottom: '10px'}}>{avgValueText}</div>
                         <div style={{textAlign: 'left', whiteSpace: 'pre-line'}}>Resource: {avgHighestSourceText}</div>
@@ -241,7 +261,7 @@ const BatchingAllTransitionsLayout: React.FC<BatchingAllTransitionsLayoutProps> 
                                 onChange={(e) => setDataMode(e.target.value)}
                                 label="Data Mode"
                             >
-                                <MenuItem value={"Average"}>Average</MenuItem>
+                                <MenuItem value={"Average"}>Average by transition</MenuItem>
                                 <MenuItem value={"Total"}>Total</MenuItem>
                             </Select>
                         </FormControl>
@@ -276,7 +296,7 @@ const BatchingAllTransitionsLayout: React.FC<BatchingAllTransitionsLayoutProps> 
                                 onChange={(e) => setDataMode2(e.target.value)}
                                 label="Data Mode"
                             >
-                                <MenuItem value={"Average"}>Average</MenuItem>
+                                <MenuItem value={"Average"}>Average by activity</MenuItem>
                                 <MenuItem value={"Total"}>Total</MenuItem>
                             </Select>
                         </FormControl>

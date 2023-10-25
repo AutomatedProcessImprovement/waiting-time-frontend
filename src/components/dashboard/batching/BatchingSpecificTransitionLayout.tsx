@@ -55,7 +55,17 @@ const BatchingSpecificTransitionsLayout: React.FC<BatchingSpecificTransitionsLay
                 ['Affected', overviewData.distinct_cases],
                 ['Not Affected', overviewData.cases - overviewData.distinct_cases]
             ]
-        }]
+        }],
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                }
+            }
+        },
     };
 
     let wtValue: number;
@@ -88,7 +98,17 @@ const BatchingSpecificTransitionsLayout: React.FC<BatchingSpecificTransitionsLay
                 ['Batching', wtValue],
                 ['Other Causes', otherCausesValue]
             ]
-        }]
+        }],
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                }
+            }
+        },
     };
 
     // Setting up data for 'On Average'
@@ -161,7 +181,7 @@ const BatchingSpecificTransitionsLayout: React.FC<BatchingSpecificTransitionsLay
                                         onChange={handleChange}
                                         label="Data Mode"
                                     >
-                                        <MenuItem value={'Average'}>Average</MenuItem>
+                                        <MenuItem value={'Average'}>Average by case</MenuItem>
                                         <MenuItem value={'Total'}>Total</MenuItem>
                                     </Select>
                                 </FormControl>

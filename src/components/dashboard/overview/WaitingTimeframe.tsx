@@ -15,6 +15,14 @@ const _colorDict = {
     extraneous: "#B3B3B3",
 };
 
+const legendNameMap: {[key in WTType]?: string} = {
+    batching: "Batching",
+    prioritization: "Prioritization",
+    contention: "Resource Contention",
+    unavailability: "Resource Unavailability",
+    extraneous: "Extraneous",
+};
+
 type WTType = keyof typeof _colorDict;
 
 const WaitingTimeframe = ({data, sourceActivity, destinationActivity, wtType}: {
@@ -48,7 +56,7 @@ const WaitingTimeframe = ({data, sourceActivity, destinationActivity, wtType}: {
             const otherTypes = Object.keys(_colorDict).filter(key => key !== wtType);
             return [
                 {
-                    name: 'Other Types',
+                    name: 'Other Causes',
                     data: data.map(d => otherTypes.reduce((acc, type) => acc + d[`total_${type}_wt`], 0)),
                     color: 'lightblue',
                     tooltip: {
@@ -59,22 +67,22 @@ const WaitingTimeframe = ({data, sourceActivity, destinationActivity, wtType}: {
                     },
                 },
                 {
-                    name: wtType,
+                    name: legendNameMap[wtType] || wtType,
                     data: data.map(d => d[`total_${wtType}_wt`]),
                     color: _colorDict[wtType],
                     tooltip: {pointFormatter: generateTooltipFormatter(wtType)}
                 },
-            ].reverse();
+            ];
         } else {
             return Object.keys(_colorDict).map((type) => {
                 const key = type as WTType;
                 return {
-                    name: key,
+                    name: legendNameMap[key] || key,
                     data: data.map(d => d[`total_${key}_wt`]),
                     color: _colorDict[key],
                     tooltip: {pointFormatter: generateTooltipFormatter(key)}
                 };
-            });
+            }).reverse();
         }
     };
 
@@ -142,6 +150,9 @@ const WaitingTimeframe = ({data, sourceActivity, destinationActivity, wtType}: {
             },
         },
         series: generateSeries(chartData),
+        legend: {
+            reversed: true
+        }
     };
 
     return (
