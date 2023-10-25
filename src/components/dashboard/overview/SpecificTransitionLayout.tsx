@@ -97,6 +97,8 @@ const SpecificTransitionLayout: React.FC<SpecificTransitionLayoutProps> = ({jobI
         otherCausesValue = overviewData.total_wttotal_sum;
     }
 
+    console.log('WT value and Other causes', wtValue);
+
     const waitingTimeOptions = {
         chart: {
             height: 300,
@@ -244,7 +246,7 @@ const SpecificTransitionLayout: React.FC<SpecificTransitionLayoutProps> = ({jobI
                                         onChange={handleChange}
                                         label="Data Mode"
                                     >
-                                        <MenuItem value={'Average'}>Average</MenuItem>
+                                        <MenuItem value={'Average'}>Average by case</MenuItem>
                                         <MenuItem value={'Total'}>Total</MenuItem>
                                     </Select>
                                 </FormControl>

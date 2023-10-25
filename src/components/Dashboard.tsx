@@ -94,8 +94,8 @@ const ActivityPairSelector = ({selectedActivityPair, handleActivityPairChange, a
         >
             <MenuItem value="All transitions">All transitions</MenuItem>
             {activityPairs.map((pair: ActivityPair, index: number) => (
-                <MenuItem key={index} value={`${pair.destination_activity} - ${pair.source_activity}`}>
-                    {`${pair.destination_activity} - ${pair.source_activity}`}
+                <MenuItem key={index} value={`${pair.source_activity} - ${pair.destination_activity}`}>
+                    {`${pair.source_activity} - ${pair.destination_activity}`}
                 </MenuItem>
             ))}
         </Select>
@@ -153,8 +153,8 @@ const BasicTabs = () => {
     };
 
     const sortedActivityPairs = [...activityPairs].sort((a, b) => {
-        const nameA = `${a.destination_activity} - ${a.source_activity}`;
-        const nameB = `${b.destination_activity} - ${b.source_activity}`;
+        const nameA = `${a.source_activity} - ${a.destination_activity}`;
+        const nameB = `${b.source_activity} - ${b.destination_activity}`;
         return nameA.localeCompare(nameB);
     });
 
