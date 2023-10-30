@@ -34,10 +34,20 @@ const AllTransitionsLayout: React.FC<AllTransitionsLayoutProps> = ({jobId}) => {
     const [showTable2, setShowTable2] = useState(false);
     const [displayMode, setDisplayMode] = useState("average");
     const [pieChartDisplayMode, setPieChartDisplayMode] = useState("average");
-    const [dataMode, setDataMode] = useState("Average");
-    const transitionsDataAverage = useFetchData(`/activity_transitions_average/${jobId}`);
+    const [dataMode, setDataMode] = useState("AverageC");
+    const transitionsDataAvgTransition = useFetchData(`/activity_transitions_average/${jobId}`);
     const transitionsDataTotal = useFetchData(`/activity_transitions/${jobId}`);
-    const transitionsData = dataMode === "Average" ? transitionsDataAverage : transitionsDataTotal;
+    const transitionsDataAvgCase = useFetchData(`/activity_transitions_average_case/${jobId}`);
+    let transitionsData;
+
+    if (dataMode === "AverageC") {
+        transitionsData = transitionsDataAvgCase;
+    } else if (dataMode === "AverageT") {
+        transitionsData = transitionsDataAvgTransition;
+    } else {
+        transitionsData = transitionsDataTotal;
+    }
+
 
     if (!overviewData || !transitionsData || !cteTableData || !potentialCteData || !timeframeData) {
         return <div>Loading...</div>;
@@ -327,7 +337,8 @@ const AllTransitionsLayout: React.FC<AllTransitionsLayoutProps> = ({jobId}) => {
                                 onChange={(e) => setDataMode(e.target.value)}
                                 label="Data Mode"
                             >
-                                <MenuItem value={"Average"}>Average by transition</MenuItem>
+                                <MenuItem value={"AverageC"}>Average by case</MenuItem>
+                                <MenuItem value={"AverageT"}>Average by transition</MenuItem>
                                 <MenuItem value={"Total"}>Total</MenuItem>
                             </Select>
                         </FormControl>
