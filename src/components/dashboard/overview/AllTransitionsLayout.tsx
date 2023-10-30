@@ -19,6 +19,7 @@ import GaugeChart from './GaugeChart';
 import PotentialCteChart from './PotentialCteChart';
 import CTEHeatmap from "./CTEHeatmap";
 import CTETable from "./CTETable";
+import Chat from "./Chat";
 
 interface AllTransitionsLayoutProps {
     jobId: string;
@@ -431,6 +432,10 @@ const AllTransitionsLayout: React.FC<AllTransitionsLayoutProps> = ({jobId}) => {
                         <CTETable data={cteTableData}/>
                     </Grid>
                 )}
+
+                {/*<Grid item xs={12}>*/}
+                {/*    <Chat jobid={jobId}/>*/}
+                {/*</Grid>*/}
             </Grid>
         </Box>
     );
