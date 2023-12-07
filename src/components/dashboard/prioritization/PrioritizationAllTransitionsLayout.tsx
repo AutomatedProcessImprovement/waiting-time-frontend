@@ -11,6 +11,8 @@ import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import ResourcesBarChart from "../ResourcesBarChart";
+import BatchingComponent from "../batching/BatchingComponent";
+import PrioritizationComponent from "./PrioritizationComponent";
 
 
 interface PrioritizationAllTransitionsLayout {
@@ -30,6 +32,7 @@ const PrioritizationAllTransitionsLayout: React.FC<PrioritizationAllTransitionsL
     const transitionsDataTotal = useFetchData(`/activity_transitions/${jobId}`);
     const transitionsData = dataMode === "Average" ? transitionsDataAverage : transitionsDataTotal;
     const [selectedMode, setSelectedMode] = React.useState('Average');
+    const prioritization = useFetchData(`/prioritization_strategies/${jobId}`)
 
     const handleChange = (event: SelectChangeEvent<string>) => {
         setSelectedMode(event.target.value);
@@ -303,6 +306,27 @@ const PrioritizationAllTransitionsLayout: React.FC<PrioritizationAllTransitionsL
                 </Grid>
                 <Grid item xs={12}>
                     <ResourcesBarChart data={activityResourceWT} selectedWt="prioritization" />
+                </Grid>
+                <Grid item xs={12}>
+                    {!prioritization && (
+                        <Grid item xs={12}>
+                            <div style={{ textAlign: 'center', padding: '20px' }}>
+                                <Typography variant="h6">
+                                    Prioritization strategies are loading...
+                                </Typography>
+                            </div>
+                        </Grid>
+                    )}
+                    {prioritization && (
+                        <Grid item xs={12}>
+                            <div style={{ textAlign: 'center', padding: '20px', justifyContent: 'left' }}>
+                                <Typography variant="h6">
+                                    Prioritization strategies
+                                </Typography>
+                            </div>
+                            <PrioritizationComponent data={prioritization} />,
+                        </Grid>
+                    )}
                 </Grid>
             </Grid>
         </Box>

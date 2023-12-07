@@ -12,6 +12,7 @@ import IconButton from "@mui/material/IconButton";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import BatchingComponent from "./BatchingComponent";
 import ResourcesBarChart from "../ResourcesBarChart";
+import batching from "./Batching";
 
 
 interface BatchingAllTransitionsLayoutProps {
@@ -22,7 +23,7 @@ const BatchingAllTransitionsLayout: React.FC<BatchingAllTransitionsLayoutProps> 
     const overviewData = useFetchData(`/wt_overview/${jobId}/batching`);
     const timeFrameData = useFetchData(`/daily_summary/${jobId}`);
     const activityResourceWT = useFetchData(`/activity_resource_wt/${jobId}`)
-    // const batching = useFetchData(`/process_csv/${jobId}`)
+    const batching = useFetchData(`/batching_strategies/${jobId}`)
     const [dataMode, setDataMode] = useState("Average");
     const transitionsDataAverage = useFetchData(`/activity_transitions_average/${jobId}`);
     const transitionsDataTotal = useFetchData(`/activity_transitions/${jobId}`);
@@ -307,27 +308,27 @@ const BatchingAllTransitionsLayout: React.FC<BatchingAllTransitionsLayoutProps> 
                     <ResourcesBarChart data={activityResourceWT} selectedWt="batching" />
                 </Grid>
 
-                {/*<Grid item xs={12}>*/}
-                {/*    {!batching && (*/}
-                {/*        <Grid item xs={12}>*/}
-                {/*            <div style={{ textAlign: 'center', padding: '20px' }}>*/}
-                {/*                <Typography variant="h6">*/}
-                {/*                    Batching strategies are loading...*/}
-                {/*                </Typography>*/}
-                {/*            </div>*/}
-                {/*        </Grid>*/}
-                {/*    )}*/}
-                {/*    {batching && (*/}
-                {/*        <Grid item xs={12}>*/}
-                {/*            <div style={{ textAlign: 'center', padding: '20px', justifyContent: 'left' }}>*/}
-                {/*                <Typography variant="h6">*/}
-                {/*                    Batching strategies*/}
-                {/*                </Typography>*/}
-                {/*            </div>*/}
-                {/*            <BatchingComponent data={batching} />,*/}
-                {/*        </Grid>*/}
-                {/*    )}*/}
-                {/*</Grid>*/}
+                <Grid item xs={12}>
+                    {!batching && (
+                        <Grid item xs={12}>
+                            <div style={{ textAlign: 'center', padding: '20px' }}>
+                                <Typography variant="h6">
+                                    Batching strategies are loading...
+                                </Typography>
+                            </div>
+                        </Grid>
+                    )}
+                    {batching && (
+                        <Grid item xs={12}>
+                            <div style={{ textAlign: 'center', padding: '20px', justifyContent: 'left' }}>
+                                <Typography variant="h6">
+                                    Batching strategies
+                                </Typography>
+                            </div>
+                            <BatchingComponent data={batching} />,
+                        </Grid>
+                    )}
+                </Grid>
             </Grid>
         </Box>
     );
