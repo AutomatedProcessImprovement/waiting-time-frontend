@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Card, TextField, Button, Typography, List, ListItem } from '@mui/material';
-import DOMPurify from 'dompurify';
 
 interface ChatProps {
     jobid: string;
@@ -31,6 +30,7 @@ export default function Chat({ jobid }: ChatProps) {
     const [chatHistory, setChatHistory] = useState<string[]>([]);
     const [isProcessing, setIsProcessing] = useState<boolean>(false);
     const [polling, setPolling] = useState<number | null>(null);
+    const [runId, setRunId] = useState<string | null>(null);
 
     const handleSendMessage = async () => {
         if (!message) return;
@@ -53,16 +53,24 @@ export default function Chat({ jobid }: ChatProps) {
             if (!threadId) {
                 setThreadId(processData.thread_id);
             }
+            setRunId(processData.run_id); // Save the runId
 
             // Start polling for the chat status
             const poll = window.setInterval(async () => {
-                const statusResponse = await fetch(`http://154.56.63.127/db-api/status/${processData.thread_id}`);
-                const statusData = await statusResponse.json();
+                // Ensure both threadId and runId are available for status check
+                if (processData.thread_id && processData.run_id) {
+                    const statusResponse = await fetch(`http://154.56.63.127/db-api/status/${processData.thread_id}/${processData.run_id}`);
+                    const statusData = await statusResponse.json();
 
-                if (statusData.status === 'completed') {
-                    updateChatHistory(`Assistant: ${statusData.message}`);
-                    setIsProcessing(false);
-                    clearInterval(poll);
+                    if (statusData.status === 'completed') {
+                        updateChatHistory(`Assistant: ${statusData.message}`);
+                        setIsProcessing(false);
+                        clearInterval(poll);
+                    } else if (statusData.status === 'error') {
+                        updateChatHistory('There has been an error processing the request.');
+                        setIsProcessing(false);
+                        clearInterval(poll);
+                    }
                 }
             }, 5000);
 
