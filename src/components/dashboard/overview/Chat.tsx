@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Card, TextField, Button, Typography, List, ListItem } from '@mui/material';
+import { Card, TextField, Button, Typography, List, ListItem, CircularProgress } from '@mui/material';
+import '../../../App.css'
 
 interface ChatProps {
     jobid: string;
@@ -35,19 +36,42 @@ export default function Chat({ jobid }: ChatProps) {
     const handleSendMessage = async () => {
         if (!message) return;
 
-        const updateChatHistory = (newMessage: string) => {
-            setChatHistory(prevHistory => [...prevHistory, newMessage]);
+        const updateChatHistory = (sender: string, newMessage: string, isLoading: boolean = false) => {
+            let formattedMessage:string;
+            if (isLoading) {
+                formattedMessage = `<strong>${sender}</strong><br/><CircularProgress /><span>Working...</span>`;
+            } else {
+                formattedMessage = `<strong>${sender}</strong><br/>${newMessage}`;
+            }
+            setChatHistory(prevHistory => [...prevHistory, formattedMessage]);
+        };    
+
+        updateChatHistory("You", message);
+        setIsProcessing(true);
+        updateChatHistory("Assistant", "", true);
+
+        const updateLastChatHistory = (newMessage: string) => {
+            setChatHistory(prevHistory => {
+                let history = [...prevHistory];
+                history[history.length - 1] = `<strong>Assistant</strong><br/>${newMessage}`;
+                return history;
+            });
         };
 
-        updateChatHistory(`You: ${message}`);
-        setIsProcessing(true);
-
-        const endpoint = threadId
-            ? `http://154.56.63.127/db-api/process/${threadId}/${jobid}/${message}`
-            : `http://154.56.63.127/db-api/start/${jobid}/${message}`;
+        const endpoint = threadId ? `http://154.56.63.127/db-api/process` : `http://154.56.63.127/db-api/start`;
 
         try {
-            const processResponse = await fetch(endpoint, { method: 'POST' });
+            const processResponse = await fetch(endpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    jobid: jobid,
+                    message: message,
+                    threadId: threadId,
+                }),
+            });
             const processData = await processResponse.json();
 
             if (!threadId) {
@@ -63,11 +87,11 @@ export default function Chat({ jobid }: ChatProps) {
                     const statusData = await statusResponse.json();
 
                     if (statusData.status === 'completed') {
-                        updateChatHistory(`Assistant: ${statusData.message}`);
+                        updateLastChatHistory(statusData.message);
                         setIsProcessing(false);
                         clearInterval(poll);
                     } else if (statusData.status === 'error') {
-                        updateChatHistory('There has been an error processing the request.');
+                        updateLastChatHistory('There has been an error processing the request.');
                         setIsProcessing(false);
                         clearInterval(poll);
                     }
@@ -95,15 +119,26 @@ export default function Chat({ jobid }: ChatProps) {
             <List>
                 {chatHistory.map((msg, index) => (
                     <ListItem key={index}>
-                        <div dangerouslySetInnerHTML={renderMarkdown(msg)} />
+                        <div dangerouslySetInnerHTML={renderMarkdown(msg.replace("<CircularProgress />", "<div class='circular-progress'></div>"))} />
                     </ListItem>
                 ))}
             </List>
+            {/* {isProcessing && (
+                <div style={{ display: 'flex', alignItems: 'left', justifyContent: 'left', marginTop: '1rem' }}>
+                    <CircularProgress />
+                    <span style={{ marginLeft: '10px' }}>Working...</span>
+                </div>
+            )} */}
             <div style={{ display: 'flex', marginTop: '1rem' }}>
                 <TextField
                     variant="outlined"
                     value={message}
                     onChange={e => setMessage(e.target.value)}
+                    onKeyPress={(e) => {
+                        if (e.key === 'Enter' && !isProcessing) {
+                            handleSendMessage();
+                        }
+                    }}
                     fullWidth
                     placeholder="Type a message"
                     disabled={isProcessing}
