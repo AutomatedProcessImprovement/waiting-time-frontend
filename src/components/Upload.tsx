@@ -149,7 +149,7 @@ const Upload = () => {
                                 }
                             }
                         })
-                    }, 30000)
+                    }, 15000)
                 })).catch((error: any) => {
 
                 setErrorMessage(error)
