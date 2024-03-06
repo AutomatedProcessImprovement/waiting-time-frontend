@@ -17,6 +17,14 @@ interface PrioritizationComponentProps {
 }
 
 export default function PrioritizationComponent({ data }: PrioritizationComponentProps) {
+    if (!data || data.length === 0) {
+        return <Typography>No prioritization strategies available.</Typography>;
+    }
+    if (typeof data === 'string') {
+        return <Typography>{data}</Typography>;
+    }
+    
+
     const renderRule = (rule: Rule) => (
         <Typography key={`${rule.attribute}-${rule.comparison}-${rule.value}`}>
             {rule.attribute} {rule.comparison} {rule.value}
@@ -33,10 +41,6 @@ export default function PrioritizationComponent({ data }: PrioritizationComponen
             ))}
         </Paper>
     );
-
-    if (!data || data.length === 0) {
-        return <Typography>No prioritization strategies available.</Typography>;
-    }
 
     return (
         <div>
