@@ -86,7 +86,7 @@ const Upload = () => {
         try {
             const config = {
                 method: 'post',
-                url: 'http://154.56.63.127/jobs?' + map_string,
+                url: 'http://193.40.11.151/jobs?' + map_string,
                 headers: {
                     'Content-Type': 'text/csv'
                 },
@@ -102,7 +102,7 @@ const Upload = () => {
                     let counter = 0
                     let f = setInterval(() => {
                         axios.get(
-                            'http://154.56.63.127/jobs/' + job.id,
+                            'http://193.40.11.151/jobs/' + job.id,
                         ).then((r: any) => {
                             let j = r.data
                             console.log(j.status)
