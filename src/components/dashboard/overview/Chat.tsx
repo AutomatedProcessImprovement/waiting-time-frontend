@@ -5,9 +5,23 @@ import ReactMarkdown from 'react-markdown';
 import rehypeKatex from 'rehype-katex';
 import 'katex/dist/katex.min.css';
 
+type FunctionNameMappingType = {
+    [key: string]: string;
+};
+
+const functionNameMapping: FunctionNameMappingType = {
+    'discover_batching_strategies': 'Discovering batching strategies',
+    'discover_prioritization_strategies': 'Discovering prioritization strategies',
+    'get_redesign_pattern_info': 'Discovering redesign patterns',
+    'discover_case_attributes': 'Discovering case attributes',
+    'query_database': 'Retrieving Kronos report'
+};
+
 interface ChatProps {
     jobid: string;
 }
+
+const BASE_URL = 'http://193.40.11.151/db-api';
 
 function renderMarkdown(text: string) {
     // Replace markdown headings with HTML headings
@@ -31,7 +45,7 @@ function renderMarkdown(text: string) {
 
 export default function Chat({ jobid }: ChatProps) {
     const [message, setMessage] = useState<string>('');
-    const defaultInstructions = "Use '{table_name}' as a placeholder for the actual table name in your query. In response time is given in seconds, so you need to convert it to a better (years/months/days/hours/minutes) format before providing an answer.";
+    const defaultInstructions = "Use '{table_name}' as a placeholder for the actual table name in your query. If the response time is given in seconds, convert it to a convenient readable data format (years, months, days, hours, minutes). If the question relates to identifying/analyzing waiting time in transitions (e.g., where is the highest waiting time? what is the largest bottleneck?), the response must include: 1. where the waiting time is located (e.g., in which transition), 2. the waiting time duration, 3. the causes of waiting time and the duration of the causes of waiting time (how much waiting time is induced by each waiting time cause in this transition and percent from the transition's duration identified in the previous step). When presenting the results, order the causes of waiting time from the highest and highlight the main cause or causes of waiting time, 4. destination resources that contribute the most to the waiting time in this transition, and how much. Use the entire dataset when calculating these values. When presenting the results of the analysis, do not include the results in seconds. When presenting the results of the analysis, use a convenient readable data format: e.g., years, months, days, hours, minutes (use the most suitable according to the values you get). Present the results for all 4 instruction points in the response. If the question relates to recommending/suggesting redesigns (redesign options, process changes), the response must include: 1. where the redesign should be applied (e.g., to which transitions, activities, or resources), 2. what redesign to implement: - the name of the redesign, - definition, i.e., explanation of the redesign principle or redesign pattern, - application, i.e., explanation of how the redesign should be applied, - benefits, i.e., what benefits can be achieved with the redesign and why specifically this redesign is relevant and useful, - impact, i.e., how much impact it is potentially going to provide (e.g., how much the cycle time will improve). Redesign options must focus on addressing the identified causes of waiting time. Suggest at least 2 redesign options for each waiting time cause. Order the redesign options starting from the highest cause of waiting time. Use the Redesign Pattern Info function and combine it with all other knowledge you have. Make the suggestions specific in detail to address the identified waiting time.";
     const [instructions, setInstructions] = useState<string>(defaultInstructions);
     const [threadId, setThreadId] = useState<string | null>(null);
     const [chatHistory, setChatHistory] = useState<string[]>([]);
@@ -53,6 +67,16 @@ export default function Chat({ jobid }: ChatProps) {
     const handleSendMessage = async () => {
         if (!message) return;
 
+
+        const replaceFunctionNames = (message: string) => {
+            Object.keys(functionNameMapping).forEach((key) => {
+                if (message.includes(key)) {
+                    message = message.replace(new RegExp(key, 'g'), functionNameMapping[key]);
+                }
+            });
+            return message;
+        };
+
         const updateChatHistory = (sender: string, newMessage: string, isLoading: boolean = false) => {
             let formattedMessage: string;
             if (isLoading) {
@@ -60,7 +84,7 @@ export default function Chat({ jobid }: ChatProps) {
                 setChatHistory(prevHistory => {
                     let history = [...prevHistory];
                     if (history.length > 0 && history[history.length - 1].includes('<CircularProgress />')) {
-                        const progressMessage = newMessage ? newMessage : 'Working...';
+                        const progressMessage = newMessage ? replaceFunctionNames(newMessage) : 'Working...';
                         history[history.length - 1] = `<strong>Assistant</strong><br/>${progressMessage}<br/><CircularProgress />`;
                     } else {
                         // Otherwise, append a new loading message from the Assistant
@@ -88,7 +112,7 @@ export default function Chat({ jobid }: ChatProps) {
             });
         };
 
-        const endpoint = threadId ? `http://154.56.63.127/db-api/process` : `http://154.56.63.127/db-api/start`;
+        const endpoint = threadId ? `${BASE_URL}/process` : `${BASE_URL}/start`;
 
         const functionStatus = {
             'discover_batching_strategies': isDiscoverBatchingStrategiesEnabled,
@@ -103,7 +127,6 @@ export default function Chat({ jobid }: ChatProps) {
             'get_redesign_pattern_info': redesignPatternInfoDescription,
             'discover_case_attributes': caseAttributesDescription
         };
-        
         
         try {
             const processResponse = await fetch(endpoint, {
@@ -136,7 +159,7 @@ export default function Chat({ jobid }: ChatProps) {
                     setIsPollingInProgress(true);
 
                     try {
-                        const statusResponse = await fetch(`http://154.56.63.127/db-api/status/${jobid}/${processData.thread_id}/${processData.run_id}`);
+                        const statusResponse = await fetch(`${BASE_URL}/status/${jobid}/${processData.thread_id}/${processData.run_id}`);
                         const statusData = await statusResponse.json();
 
                         if (statusData.status === 'completed') {
@@ -181,6 +204,7 @@ export default function Chat({ jobid }: ChatProps) {
     return (
         <Card style={{ padding: '1rem', margin: 'auto' }}>
             <Select
+                style={{ display: 'none' }}
                 value={selectedModel}
                 onChange={(e) => setSelectedModel(e.target.value)}
                 fullWidth
@@ -189,6 +213,7 @@ export default function Chat({ jobid }: ChatProps) {
                 <MenuItem value="gpt-4">GPT-4</MenuItem>
             </Select>
             <TextField
+                style={{ display: 'none' }}
                 variant="outlined"
                 value={assistantInstructions}
                 onChange={(e) => setAssistantInstructions(e.target.value)}
@@ -199,6 +224,7 @@ export default function Chat({ jobid }: ChatProps) {
                 placeholder="Type assistant-level instructions"
             />
             <TextField
+                style={{ display: 'none' }}
                 variant="outlined"
                 value={instructions}
                 onChange={(e) => setInstructions(e.target.value)}
@@ -207,10 +233,11 @@ export default function Chat({ jobid }: ChatProps) {
                 fullWidth
                 placeholder="Type instructions"
                 disabled={!!threadId}
-                style={{ marginBottom: '1rem' }}
+                // style={{ marginBottom: '1rem' }}
             />
             {/* Function Descriptions */}
             <TextField
+                style={{ display: 'none' }}
                 label="Batching Strategies Description"
                 variant="outlined"
                 value={batchingDescription}
@@ -219,9 +246,10 @@ export default function Chat({ jobid }: ChatProps) {
                 multiline
                 disabled={!!threadId}
                 rows={2}
-                style={{ marginBottom: '1rem' }}
+                // style={{ marginBottom: '1rem' }}
             />
             <TextField
+                style={{ display: 'none' }}
                 label="Prioritization Strategies Description"
                 variant="outlined"
                 value={prioritizationDescription}
@@ -230,9 +258,10 @@ export default function Chat({ jobid }: ChatProps) {
                 multiline
                 disabled={!!threadId}
                 rows={2}
-                style={{ marginBottom: '1rem' }}
+                // style={{ marginBottom: '1rem' }}
             />
             <TextField
+                style={{ display: 'none' }}
                 label="Redesign Pattern Info Description"
                 variant="outlined"
                 value={redesignPatternInfoDescription}
@@ -241,9 +270,10 @@ export default function Chat({ jobid }: ChatProps) {
                 multiline
                 disabled={!!threadId}
                 rows={2}
-                style={{ marginBottom: '1rem' }}
+                // style={{ marginBottom: '1rem' }}
             />
             <TextField
+                style={{ display: 'none' }}
                 label="Case Attributes Discovery Description"
                 variant="outlined"
                 value={caseAttributesDescription}
@@ -252,11 +282,12 @@ export default function Chat({ jobid }: ChatProps) {
                 multiline
                 disabled={!!threadId}
                 rows={2}
-                style={{ marginBottom: '1rem' }}
+                // style={{ marginBottom: '1rem' }}
             />
 
             {/* Enable/Disable Switches */}
             <FormControlLabel
+                style={{ display: 'none' }}
                 control={
                     <Switch
                         checked={isDiscoverBatchingStrategiesEnabled}
@@ -267,6 +298,7 @@ export default function Chat({ jobid }: ChatProps) {
                 label="Enable Batching Strategies"
             />
             <FormControlLabel
+                style={{ display: 'none' }}
                 control={
                     <Switch
                         checked={isDiscoverPrioritizationStrategiesEnabled}
@@ -277,6 +309,7 @@ export default function Chat({ jobid }: ChatProps) {
                 label="Enable Prioritization Strategies"
             />
             <FormControlLabel
+                style={{ display: 'none' }}
                 control={
                     <Switch
                         checked={isGetRedesignPatternInfoEnabled}
@@ -287,6 +320,7 @@ export default function Chat({ jobid }: ChatProps) {
                 label="Enable Redesign Pattern Info"
             />
             <FormControlLabel
+                style={{ display: 'none' }}
                 control={
                     <Switch
                         checked={isDiscoverCaseAttributesEnabled}
