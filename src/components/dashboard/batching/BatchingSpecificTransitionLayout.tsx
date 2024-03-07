@@ -11,6 +11,7 @@ import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import TransitionsBarChart from "../overview/TransitionsBarChart";
+import BatchingComponent from "./BatchingComponent";
 
 interface BatchingSpecificTransitionsLayoutProps {
     jobId: string;
@@ -27,6 +28,7 @@ const BatchingSpecificTransitionsLayout: React.FC<BatchingSpecificTransitionsLay
     const barChartData = useFetchData(`/activity_transitions/${jobId}/${sourceActivity}/${destinationActivity}`);
     const barChartDataByResource = useFetchData(`/activity_transitions_by_resource/${jobId}/${sourceActivity}/${destinationActivity}`);
     const activityResourceWT = useFetchData(`/activity_resource_wt/${jobId}`);
+    const batching = useFetchData(`/batching_strategies/${jobId}`)
     const [selectedMode, setSelectedMode] = React.useState('Average');
 
     const handleChange = (event: SelectChangeEvent<string>) => {
@@ -283,6 +285,27 @@ const BatchingSpecificTransitionsLayout: React.FC<BatchingSpecificTransitionsLay
                         </Tooltip>
                     </div>
                     <TransitionsBarChart data={barChartDataByResource} selectedWTType={'batching'}/>
+                </Grid>
+                <Grid item xs={12}>
+                    {!batching && (
+                        <Grid item xs={12}>
+                            <div style={{ textAlign: 'center', padding: '20px' }}>
+                                <Typography variant="h6">
+                                    Batching strategies are loading...
+                                </Typography>
+                            </div>
+                        </Grid>
+                    )}
+                    {batching && (
+                        <Grid item xs={12}>
+                            <div style={{ textAlign: 'center', padding: '20px', justifyContent: 'left' }}>
+                                <Typography variant="h6">
+                                    Batching strategies
+                                </Typography>
+                            </div>
+                            <BatchingComponent data={batching} defaultActivity={destinationActivity}/>,
+                        </Grid>
+                    )}
                 </Grid>
             </Grid>
         </Box>

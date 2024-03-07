@@ -444,9 +444,9 @@ const AllTransitionsLayout: React.FC<AllTransitionsLayoutProps> = ({jobId}) => {
                     </Grid>
                 )}
 
-                {/*<Grid item xs={12}>*/}
-                {/*    <Chat jobid={jobId}/>*/}
-                {/*</Grid>*/}
+                <Grid item xs={12}>
+                    <Chat jobid={jobId}/>
+                </Grid>
             </Grid>
         </Box>
     );

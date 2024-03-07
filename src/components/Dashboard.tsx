@@ -105,11 +105,11 @@ const ActivityPairSelector = ({selectedActivityPair, handleActivityPairChange, a
 const onDownload = (type: number, jobId: string) => {
     switch (type) {
         case 0:
-            window.location.href = `http://193.40.11.233/assets/results/${jobId}/event_log_transitions_report.csv`;
+            window.location.href = `http://193.40.11.151/assets/results/${jobId}/event_log_transitions_report.csv`;
             break;
         case 1:
             axios({
-                url: `http://193.40.11.233/assets/results/${jobId}/event_log_transitions_report.json`,
+                url: `http://193.40.11.151/assets/results/${jobId}/event_log_transitions_report.json`,
                 method: 'GET',
                 responseType: 'blob'
             }).then(response => {
