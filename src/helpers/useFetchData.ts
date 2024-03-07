@@ -1,6 +1,6 @@
 import { useQuery } from 'react-query';
 
-const BASE_URL = "http://193.40.11.151/db-api";
+const BASE_URL = "http://193.40.11.233/db-api";
 
 export function useFetchData(endpoint: string) {
     const fullUrl = `${BASE_URL}${endpoint}`;

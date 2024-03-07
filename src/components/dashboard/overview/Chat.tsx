@@ -21,7 +21,7 @@ interface ChatProps {
     jobid: string;
 }
 
-const BASE_URL = 'http://193.40.11.151/db-api';
+const BASE_URL = 'http://193.40.11.233/db-api';
 
 function renderMarkdown(text: string) {
     // Replace markdown headings with HTML headings
